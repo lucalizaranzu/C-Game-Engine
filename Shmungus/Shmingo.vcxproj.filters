@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{0F45D591-7B24-542D-843C-DF03F09ABA8E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\display">
+      <UniqueIdentifier>{B247071C-1EFD-7F11-A7F1-79E813A67615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\engine">
+      <UniqueIdentifier>{32B5D758-1E6D-19A6-8774-F201734BB496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entities">
+      <UniqueIdentifier>{A142F00B-8DA5-7FB0-362B-B866226D4B33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\events">
+      <UniqueIdentifier>{91766759-7D2E-A9A6-E635-8202D20C4497}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layers">
+      <UniqueIdentifier>{6C614A68-5819-8CB5-C120-6511ADF726A6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools">
+      <UniqueIdentifier>{EB1B37DF-D714-5631-0047-3BB6EC9E353D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\models">
+      <UniqueIdentifier>{605C916B-4C14-D3B8-B51B-AC14A1F26DA9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\player">
+      <UniqueIdentifier>{C93B5972-B5F3-9ABF-1EFB-731B0AD235B0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\renderEngine">
+      <UniqueIdentifier>{32D13939-1ECA-588B-47FC-3D1033543897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{26450F9B-92FA-8790-1BEF-816787A37E94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\tools">
+      <UniqueIdentifier>{8DED2DB6-F957-E22C-4296-93D2AE3FC081}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\display\DisplayManager.h">
+      <Filter>src\display</Filter>
+    </ClInclude>
+    <ClInclude Include="src\display\Window.h">
+      <Filter>src\display</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\Engine.h">
+      <Filter>src\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\Input.h">
+      <Filter>src\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ShmingoApp.h">
+      <Filter>src\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\ShmingoCore.h">
+      <Filter>src\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\entity.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\Event.h">
+      <Filter>src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\EventBus.h">
+      <Filter>src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\EventHandler.h">
+      <Filter>src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\Layer.h">
+      <Filter>src\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\LayerStack.h">
+      <Filter>src\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\SandboxLayer.h">
+      <Filter>src\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\UniformBuffer.h">
+      <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\Vertex.h">
+      <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\VertexArray.h">
+      <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\VertexTools.h">
+      <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Model.h">
+      <Filter>src\models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Camera.h">
+      <Filter>src\player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\player\Player.h">
+      <Filter>src\player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\MasterRenderer.h">
+      <Filter>src\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\RenderPair.h">
+      <Filter>src\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\Renderer.h">
+      <Filter>src\renderEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\DefaultShader.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\ShaderProgram.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\ShaderTools.h">
+      <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\Matrices.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\UniformTools.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\display\DisplayManager.cpp">
+      <Filter>src\display</Filter>
+    </ClCompile>
+    <ClCompile Include="src\display\Window.cpp">
+      <Filter>src\display</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\Input.cpp">
+      <Filter>src\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ShmingoApp.cpp">
+      <Filter>src\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\ShmingoCore.cpp">
+      <Filter>src\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\main.cpp">
+      <Filter>src\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\entity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\glad.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\Layer.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\LayerStack.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\SandboxLayer.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\UniformBuffer.cpp">
+      <Filter>src\loadingTools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\VertexArray.cpp">
+      <Filter>src\loadingTools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\VertexTools.cpp">
+      <Filter>src\loadingTools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\Model.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Camera.cpp">
+      <Filter>src\player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\player\Player.cpp">
+      <Filter>src\player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\MasterRenderer.cpp">
+      <Filter>src\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderEngine\Renderer.cpp">
+      <Filter>src\renderEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shaders\DefaultShader.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shaders\ShaderProgram.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\shaders\ShaderTools.cpp">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\Matrices.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\UniformTools.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\fragment.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vertex.glsl">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
