@@ -23,8 +23,6 @@ public:
 	//Independent loader functions for each uniform to avoid needing to look up types in a hashmap multiple times per frame
 	void setProjectionMatrix(mat4 projectionMatrix);
 	void setViewMatrix(mat4 viewMatrix);
-	void setTestFloat(float testFloat);
-
 
 	static UniformBuffer& get() { return instance; };
 

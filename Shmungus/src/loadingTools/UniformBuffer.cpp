@@ -38,28 +38,24 @@ void UniformBuffer::init() {
 	* and unbind different buffer objects and use different UBOs for everything
 	* */
 
-
-	glBindBufferRange(GL_UNIFORM_BUFFER, INDEX_MATRIXBLOCK, uboID, 0, (2 * sizeof(mat4)) + sizeof(float)); //Range 1
+	glBindBufferRange(GL_UNIFORM_BUFFER, INDEX_MATRIXBLOCK, uboID, 0, (2 * sizeof(mat4))); //Range 1
 
 }
 
 void UniformBuffer::setProjectionMatrix(mat4 projectionMatrix){
+	glBindBuffer(GL_UNIFORM_BUFFER,uboID);
 	setUniformMat4(projectionMatrix, OFFSET_PROJECTIONMATRIX, INDEX_MATRIXBLOCK);
 }
 
 void UniformBuffer::setViewMatrix(mat4 viewMatrix){
+	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
 	setUniformMat4(viewMatrix, OFFSET_VIEWMATRIX, INDEX_MATRIXBLOCK);
-}
-
-void UniformBuffer::setTestFloat(float testFloat) {
-	setUniform1f(testFloat, 128, INDEX_MATRIXBLOCK);
 }
 
 
 void UniformBuffer::setAsActive() {
 	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
 }
-
 
 
 void UniformBuffer::setUniform1f(float value, GLint offset, GLuint index) {

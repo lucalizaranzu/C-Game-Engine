@@ -13,6 +13,7 @@ protected:
 	bool handled = false; //Set to false by default
 };
 
+
 class TestEvent : public Event{
 
 public:
@@ -22,6 +23,7 @@ public:
 	char m_y;
 
 };
+
 
 class KeyboardEvent : public Event {
 
@@ -44,6 +46,7 @@ protected:
 
 };
 
+
 class KeyPressEvent : public KeyboardEvent {
 
 public:
@@ -58,9 +61,55 @@ public:
 	KeyReleaseEvent(int key, int scancode, int action, int mods) : KeyboardEvent(key, scancode, action, mods) {}
 };
 
+
 class KeyRepeatEvent : public KeyboardEvent {
 
 public:
 
 	KeyRepeatEvent(int key, int scancode, int action, int mods) : KeyboardEvent(key, scancode, action, mods) {}
+};
+
+
+class MouseEvent : public Event {
+
+public:
+
+	MouseEvent(int button, int action, int mods) : button(button), action(action), mods(mods) {};
+
+	int getButton() { return button; };
+	int getAction() { return action; };
+	int getMods() { return mods; };
+
+protected:
+
+	int button;
+	int action;
+	int mods;
+
+};
+
+
+class MouseClickEvent : public MouseEvent {
+
+public:
+
+	MouseClickEvent(int button, int action, int mods) : MouseEvent(button,action,mods){}
+
+};
+
+
+class MouseDragEvent : public Event{
+
+public:
+	
+	MouseDragEvent(float xDiff, float yDiff) : xOffset(xDiff), yOffset(yDiff) {}
+
+	float getXOffset() { return xOffset; };
+	float getYOffset() { return yOffset; };
+
+protected:
+
+	float xOffset;
+	float yOffset;
+
 };

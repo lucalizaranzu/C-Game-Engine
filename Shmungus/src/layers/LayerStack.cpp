@@ -20,7 +20,6 @@ LayerStack::~LayerStack() {
 void LayerStack::emplaceLayer(Layer* layer) {
 	//Adds layer to iterator position and increments iterator
 	layerInsertPosition = stack.emplace(layerInsertPosition,layer); 
-	layerInsertPosition = stack.begin();
 	eventIterator = stack.rbegin();
 
 	layer->onAttach();

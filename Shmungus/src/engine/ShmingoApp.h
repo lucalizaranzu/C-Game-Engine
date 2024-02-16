@@ -18,8 +18,7 @@ public:
 
 private:
 
-	LayerStack layerStack;
-	ShmingoApp(); //Constructor
+	ShmingoApp(); //Privated constructor
 	Window* window;
 
 	void init();

@@ -3,7 +3,13 @@
 #include "ShmingoApp.h"
 #include <ShmingoCore.h>
 
-#include <ShmingoCore.h>
+#include "Matrices.h"
 
+//Key callback function
 void setGLFWkeyCallback();
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+//Mouse callback function
+void setGLFWWindowCallbacks();
+
+//Window callback function
+void setGLFWCursorPosCallback();

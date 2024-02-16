@@ -14,7 +14,6 @@ void MasterRenderer::init() {
 	se_uniformBuffer.init();
 
 	declareRenderPair(se_DEFAULT_SHADER, createShaderProgram(se_DEFAULT_SHADER,"vertex.glsl","fragment.glsl"));
-
 }
 
 //Declare render pairs for internal shaders, if you make a new shader type, add to the enum following the convention in ShaderProgram.h, then declare it as a pair with your new shader object

@@ -23,6 +23,13 @@ void Window::setViewport(float red, float green, float blue, float alpha) {
 
 //Wrappers for GLFW/Opengl functions to do with GLFWwindow
 int Window::shouldDisplayClose() { return glfwWindowShouldClose(window); }
+
+void Window::setDimensions(int newWidth, int newHeight){
+
+	width = newWidth;
+	height = newHeight;
+
+}
 void Window::swapBuffers() { 
 	glfwSwapBuffers(window); 
 }

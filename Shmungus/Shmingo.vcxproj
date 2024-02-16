@@ -166,7 +166,9 @@
     <ClInclude Include="src\shaders\DefaultShader.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\ShaderTools.h" />
+    <ClInclude Include="src\tools\MathTools.h" />
     <ClInclude Include="src\tools\Matrices.h" />
+    <ClInclude Include="src\tools\MiscTools.h" />
     <ClInclude Include="src\tools\UniformTools.h" />
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +194,9 @@
     <ClCompile Include="src\shaders\DefaultShader.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\shaders\ShaderTools.cpp" />
+    <ClCompile Include="src\tools\MathTools.cpp" />
     <ClCompile Include="src\tools\Matrices.cpp" />
+    <ClCompile Include="src\tools\MiscTools.cpp" />
     <ClCompile Include="src\tools\UniformTools.cpp" />
   </ItemGroup>
   <ItemGroup>

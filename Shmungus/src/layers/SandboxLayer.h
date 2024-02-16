@@ -9,12 +9,14 @@
 
 #include "UniformBuffer.h"
 #include "Matrices.h"
+#include "MiscTools.h"
 
 class SandboxLayer : public Layer {
 
 public:
 
 	SandboxLayer();
+	~SandboxLayer();
 
 private:
 

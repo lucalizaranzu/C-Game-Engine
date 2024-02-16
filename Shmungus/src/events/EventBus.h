@@ -20,7 +20,7 @@ private:
 
     template<class EventType>
     void pushEvent(EventType* event) {
-        HandlerList* handlers = handlerMap[typeid(EventType)]; //Checking for listeners
+        HandlerList* handlers = handlerMap[typeid(EventType)]; //Checking for listeners for type
 
         if (handlers == nullptr) {
             return; //Return if there are no listeners for the event

@@ -4,11 +4,7 @@
 //This is a custom wrapper containing a GLFW window pointer, and any data associated with it
 class Window {
 
-private:
-
-	int width;
-	int height;
-	GLFWwindow* window;
+	friend class ShmingoApp;
 
 public:
 
@@ -21,9 +17,21 @@ public:
 
 	//Wrappers for GLFW/Opengl functions to do with GLFWwindow
 	int shouldDisplayClose();
-	void swapBuffers();
 
 	inline GLFWwindow* getGLFWwindow() { return window; }
+
+	inline int getWidth() { return width; };
+	inline int getHeight() { return height; };
+
+	void setDimensions(int newWidth, int newHeight);
+
+private:
+
+	int width;
+	int height;
+	GLFWwindow* window;
+
+	void swapBuffers();
 
 };
 

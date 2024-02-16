@@ -7,8 +7,9 @@
 #include "UniformBuffer.h"
 #include "Matrices.h"
 
-const float DEFAULT_ACCELERATION = 0.2f; //default acceleration of player
-const float MAX_SPEED = 1.0f; //Max velocity of player
+const float DEFAULT_ACCELERATION = 0.004f; //default acceleration of player
+const float MAX_SPEED = 0.03f; //Max velocity of player
+const float LOOK_SENSITIVITY = 0.005f;
 
 class Player : public Entity {
 
@@ -25,6 +26,9 @@ private:
 
 	void getKeyDown(KeyPressEvent* e);
 	void getKeyUp(KeyReleaseEvent* e);
+
+	void getMouseMovement(MouseDragEvent* e);
+
 	void calcVelocity();
 	void move();
 

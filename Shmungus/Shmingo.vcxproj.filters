@@ -120,7 +120,13 @@
     <ClInclude Include="src\shaders\ShaderTools.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="src\tools\MathTools.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
     <ClInclude Include="src\tools\Matrices.h">
+      <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\MiscTools.h">
       <Filter>src\tools</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\UniformTools.h">
@@ -194,7 +200,13 @@
     <ClCompile Include="src\shaders\ShaderTools.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\tools\MathTools.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
     <ClCompile Include="src\tools\Matrices.cpp">
+      <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\MiscTools.cpp">
       <Filter>src\tools</Filter>
     </ClCompile>
     <ClCompile Include="src\tools\UniformTools.cpp">

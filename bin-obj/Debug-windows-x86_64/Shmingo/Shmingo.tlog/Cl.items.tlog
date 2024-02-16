@@ -20,5 +20,7 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\renderEngine\Renderer.cpp;C:\Us
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\DefaultShader.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\DefaultShader.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\ShaderProgram.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShaderProgram.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\ShaderTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShaderTools.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\MathTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MathTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\Matrices.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Matrices.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\MiscTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MiscTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\UniformTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformTools.obj

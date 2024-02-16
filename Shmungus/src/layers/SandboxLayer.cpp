@@ -9,11 +9,17 @@ std::shared_ptr<ColorQuadVertexArray> vertexArray;
 
 std::shared_ptr<Player> player;
 
+SandboxLayer::~SandboxLayer() {
+
+}
+
 void SandboxLayer::onAttach() {
 
-	player = std::make_shared<Player>();
+	//Init functions
+	disableGLFWCursor();
 
 	//Creating objects
+	player = std::make_shared<Player>();
 	vertexArray = std::make_shared<ColorQuadVertexArray>();
 
 	//Create a quad
@@ -21,18 +27,15 @@ void SandboxLayer::onAttach() {
 
 	vertexArray->pushVertexData(quad1.data(), 4);
 
+	se_uniformBuffer.setAsActive();
+	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 100.0f));
 }
 
 void SandboxLayer::onUpdate() {
 
-	se_uniformBuffer.setAsActive();
 	player->update();
 	se_masterRenderer.submitVertexArray(vertexArray, se_DEFAULT_SHADER);
 
-
-	se_uniformBuffer.setAsActive();
-	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 100.0f));
-	se_uniformBuffer.setTestFloat(1.0f);
 }
 
 void SandboxLayer::onDetach() {
