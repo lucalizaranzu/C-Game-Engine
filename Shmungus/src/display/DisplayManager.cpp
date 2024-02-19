@@ -21,7 +21,6 @@ GLFWwindow* createGLFWwindow(int width, int height) {
 		return NULL;
 	}
 
-	se_log("Created a window");
 	return window;
 }
 

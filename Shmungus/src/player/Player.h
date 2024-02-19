@@ -9,7 +9,7 @@
 
 const float DEFAULT_ACCELERATION = 0.004f; //default acceleration of player
 const float MAX_SPEED = 0.03f; //Max velocity of player
-const float LOOK_SENSITIVITY = 0.005f;
+const float LOOK_SENSITIVITY = 0.002f;
 
 class Player : public Entity {
 
@@ -22,7 +22,7 @@ public:
 
 private:
 
-	Camera camera; //Player's camera, may free this if I want to do freecam eventually but who knows
+	Camera camera; //Player's camera, may free this if I want to do freecam not tied to player position eventually but who knows
 
 	void getKeyDown(KeyPressEvent* e);
 	void getKeyUp(KeyReleaseEvent* e);

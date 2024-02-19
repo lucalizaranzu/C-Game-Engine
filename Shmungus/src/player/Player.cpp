@@ -18,7 +18,6 @@ void Player::update() {
 
 	calcVelocity();
 	direction = calcDirection(rotation);
-	se_log("Direction:" << rotation.x << ", " << rotation.x);
 	move();
 
 	se_uniformBuffer.setViewMatrix(createViewMatrix(camera));
@@ -69,6 +68,12 @@ void Player::getKeyDown(KeyPressEvent* e) {
 			acceleration.y = 0;
 		}
 	}
+	else {
+		return;
+	}
+
+	e->setHandled(); //Stops propogation if key was one we're looking for here
+
 }
 
 //Sets flag to 0 on key release
@@ -111,6 +116,11 @@ void Player::getKeyUp(KeyReleaseEvent* e) {
 			acceleration.y = DEFAULT_ACCELERATION;
 		}
 	}
+	else {
+		return;
+	}
+
+	e->setHandled(); //Stops propogation if key was one we're looking for here
 }
 
 void Player::calcVelocity() {

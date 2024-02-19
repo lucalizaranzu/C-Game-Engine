@@ -1,11 +1,15 @@
 #pragma once
 
 #include <ShmingoCore.h>
+
 #include "EventBus.h"
+#include "VertexArray.h"
+#include "Vertex.h"
 
 enum LayerType {
 
-	se_SANDBOX_LAYER
+	se_SANDBOX_LAYER,
+	se_PAUSEMENU_LAYER
 
 };
 
@@ -38,4 +42,38 @@ protected:
 	LayerType type;
 };
 
+
+class SandboxLayer : public Layer {
+
+public:
+
+	SandboxLayer();
+	~SandboxLayer();
+
+private:
+
+	void onAttach() override;
+	void onDetach() override;
+	void onUpdate() override;
+
+	void KeyboardCallback(KeyPressEvent* e);
+
+};
+
+class PauseMenuLayer : public Layer {
+
+public:
+
+	PauseMenuLayer();
+
+private:
+
+	void onAttach() override;
+	void onDetach() override;
+	void onUpdate() override;
+
+	void keybordCallback(KeyPressEvent* e);
+	void mouseDragCallback(MouseDragEvent* e);
+
+};
 

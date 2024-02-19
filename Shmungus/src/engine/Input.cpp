@@ -35,7 +35,7 @@ void setGLFWWindowCallbacks(){
 void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
 	
 	se_application.getWindow()->setDimensions(width, height);
-	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, width, height, 0.1f, 100.0f));
+	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, (float)width, (float)height, 0.1f, 100.0f));
 }
 
 //Key callback for keybaord input

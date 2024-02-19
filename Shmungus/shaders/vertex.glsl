@@ -7,7 +7,6 @@ layout(std140, binding = 0) uniform MatrixData {
 
 	mat4 viewMatrix;
 	mat4 projectionMatrix;
-	float color;
 
 } matrices;
 

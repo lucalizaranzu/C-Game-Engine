@@ -13,4 +13,3 @@
 #include "VertexTools.h"
 #include "Event.h"
 #include "MasterRenderer.h"
-#include "SandboxLayer.h"

@@ -78,9 +78,6 @@
     <ClInclude Include="src\layers\LayerStack.h">
       <Filter>src\layers</Filter>
     </ClInclude>
-    <ClInclude Include="src\layers\SandboxLayer.h">
-      <Filter>src\layers</Filter>
-    </ClInclude>
     <ClInclude Include="src\loadingTools\UniformBuffer.h">
       <Filter>src\loadingTools</Filter>
     </ClInclude>
@@ -162,6 +159,9 @@
       <Filter>src\layers</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\LayerStack.cpp">
+      <Filter>src\layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\PauseMenuLayer.cpp">
       <Filter>src\layers</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\SandboxLayer.cpp">

@@ -66,9 +66,6 @@ ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
 	// Delete the now useless Vertex and Fragment Shader objects
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-
-	std::cout << "Created shader program with ID: " << ID << std::endl;
-
 }
 
 //Binds VAO attributes to the shader program in the specified layout position

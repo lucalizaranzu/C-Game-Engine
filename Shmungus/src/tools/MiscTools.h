@@ -4,3 +4,4 @@
 #include "ShmingoApp.h"
 
 void disableGLFWCursor();
+void enableGLFWCursor();

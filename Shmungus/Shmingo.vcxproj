@@ -152,7 +152,6 @@
     <ClInclude Include="src\events\EventHandler.h" />
     <ClInclude Include="src\layers\Layer.h" />
     <ClInclude Include="src\layers\LayerStack.h" />
-    <ClInclude Include="src\layers\SandboxLayer.h" />
     <ClInclude Include="src\loadingTools\UniformBuffer.h" />
     <ClInclude Include="src\loadingTools\Vertex.h" />
     <ClInclude Include="src\loadingTools\VertexArray.h" />
@@ -182,6 +181,7 @@
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\layers\Layer.cpp" />
     <ClCompile Include="src\layers\LayerStack.cpp" />
+    <ClCompile Include="src\layers\PauseMenuLayer.cpp" />
     <ClCompile Include="src\layers\SandboxLayer.cpp" />
     <ClCompile Include="src\loadingTools\UniformBuffer.cpp" />
     <ClCompile Include="src\loadingTools\VertexArray.cpp" />

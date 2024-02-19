@@ -1,5 +1,8 @@
-#include "SandboxLayer.h"
+#include "Layer.h"
 #include "LayerStack.h"
+
+#include "Player.h"
+#include "MiscTools.h"
 
 SandboxLayer::SandboxLayer() {
 	type = se_SANDBOX_LAYER;
@@ -14,6 +17,8 @@ SandboxLayer::~SandboxLayer() {
 }
 
 void SandboxLayer::onAttach() {
+
+	se_layerStack.addListener<SandboxLayer, KeyPressEvent>(se_SANDBOX_LAYER, this, &SandboxLayer::KeyboardCallback);
 
 	//Init functions
 	disableGLFWCursor();
@@ -36,6 +41,15 @@ void SandboxLayer::onUpdate() {
 	player->update();
 	se_masterRenderer.submitVertexArray(vertexArray, se_DEFAULT_SHADER);
 
+}
+
+void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
+
+	if (e->getKey() == se_KEY_ESCAPE) {
+
+		se_layerStack.emplaceOverlay(new PauseMenuLayer());
+	}
+	e->setHandled();
 }
 
 void SandboxLayer::onDetach() {

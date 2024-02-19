@@ -25,8 +25,8 @@ public:
 		}
 	}
 	//Adds a function pointer as a listener, specify which layer should listen for the event, the instance of the class that will respond to the event, and a member function of the class to be called on event
-	template<class T, class EventType>
-	void addListener(LayerType layerType, T* instance, void (T::* instanceFunction)(EventType*)) {
+	template<class InstanceClass, class EventType>
+	void addListener(LayerType layerType, InstanceClass* instance, void (InstanceClass::* instanceFunction)(EventType*)) {
 
 		for (Layer* layer : stack) {
 			if (layer->type == layerType) {
@@ -36,6 +36,9 @@ public:
 		}
 	}
 
+	void emplaceLayer(Layer* layer);
+	void emplaceOverlay(Layer* layer);
+	void removeLayer(LayerType layerType);
 
 private:
 
@@ -44,10 +47,6 @@ private:
 	~LayerStack();
 
 	void init();
-
-	void emplaceLayer(Layer* layer);
-	void emplaceOverlay(Layer* layer);
-	void removeLayer(Layer* layer);
 
 	void updateLayers();
 

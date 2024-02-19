@@ -8,6 +8,7 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\entity.cpp;C:\Users\Lu
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\glad.c;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\glad.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\Layer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Layer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\LayerStack.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\LayerStack.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\PauseMenuLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\PauseMenuLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\SandboxLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\SandboxLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\UniformBuffer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformBuffer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\VertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexArray.obj
