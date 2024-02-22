@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "ShmingoCore.h"
 
 void clearOpenGLError(){

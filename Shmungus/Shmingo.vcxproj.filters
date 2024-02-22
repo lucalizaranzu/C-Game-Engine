@@ -60,7 +60,10 @@
     <ClInclude Include="src\engine\ShmingoCore.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\entity.h">
+    <ClInclude Include="src\engine\sepch.h">
+      <Filter>src\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\Entity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -149,7 +152,10 @@
     <ClCompile Include="src\engine\main.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\entity.cpp">
+    <ClCompile Include="src\engine\sepch.cpp">
+      <Filter>src\engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\Entity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\glad.c">

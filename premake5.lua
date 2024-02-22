@@ -20,6 +20,9 @@ project "Shmingo"
 	targetdir ("bin/" .. outputDirectory .."/%{prj.name}")
 	objdir ("bin-obj/" .. outputDirectory .."/%{prj.name}")
 
+	pchheader ("sepch.h")
+	pchsource(srcDirectory .. "engine/sepch.cpp")
+
 	files{
 
 		(srcDirectory .. "**/*.h"),
@@ -47,8 +50,11 @@ project "Shmingo"
 		libDirectory .. "lib/glfw3.dll"
 	}
 
+	filter "files:**.c"
+		flags {"NoPCH"}
+
 	filter "system:windows"
-		cppdialect "C++17"
+		cppdialect "C++20"
 		staticruntime "On"
 		systemversion "latest"
 		filter "system:windows"

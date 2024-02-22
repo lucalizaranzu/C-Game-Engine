@@ -2,6 +2,7 @@
 
 #include <ShmingoCore.h>
 #include "Vertex.h"
+#include "Entity.h"
 
 class VertexArray {
 
@@ -10,18 +11,23 @@ public:
 	VertexArray();
 	~VertexArray();
 
-	inline GLuint getVaoID() { return this->vaoID; };
+
+	//Main functions
+	void pushTestVertices();
 	
+	//Helper functions
 	void bind();
 	void unbind();
-	void pushTestVertices();
 
+	//Getters for information about buffer itself
+	inline GLuint getVaoID() { return this->vaoID; };
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline GLuint getIndexCount() { return indexCount; };
 	inline unsigned int getAttribAmount() { return attribAmount; };
 
 protected:
 
+	//Attributes of buffer itself ------------------------------------------------------------
 	GLuint vaoID = 0; //This is a default value which will be overriden in the base class constructor when glGenVertexArrays() is called.
 
 	GLuint vertexCount = 0; //Amount of vertices
@@ -30,15 +36,28 @@ protected:
 	GLuint vertexVboID = 0; //Same idea, one VBO per VAO
 	GLuint indexVboID = 0; //Same idea, one VBO per VAO
 
+	unsigned int attribAmount = 0; //Defaults to 0, declare this in child constructors!
 
-	int verticesEndIndex = 0; //Index to write vertices into
+
+	//Useful information for member functions to know --------------------------------------
+	int verticesEndIndex = 0; //Index to push new vertices into
 	int indicesEndIndex = 0; //Index to write indices into, I believe fewer instructions than doing the math
 
-	void bindVerticesVbo();
-	void bindIndicesVbo();
 
-	unsigned int attribAmount = 0; //Defaults to 0, declare this in child constructors!
+	//Bookkeeping ---------------------------------------------------------------------------
+
+	
+
+
+	//Small helper functions ---------------------------------------------------------------------------
+	void bindVerticesVbo(); //Bind the vertices VBO
+	void bindIndicesVbo(); //Bind the indices VBO
+
 };
+
+
+//Child class declarations ----------------------
+//Basic vertex arrays - more or less just proof of concept
 
 class DefaultVertexArray : public VertexArray {
 
@@ -52,6 +71,7 @@ private:
 
 };
 
+
 class PositionsOnlyVertexArray : public VertexArray {
 
 	PositionsOnlyVertexArray();
@@ -63,6 +83,7 @@ private:
 	const static unsigned int floatsPerVertex = 3;
 
 };
+
 
 class TexturedQuadVertexArray : public VertexArray {
 
@@ -76,6 +97,7 @@ private:
 
 };
 
+
 class ColorQuadVertexArray : public VertexArray {
 
 public:
@@ -87,5 +109,24 @@ public:
 private:
 
 	const static unsigned int floatsPerVertex = 6;
+
+};
+
+
+//Realistically used vertex arrays
+
+class EntityVertexArray : public VertexArray {
+
+public:
+
+	EntityVertexArray();
+
+	void pushVertexData(std::shared_ptr<Entity> entity);
+	void removeVertexData(std::shared_ptr<Entity> entity);
+
+private:
+
+	std::map<std::shared_ptr<Entity>, GLuint> vertexOffsetMap;
+	std::map<std::shared_ptr<Entity>, GLuint> indexOffsetMap;
 
 };

@@ -1,26 +1,11 @@
 #pragma once
 
-#include <array>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <unordered_map>
-#include <algorithm>
-#include <functional>
-#include <map>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
-
 using vec2 = glm::vec2; //Format ix x,y
 using vec3 = glm::vec3; //Format is x,y,z
 using vec4 = glm::vec4; //Format is x,y,z,w
 
 #define se_bit_left(x) 1 << x
-#include <glm/mat4x4.hpp>
+
 
 #ifdef se_DEBUG //Debug only macros
 #define se_log(x) std::cout << x << std::endl;

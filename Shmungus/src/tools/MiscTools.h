@@ -5,3 +5,4 @@
 
 void disableGLFWCursor();
 void enableGLFWCursor();
+void centerCursor();

@@ -1,3 +1,5 @@
+#include <sepch.h>
+
 #include "Layer.h"
 #include "LayerStack.h"
 
@@ -14,8 +16,7 @@ void PauseMenuLayer::onAttach() {
 	se_layerStack.addListener<PauseMenuLayer, MouseDragEvent>(se_PAUSEMENU_LAYER, this, &PauseMenuLayer::mouseDragCallback);
 
 	enableGLFWCursor(); //Re enable glfw cursor
-
-	//TODO: re-center GLFW cursor to the center of the screen here
+	centerCursor();
 }
 
 

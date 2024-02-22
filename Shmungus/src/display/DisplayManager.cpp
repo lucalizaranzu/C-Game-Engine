@@ -1,5 +1,6 @@
+#include <sepch.h>
+
 #include "DisplayManager.h"
-#include <iostream>
 #include "Engine.h"
 
 void initDisplay() {

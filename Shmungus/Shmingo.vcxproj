@@ -76,13 +76,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\tools;shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -93,7 +94,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\tools;shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -103,7 +105,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -116,7 +118,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\tools;shaders;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -127,7 +130,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
@@ -146,7 +149,8 @@
     <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\ShmingoApp.h" />
     <ClInclude Include="src\engine\ShmingoCore.h" />
-    <ClInclude Include="src\entities\entity.h" />
+    <ClInclude Include="src\engine\sepch.h" />
+    <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventBus.h" />
     <ClInclude Include="src\events\EventHandler.h" />
@@ -177,8 +181,13 @@
     <ClCompile Include="src\engine\ShmingoApp.cpp" />
     <ClCompile Include="src\engine\ShmingoCore.cpp" />
     <ClCompile Include="src\engine\main.cpp" />
-    <ClCompile Include="src\entities\entity.cpp" />
-    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\engine\sepch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\glad.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\layers\Layer.cpp" />
     <ClCompile Include="src\layers\LayerStack.cpp" />
     <ClCompile Include="src\layers\PauseMenuLayer.cpp" />

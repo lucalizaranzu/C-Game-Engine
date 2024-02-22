@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "UniformTools.h"
 
 //Need to keep track of the ID of the currently bound shader program, so it can be passed into glGetUniformLocation

@@ -1,3 +1,5 @@
+#include <sepch.h>
+
 #include "MasterRenderer.h"
 
 UniformBuffer UniformBuffer::instance;

@@ -35,3 +35,13 @@ struct ColorQuadVertex {
 	float positions[2];
 	float color[4];
 };
+
+
+
+struct EntityVertex {
+
+	float positions[3];
+	byte texCoords[2];
+	byte textureID;
+
+};

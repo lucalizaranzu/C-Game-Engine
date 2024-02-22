@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "VertexArray.h"
 
 VertexArray::VertexArray(){
@@ -120,10 +121,24 @@ ColorQuadVertexArray::ColorQuadVertexArray() {
 
 }
 
+EntityVertexArray::EntityVertexArray() {
+
+	attribAmount = 3;
+
+	//Set attrib pointers unique to this type of vertex array
+	bindVerticesVbo();
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, positions));
+	glVertexAttribPointer(1, 2, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, texCoords));
+	glVertexAttribPointer(2, 1, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, textureID));
+	//unbind VAO
+	unbind();
+
+}
+
 void TexturedQuadVertexArray::pushVertexData(TexturedQuadVertex* vertices, GLuint vertexAmt) {
 
 
-	//Size of vertex data in bytes
+	//Size of each vertex in bytes
 	GLuint verticesByteSize = vertexAmt * sizeof(TexturedQuadVertex);
 	int indexAmt = (int)vertexAmt * 3 / 2; //Convert vertex amount to index amount, for quads there will always be 3/2 as many indices as vertices
 	GLuint indicesByteSize = indexAmt * sizeof(int);
@@ -212,4 +227,52 @@ void ColorQuadVertexArray::pushVertexData(ColorQuadVertex* vertices, GLuint vert
 	unbind(); //Unbinds vao and vbos
 
 	delete[] indices; //Delete index buffer after we're done with it
+}
+
+
+void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
+
+	vertexOffsetMap.insert(std::make_pair(entity, verticesEndIndex)); //Sets the offset of the model data as the current vertices end index
+	indexOffsetMap.insert(std::make_pair(entity, indicesEndIndex)); //Sets the offset of the model data as the current vertices end index
+
+	Model model = entity->getModel();
+
+	GLuint vertexAmt = model.getVertexCount();
+	GLuint indexAmt = model.getIndexCount();
+
+	//Size of vertex data in bytes
+	GLuint verticesByteSize = vertexAmt * sizeof(EntityVertex);
+	GLuint indicesByteSize = indexAmt * sizeof(int);
+
+	//Bind the vertices vbo and push the vertex data
+	bindVerticesVbo();
+	glBufferSubData(GL_ARRAY_BUFFER, verticesEndIndex, verticesByteSize, model.getVertexData());
+	//Bind the indices vbo and push the index data
+	bindIndicesVbo();
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesEndIndex, indicesByteSize, model.getIndexData());
+
+	//Increment the starting point of the vertex and index buffers
+	verticesEndIndex += verticesByteSize; //Byte position of vertex end
+	indicesEndIndex += indicesByteSize; //Byte position of index end
+
+	//Increment the vertex and index counts
+	vertexCount += vertexAmt;
+	indexCount += indexAmt;
+
+	unbind(); //Unbinds vao and vbos
+}
+
+void EntityVertexArray::removeVertexData(std::shared_ptr<Entity> entity){
+
+	GLuint vertexRemovalIndex = vertexOffsetMap.at(entity);
+	GLuint indexRemovalIndex = indexOffsetMap.at(entity);
+
+	GLuint verticesRemovalSize = entity->getModel().getVerticesByteSize();
+	GLuint indicesRemovalSize = entity->getModel().getIndicesByteSize();
+
+
+	for (auto it = vertexOffsetMap.find(entity); it != vertexOffsetMap.end(); it++) {
+		it->second = (it->second - verticesRemovalSize);
+	}
+
 }
