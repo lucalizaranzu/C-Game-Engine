@@ -119,12 +119,16 @@ class EntityVertexArray : public VertexArray {
 
 public:
 
+	typedef std::vector<std::shared_ptr<Entity>> entityVec;
+
 	EntityVertexArray();
 
 	void pushVertexData(std::shared_ptr<Entity> entity);
 	void removeVertexData(std::shared_ptr<Entity> entity);
 
 private:
+
+	entityVec insertOrderVector;
 
 	std::map<std::shared_ptr<Entity>, GLuint> vertexOffsetMap;
 	std::map<std::shared_ptr<Entity>, GLuint> indexOffsetMap;

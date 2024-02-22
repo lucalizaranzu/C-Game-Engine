@@ -262,6 +262,7 @@ void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
 	unbind(); //Unbinds vao and vbos
 }
 
+//Maybe put this on another thread?
 void EntityVertexArray::removeVertexData(std::shared_ptr<Entity> entity){
 
 	GLuint vertexRemovalIndex = vertexOffsetMap.at(entity);
@@ -270,9 +271,20 @@ void EntityVertexArray::removeVertexData(std::shared_ptr<Entity> entity){
 	GLuint verticesRemovalSize = entity->getModel().getVerticesByteSize();
 	GLuint indicesRemovalSize = entity->getModel().getIndicesByteSize();
 
+	entityVec::iterator entityPos = std::find(insertOrderVector.begin(),
+		insertOrderVector.end(), entity);
 
-	for (auto it = vertexOffsetMap.find(entity); it != vertexOffsetMap.end(); it++) {
-		it->second = (it->second - verticesRemovalSize);
+	//TODO: actually shift data
+
+
+
+
+	//Im looking to see if I can run something like this in a compute shader since this is a long for loop
+	for (auto it = entityPos; it != insertOrderVector.end() ; it++) {
+		vertexOffsetMap[*it] -= verticesRemovalSize;
+		indexOffsetMap[*it] -= indicesRemovalSize;
 	}
 
+	vertexCount -= entity->getModel().getVertexCount();
+	indexCount - +entity->getModel().getIndexCount();
 }

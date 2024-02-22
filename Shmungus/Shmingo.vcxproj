@@ -150,7 +150,7 @@
     <ClInclude Include="src\engine\ShmingoApp.h" />
     <ClInclude Include="src\engine\ShmingoCore.h" />
     <ClInclude Include="src\engine\sepch.h" />
-    <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventBus.h" />
     <ClInclude Include="src\events\EventHandler.h" />
@@ -184,7 +184,7 @@
     <ClCompile Include="src\engine\sepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\glad.c">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>

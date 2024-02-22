@@ -63,7 +63,7 @@
     <ClInclude Include="src\engine\sepch.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\Entity.h">
+    <ClInclude Include="src\entities\entity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -155,7 +155,7 @@
     <ClCompile Include="src\engine\sepch.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\Entity.cpp">
+    <ClCompile Include="src\entities\entity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\glad.c">
