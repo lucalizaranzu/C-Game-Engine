@@ -3,6 +3,7 @@
 #include <sepch.h>
 #include <ShmingoCore.h>
 #include "Vertex.h"
+#include "Texture.h"
 
 //Serves as just a wrapper around a std::array containing vertices, and eventually indices as well. 
 //Future edits to this include animations and transforms.
@@ -13,7 +14,7 @@ class Model{
 
 public:
 
-	Model(EntityVertex* vertices, GLuint vertexCount, int* indices, GLuint indexCount);
+	Model(EntityVertex* vertices, GLuint vertexCount, int* indices, GLuint indexCount, Texture texture);
 	~Model();
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline EntityVertex* getVertexData() {return vertexData; };
@@ -32,5 +33,8 @@ private:
 	//Index data
 	GLuint indexCount;
 	int* indexData;
+
+	//Texture data
+	Texture texture;
 };
 

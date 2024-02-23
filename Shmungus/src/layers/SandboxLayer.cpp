@@ -5,14 +5,17 @@
 
 #include "Player.h"
 #include "MiscTools.h"
+#include "TextureTools.h"
+#include "ModelTools.h"
 
 SandboxLayer::SandboxLayer() {
 	type = se_SANDBOX_LAYER;
 }
 
-std::shared_ptr<ColorQuadVertexArray> vertexArray;
+std::shared_ptr<EntityVertexArray> vertexArray;
 
 std::shared_ptr<Player> player;
+std::shared_ptr<Entity> entity;
 
 SandboxLayer::~SandboxLayer() {
 
@@ -27,12 +30,14 @@ void SandboxLayer::onAttach() {
 
 	//Creating objects
 	player = std::make_shared<Player>();
-	vertexArray = std::make_shared<ColorQuadVertexArray>();
+	vertexArray = std::make_shared<EntityVertexArray>();
 
-	//Create a quad
-	std::array<ColorQuadVertex, 4> quad1 = createColorQuad(vec2(-0.5f, 0.5f), vec4(0.2f, 1.0f, 0.7f, 1.0f));
+	//Create an entity
 
-	vertexArray->pushVertexData(quad1.data(), 4);
+	Model cubeModel = createCubeModel("funnyimage.png");
+	entity = std::make_shared<Entity>(cubeModel);
+
+	vertexArray->pushVertexData(entity);
 
 	se_uniformBuffer.setAsActive();
 	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 100.0f));

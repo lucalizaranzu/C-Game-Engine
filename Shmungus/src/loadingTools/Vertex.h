@@ -37,7 +37,7 @@ struct ColorQuadVertex {
 };
 
 
-
+//Real vertices
 struct EntityVertex {
 
 	float positions[3];

@@ -15,7 +15,14 @@
 enum ShaderType {
 
 	se_SHADER_NONE,
-	se_DEFAULT_SHADER
+	se_DEFAULT_SHADER,
+	se_ENTITY_SHADER
+
+};
+
+enum ShaderProgramType {
+
+	DEFAULT_SHADER
 
 };
 
@@ -42,6 +49,9 @@ public:
 	void compileErrors(GLuint shader, const char* type);
 
 	void cleanUp();
+
+
+	void loadTextureMap(int slotAmount);
 
 
 protected:

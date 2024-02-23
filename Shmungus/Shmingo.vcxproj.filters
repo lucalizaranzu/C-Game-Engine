@@ -37,6 +37,9 @@
     <Filter Include="src\shaders">
       <UniqueIdentifier>{26450F9B-92FA-8790-1BEF-816787A37E94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\textures">
+      <UniqueIdentifier>{C0FB1B39-AC5E-ABDD-55E4-E39341267760}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\tools">
       <UniqueIdentifier>{8DED2DB6-F957-E22C-4296-93D2AE3FC081}</UniqueIdentifier>
     </Filter>
@@ -63,7 +66,7 @@
     <ClInclude Include="src\engine\sepch.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\entity.h">
+    <ClInclude Include="src\entities\Entity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -96,6 +99,9 @@
     <ClInclude Include="src\models\Model.h">
       <Filter>src\models</Filter>
     </ClInclude>
+    <ClInclude Include="src\models\ModelTools.h">
+      <Filter>src\models</Filter>
+    </ClInclude>
     <ClInclude Include="src\player\Camera.h">
       <Filter>src\player</Filter>
     </ClInclude>
@@ -119,6 +125,12 @@
     </ClInclude>
     <ClInclude Include="src\shaders\ShaderTools.h">
       <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\Texture.h">
+      <Filter>src\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\textures\TextureTools.h">
+      <Filter>src\textures</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\MathTools.h">
       <Filter>src\tools</Filter>
@@ -155,7 +167,7 @@
     <ClCompile Include="src\engine\sepch.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\entity.cpp">
+    <ClCompile Include="src\entities\Entity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\glad.c">
@@ -185,6 +197,9 @@
     <ClCompile Include="src\models\Model.cpp">
       <Filter>src\models</Filter>
     </ClCompile>
+    <ClCompile Include="src\models\ModelTools.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
     <ClCompile Include="src\player\Camera.cpp">
       <Filter>src\player</Filter>
     </ClCompile>
@@ -206,6 +221,15 @@
     <ClCompile Include="src\shaders\ShaderTools.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\stb_image.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\Texture.cpp">
+      <Filter>src\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\TextureTools.cpp">
+      <Filter>src\textures</Filter>
+    </ClCompile>
     <ClCompile Include="src\tools\MathTools.cpp">
       <Filter>src\tools</Filter>
     </ClCompile>
@@ -226,5 +250,7 @@
     <None Include="shaders\vertex.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\entityVertex.glsl" />
+    <None Include="shaders\entityFragment.glsl" />
   </ItemGroup>
 </Project>

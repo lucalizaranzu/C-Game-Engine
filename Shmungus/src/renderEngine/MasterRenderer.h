@@ -17,9 +17,6 @@ public:
 
 	//Meant for initializing the maps, all shaders and renderers should be added to the map in this function
 	void init();
-	//Used to set which shader program and renderer a particular shader enum corresponds to
-	void declareRenderPair(ShaderType type, std::shared_ptr<ShaderProgram> shader);
-
 	//This function is how you render an object using shaders provided by the engine, custom shaders pass in a custom shader object in a shared pointer
 	void submitVertexArray(std::shared_ptr<VertexArray> vertexArray, ShaderType type);
 	//Meant for shaders added by modders, which do not have a corresponding ShaderType enum. Pass the object directly into the function
@@ -34,6 +31,11 @@ public:
 
 
 private:
+
+	//Used to set which shader program and renderer a particular shader enum corresponds to
+	void declareRenderPair(ShaderType type, std::shared_ptr<ShaderProgram> shader);
+	//Used to set sampler uniform
+	void declareShaderTextureMap(ShaderType type, int textureSlotAmount);
 
 	MasterRenderer() {};
 

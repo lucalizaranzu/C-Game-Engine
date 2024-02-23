@@ -28,6 +28,7 @@ project "Shmingo"
 		(srcDirectory .. "**/*.h"),
 		(srcDirectory .. "**/*.cpp"),
 		(srcDirectory .. "*.c"),
+		(srcDirectory .. "*.cpp"),
 		"Shmungus/shaders/**.glsl"
 
 	}
@@ -36,7 +37,8 @@ project "Shmingo"
 
 		libDirectory .. "include",
 		(srcDirectory .. "**"),
-		"Shmungus/shaders"
+		"Shmungus/shaders",
+		libDirectory .. "vendors"
 	}
 
 	libdirs{

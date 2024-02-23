@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "ShaderProgram.h"
 #include <iostream>
 
@@ -115,6 +116,24 @@ void ShaderProgram::loadMatrix4(GLuint location, const glm::mat4 mat) {
 
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
 }
+
+
+void ShaderProgram::loadTextureMap(int slotAmount) {
+
+	GLuint location = glGetUniformLocation(ID, "textures");
+
+	start();
+
+	int* slots = new int[slotAmount]; //Need to dynamically allocate because we're using a variable size
+
+	//Generates an incrementing array up to slot amount
+	for (int i = 0; i < slotAmount; i++) {
+		slots[i] = i;
+	}
+
+	glUniform1iv(location, slotAmount, slots); //Sets uniform, name will always be "textures"
+}
+
 
 // Activates the Shader Program
 void ShaderProgram::start(){

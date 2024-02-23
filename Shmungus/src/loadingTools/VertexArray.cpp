@@ -133,6 +133,11 @@ EntityVertexArray::EntityVertexArray() {
 	//unbind VAO
 	unbind();
 
+	//Initialize temporary buffer: For our purposes it should be more efficient to use one dynamic buffer instead of making a new static one every time
+	glGenBuffers(1, &tempBuffer);
+	glBindBuffer(GL_COPY_READ_BUFFER, tempBuffer);
+	glBufferData(GL_COPY_READ_BUFFER, MAX_FLOATS * sizeof(float), nullptr, GL_DYNAMIC_READ); 
+	glBindBuffer(GL_COPY_READ_BUFFER, 0);
 }
 
 void TexturedQuadVertexArray::pushVertexData(TexturedQuadVertex* vertices, GLuint vertexAmt) {
@@ -262,7 +267,9 @@ void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
 	unbind(); //Unbinds vao and vbos
 }
 
-//Maybe put this on another thread?
+//Maybe put this on another thread? Or run some diagnostics with multiple entities comparing doing this with a compute shader
+//vs doing this this way. If there is a inflection point, maybe change methods depending on size of entity buffer
+//May need to change to a raw pointer in the future
 void EntityVertexArray::removeVertexData(std::shared_ptr<Entity> entity){
 
 	GLuint vertexRemovalIndex = vertexOffsetMap.at(entity);
@@ -273,18 +280,34 @@ void EntityVertexArray::removeVertexData(std::shared_ptr<Entity> entity){
 
 	entityVec::iterator entityPos = std::find(insertOrderVector.begin(),
 		insertOrderVector.end(), entity);
+	 
+	int vertexShiftByteSize = vertexOffsetMap[insertOrderVector.back()] - vertexRemovalIndex - verticesRemovalSize; //Gets the byte size of the data we are shifting
+	int indexShiftByteSize = indexOffsetMap[insertOrderVector.back()] - indexRemovalIndex - indicesRemovalSize; //Gets the byte size of the data we are shifting
 
-	//TODO: actually shift data
+	GLuint vertexRemovalOffset = vertexOffsetMap[entity];
+	GLuint indexRemovalOffset = indexOffsetMap[entity];
 
+	glBindBuffer(GL_COPY_READ_BUFFER, tempBuffer); //Bind temp buffer
 
+	//Vertex buffer shift
+	glBindBuffer(GL_ARRAY_BUFFER, vertexVboID); //Bind vertex VBO
+	glCopyBufferSubData(GL_ARRAY_BUFFER, GL_COPY_READ_BUFFER, vertexRemovalOffset + verticesRemovalSize, 0, vertexShiftByteSize); //Copies data after removal index to temp buffer
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_ARRAY_BUFFER, 0, vertexRemovalOffset, vertexShiftByteSize); //Copies data from tempBuffer back to vertex buffer at new offset
 
+	//Index buffer shift
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexVboID); //Bind vertex VBO
+	glCopyBufferSubData(GL_ELEMENT_ARRAY_BUFFER, GL_COPY_READ_BUFFER, indexRemovalOffset + indicesRemovalSize, 0, indexShiftByteSize); //Copies data after removal index to temp buffer
+	glCopyBufferSubData(GL_COPY_READ_BUFFER, GL_ELEMENT_ARRAY_BUFFER, 0, indexRemovalOffset, indexShiftByteSize); //Copies data from tempBuffer back to index buffer at new offset
 
-	//Im looking to see if I can run something like this in a compute shader since this is a long for loop
+	glBindBuffer(GL_COPY_READ_BUFFER, 0); //Unbind temp buffer
+
+	//Shift map entries to represent new offset after shift
 	for (auto it = entityPos; it != insertOrderVector.end() ; it++) {
 		vertexOffsetMap[*it] -= verticesRemovalSize;
 		indexOffsetMap[*it] -= indicesRemovalSize;
 	}
 
 	vertexCount -= entity->getModel().getVertexCount();
-	indexCount - +entity->getModel().getIndexCount();
+	indexCount -= entity->getModel().getIndexCount();
+
 }

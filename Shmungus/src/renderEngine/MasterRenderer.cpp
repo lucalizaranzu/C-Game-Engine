@@ -4,25 +4,36 @@
 
 UniformBuffer UniformBuffer::instance;
 
-/*This is where all shaders will be declared with renderer pairs.
+/*
+* This is where all shaders will be declared with renderer pairs.
 * You can specify the shader type enum, and the renderer and shaders that will go along with it.
 * Use the new keyword to create a new pointer to a renderer and shader, make sure to specify shader paths.
 * Notice how you can have multiple instances of the same type of shader with different file paths, this is intentional
-* so that you don't have to make a new shaderprogram instance every time you want to use a new shader file, as long as the uniforms align.
-* */
+* so that you don't have to make a new shaderprogram instance every time you want to use a new shader file
+*/
 
 void MasterRenderer::init() {
 
 	se_uniformBuffer.init();
 
-	declareRenderPair(se_DEFAULT_SHADER, createShaderProgram(se_DEFAULT_SHADER,"vertex.glsl","fragment.glsl"));
+	declareRenderPair(se_DEFAULT_SHADER, createShaderProgram(DEFAULT_SHADER,"vertex.glsl","fragment.glsl"));
+
+	declareRenderPair(se_ENTITY_SHADER, createShaderProgram(DEFAULT_SHADER, "entityVertex.glsl", "entityFragment.glsl"));
+	declareShaderTextureMap(se_ENTITY_SHADER, 1);
 }
+
+
 
 //Declare render pairs for internal shaders, if you make a new shader type, add to the enum following the convention in ShaderProgram.h, then declare it as a pair with your new shader object
 void MasterRenderer::declareRenderPair(ShaderType type, std::shared_ptr<ShaderProgram> shader) {
 
 	//Add to maps with shader type as key
 	shaderMap.insert(std::make_pair(type, shader));
+}
+
+void MasterRenderer::declareShaderTextureMap(ShaderType type, int textureSlotAmount){
+
+	shaderMap.at(type)->loadTextureMap(textureSlotAmount);
 }
 
 //Creates a render group using the renderer and shader from the maps, adds to render queue

@@ -128,6 +128,8 @@ public:
 
 private:
 
+	GLuint tempBuffer = 0;
+
 	entityVec insertOrderVector;
 
 	std::map<std::shared_ptr<Entity>, GLuint> vertexOffsetMap;

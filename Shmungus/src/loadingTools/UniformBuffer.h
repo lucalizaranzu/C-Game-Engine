@@ -4,6 +4,7 @@
 
 #include <glm/gtc/type_ptr.hpp>
 
+
 enum UniformBlock {
 
 	se_MATRICES
@@ -40,7 +41,7 @@ private:
 	static UniformBuffer instance;
 
 
-	//set 1 float
+	//set 1 float - Use this for bools as well since its most efficient
 	void setUniform1f(float value, GLint offset, GLuint index);
 	//set 1 int
 	void setUniform1i(int value, GLint offset, GLuint index);

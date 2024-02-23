@@ -1,5 +1,7 @@
 #pragma once
 
+//EVERY TIME I CHANGE THE FILE NAME TO ENTITY WITH CAPITAL E IT CHANGES BACK I DONT KNOW WHY!
+
 #include <ShmingoCore.h>
 
 #include "Model.h"
@@ -8,7 +10,7 @@ class Entity{
 
 public:
 
-	Entity();
+	Entity(Model model);
 
 	//To be implemented
 	void move();

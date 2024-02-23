@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "UniformBuffer.h"
 
 //Im hardcoding all the offsets of the uniforms in the buffer object to avoid having to look up values in a hashmap every frame, get over it

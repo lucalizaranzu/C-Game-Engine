@@ -1,6 +1,7 @@
+#include <sepch.h>
 #include "ShaderTools.h"
 
-std::shared_ptr<ShaderProgram> createShaderProgram(ShaderType type, std::string vertexFile, std::string fragmentFile){
+std::shared_ptr<ShaderProgram> createShaderProgram(ShaderProgramType type, std::string vertexFile, std::string fragmentFile){
 
 	//This is the path of the default shader directory, if sub directories are made, those edits need to be reflected in this method
 	std::string shaderPath = "shaders/";
@@ -10,7 +11,7 @@ std::shared_ptr<ShaderProgram> createShaderProgram(ShaderType type, std::string 
 
 	switch (type) {
 
-	case se_DEFAULT_SHADER:
+	case DEFAULT_SHADER:
 		return std::make_shared<DefaultShader>(vertexPath.c_str(), fragmentPath.c_str());
 
 	}
