@@ -17,7 +17,7 @@ class Player : public Entity {
 
 public:
 
-	Player();
+	Player(Model model);
 	void update();
 
 private:

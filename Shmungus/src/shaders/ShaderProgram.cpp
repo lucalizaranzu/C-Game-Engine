@@ -132,6 +132,15 @@ void ShaderProgram::loadTextureMap(int slotAmount) {
 	}
 
 	glUniform1iv(location, slotAmount, slots); //Sets uniform, name will always be "textures"
+	delete[] slots;
+}
+
+void ShaderProgram::loadSampler(const char* uniformName, GLuint value) {
+
+	GLuint location = glGetUniformLocation(ID, uniformName);
+
+	glUniform1i(location, value);
+
 }
 
 
@@ -178,5 +187,7 @@ void ShaderProgram::cleanUp() {
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	glDeleteProgram(ID);
+
+
 
 }

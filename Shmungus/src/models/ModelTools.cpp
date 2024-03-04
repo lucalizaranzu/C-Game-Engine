@@ -1,43 +1,79 @@
 #include <sepch.h>
 #include "ModelTools.h"
 
-Model createCubeModel(std::string texturePath) {
 
-    EntityVertex vertexData[8] = {
+Model createCubeModel(vec3 position, float textureID) {
+
+    if (textureID == -1.0f) {
+        std::cerr << "Could not create model given texture ID : " << textureID << "Check vertex array!" << std::endl;
+    }
+
+  EntityVertex* vertexData = new EntityVertex[8]{
         //Front face
-        {0.0f, 0.0f, 0.0f, {0, 0}, 0},
-        {1.0f, 0.0f, 0.0f, {1, 0}, 0},
-        {1.0f, 1.0f, 0.0f, {1, 1}, 0},
-        {0.0f, 1.0f, 0.0f, {0, 1}, 0},
-        // Back face
-        {0.0f, 0.0f, 1.0f, {0, 0}, 0},
-        {1.0f, 0.0f, 1.0f, {1, 0}, 0},
-        {1.0f, 1.0f, 1.0f, {1, 1}, 0},
-        {0.0f, 1.0f, 1.0f, {0, 1}, 0}
+        EntityVertex{-1.0f + position.x,1.0f + position.y,1.0f + position.z,  0.0f,1.0f, textureID},
+        EntityVertex{-1.0f + position.x,-1.0f + position.y,1.0f + position.z,   0.0f,0.0f, textureID},
+        EntityVertex{1.0f + position.x,-1.0f + position.y,1.0f + position.z,   1.0f,0.0f, textureID},
+        EntityVertex{1.0f + position.x,1.0f + position.y,1.0f + position.z,    1.0f,1.0f, textureID},
+        EntityVertex{-1.0f + position.x,1.0f + position.y,-1.0f + position.z,  0.0f,1.0f, textureID},
+        EntityVertex{-1.0f + position.x,-1.0f + position.y,-1.0f + position.z,   0.0f,0.0f, textureID},
+        EntityVertex{1.0f + position.x,-1.0f + position.y,-1.0f + position.z,   1.0f,0.0f, textureID},
+        EntityVertex{1.0f + position.x,1.0f + position.y,-1.0f + position.z,    1.0f,1.0f, textureID},
     };
 
-    int indices[36] = {
-        // Front face
-        0, 1, 2,
-        2, 3, 0,
-        // Back face
-        4, 5, 6,
-        6, 7, 4,
-        // Top face
-        3, 2, 6,
-        6, 7, 3,
-        // Bottom face
-        0, 1, 5,
-        5, 4, 0,
-        // Left face
-        0, 3, 7,
-        7, 4, 0,
-        // Right face
-        1, 2, 6,
-        6, 5, 1
+    int* indices = new int[36]{
+        //Front
+        0, 1, 3,
+        3, 1, 2,
+
+        //Left
+        4, 5, 0,
+        0, 5, 1,
+
+        //Bottom
+        1, 5, 2,
+        2, 5, 6,
+
+        //Right
+        3, 2, 7,
+        7, 2, 6,
+
+        //Top
+        4, 0, 7,
+        7, 0, 3,
+
+        //Back
+        7, 6, 4,
+        4, 6, 5
     };
 
-    Texture texture = createTexture2D(("assets/textures/" + texturePath).c_str());
+    return Model(vertexData, 8, indices, 36, (GLuint) textureID);
+}
 
-    return Model(vertexData, 8, indices, 36, texture);
+Model createQuadModel(vec3 position, float textureID) {
+
+    //Front face
+    EntityVertex* vertexData = new EntityVertex[8]{
+        EntityVertex{ -1.0f + position.x,1.0f + position.y,position.z,  0.0f,1.0f, textureID },
+        EntityVertex{ -1.0f + position.x,-1.0f + position.y,position.z,   0.0f,0.0f, textureID },
+        EntityVertex{ 1.0f + position.x,-1.0f + position.y,position.z,   1.0f,0.0f, textureID },
+        EntityVertex{ 1.0f + position.x,1.0f + position.y,position.z,    1.0f,1.0f, textureID },
+    };
+
+    int* indices = new int[6]{
+        0,1,3,3,1,2
+    };
+
+    return Model(vertexData, 4, indices, 6, (GLuint) textureID);
+}
+
+
+//DO NOT USE THIS OUTSIDE OF SPECIFIED VERTEX ARRAY FUNCTIONS! THIS WILL CAUSE A MEMORY LEAK!
+std::unique_ptr<int[]> shiftIndices(int* indices, int amount, int indexCount) {
+    std::unique_ptr<int[]> newIndices = std::make_unique<int[]>(indexCount);
+
+    for (int i = 0; i < indexCount; i++) {
+		newIndices.get()[i] = indices[i] + amount;
+	}
+
+	return newIndices; 
 }

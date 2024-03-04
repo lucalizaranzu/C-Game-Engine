@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "Camera.h"
 
 Camera::Camera(vec3* position, vec3* rotation, vec3* direction) : position(position), rotation(rotation), direction(direction){

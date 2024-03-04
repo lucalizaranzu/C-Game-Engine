@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Libraries">
+      <UniqueIdentifier>{0259E1F6-6EC3-956D-B701-471323AB73C2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\lib">
+      <UniqueIdentifier>{28A925CA-9469-A100-5DA4-EA7DC923E6DC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Libraries\lib\vendors">
+      <UniqueIdentifier>{98B33648-0420-F242-CD13-8AA0393F14AB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{0F45D591-7B24-542D-843C-DF03F09ABA8E}</UniqueIdentifier>
     </Filter>
@@ -141,11 +150,14 @@
     <ClInclude Include="src\tools\MiscTools.h">
       <Filter>src\tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\tools\UniformTools.h">
-      <Filter>src\tools</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Libraries\lib\vendors\glad.c">
+      <Filter>Libraries\lib\vendors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Libraries\lib\vendors\stb_image.cpp">
+      <Filter>Libraries\lib\vendors</Filter>
+    </ClCompile>
     <ClCompile Include="src\display\DisplayManager.cpp">
       <Filter>src\display</Filter>
     </ClCompile>
@@ -169,9 +181,6 @@
     </ClCompile>
     <ClCompile Include="src\entities\Entity.cpp">
       <Filter>src\entities</Filter>
-    </ClCompile>
-    <ClCompile Include="src\glad.c">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\Layer.cpp">
       <Filter>src\layers</Filter>
@@ -221,9 +230,6 @@
     <ClCompile Include="src\shaders\ShaderTools.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\stb_image.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\textures\Texture.cpp">
       <Filter>src\textures</Filter>
     </ClCompile>
@@ -239,18 +245,19 @@
     <ClCompile Include="src\tools\MiscTools.cpp">
       <Filter>src\tools</Filter>
     </ClCompile>
-    <ClCompile Include="src\tools\UniformTools.cpp">
-      <Filter>src\tools</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\entityFragment.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\entityVertex.glsl">
+      <Filter>shaders</Filter>
+    </None>
     <None Include="shaders\fragment.glsl">
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\vertex.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="shaders\entityVertex.glsl" />
-    <None Include="shaders\entityFragment.glsl" />
   </ItemGroup>
 </Project>

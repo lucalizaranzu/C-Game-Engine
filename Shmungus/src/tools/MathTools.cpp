@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "MathTools.h"
 
 vec3 calcDirection(vec3 rotation) {

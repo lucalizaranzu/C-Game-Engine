@@ -19,10 +19,8 @@ void MasterRenderer::init() {
 	declareRenderPair(se_DEFAULT_SHADER, createShaderProgram(DEFAULT_SHADER,"vertex.glsl","fragment.glsl"));
 
 	declareRenderPair(se_ENTITY_SHADER, createShaderProgram(DEFAULT_SHADER, "entityVertex.glsl", "entityFragment.glsl"));
-	declareShaderTextureMap(se_ENTITY_SHADER, 1);
+	declareShaderTextureMap(se_ENTITY_SHADER, 32);
 }
-
-
 
 //Declare render pairs for internal shaders, if you make a new shader type, add to the enum following the convention in ShaderProgram.h, then declare it as a pair with your new shader object
 void MasterRenderer::declareRenderPair(ShaderType type, std::shared_ptr<ShaderProgram> shader) {

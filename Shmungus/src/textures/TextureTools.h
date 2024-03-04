@@ -2,5 +2,6 @@
 
 #include <sepch.h>
 #include "Texture.h"
+#include <stb_image.h>
 
-Texture2D createTexture2D(std::string filePath);
+std::shared_ptr<Texture2D> createTexture2D(std::string filePath);

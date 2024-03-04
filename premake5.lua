@@ -27,9 +27,11 @@ project "Shmingo"
 
 		(srcDirectory .. "**/*.h"),
 		(srcDirectory .. "**/*.cpp"),
-		(srcDirectory .. "*.c"),
 		(srcDirectory .. "*.cpp"),
-		"Shmungus/shaders/**.glsl"
+		"Shmungus/shaders/**.glsl",
+		libDirectory .. "lib/vendors/*.cpp",
+		libDirectory .. "lib/vendors/*.c",
+
 
 	}
 
@@ -38,7 +40,7 @@ project "Shmingo"
 		libDirectory .. "include",
 		(srcDirectory .. "**"),
 		"Shmungus/shaders",
-		libDirectory .. "vendors"
+		libDirectory .. "vendors/stb_image"
 	}
 
 	libdirs{
@@ -48,8 +50,8 @@ project "Shmingo"
 
 	links{
 
-		libDirectory .. "lib/glfw3_mt.lib",
-		libDirectory .. "lib/glfw3.dll"
+		libDirectory .. "lib/configs/glfw3_mt.lib",
+		libDirectory .. "lib/configs/glfw3.dll"
 	}
 
 	filter "files:**.c"

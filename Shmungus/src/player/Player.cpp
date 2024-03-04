@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "Player.h"
 
 float roundToNearestThird(float num);
@@ -6,7 +7,7 @@ short movementArray[6] = { 0,0,0,0,0,0 };
 //Format is                D,S,A,W,SPACE,CTRL
 
 //Initializes camera with all zeros, THIS IS TEMPORARY! Camera should eventually take in vector pointers so it can be attached to player
-Player::Player() : camera(Camera(&position, &rotation, &direction)){
+Player::Player(Model model) : Entity(model), camera(Camera(&position, &rotation, &direction)){
 
 	se_layerStack.addListener<Player, KeyPressEvent>(se_SANDBOX_LAYER, this, &Player::getKeyDown);
 	se_layerStack.addListener<Player, KeyReleaseEvent>(se_SANDBOX_LAYER, this, &Player::getKeyUp);

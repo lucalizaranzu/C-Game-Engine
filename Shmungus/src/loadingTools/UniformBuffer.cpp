@@ -9,6 +9,7 @@
 //Size of vec3 = 12
 //Size of vec2 = 8
 //Size of int / float = 4
+//Make sure to format properly according to STD140 protocol!
 
 //Incrementing based on size of data type
 #define OFFSET_VIEWMATRIX 0

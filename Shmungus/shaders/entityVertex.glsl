@@ -1,8 +1,8 @@
 #version 420 core
 
-layout (location = 0) in vec3 positions;
-layout (location = 1) in uvec2 textureCoords;
-layout (location = 2) in uint textureID; 
+in vec3 positions;
+in vec2 textureCoords;
+in float textureID; 
 
 layout(std140, binding = 0) uniform MatrixData {
 
@@ -11,16 +11,16 @@ layout(std140, binding = 0) uniform MatrixData {
 
 } matrices;
 
-out vec4 vColor;
 out vec2 pass_textureCoords;
-out uint texID;
+flat out int texID;
 
 
 void main()
 {
-   gl_Position = matrices.projectionMatrix * matrices.viewMatrix * vec4(positions.x, positions.y, -1.0f, 1.0);
+	int intTex = int(textureID);
+   gl_Position = matrices.projectionMatrix * matrices.viewMatrix * vec4(positions.x, positions.y, positions.z, 1.0);
 
    pass_textureCoords = textureCoords; //Setting the pass
-   texID = textureID;
+   texID = intTex;
 };
 

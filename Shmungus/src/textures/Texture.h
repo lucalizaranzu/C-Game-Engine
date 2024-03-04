@@ -1,5 +1,6 @@
 #pragma once
-
+	
+#include <shmingoCore.h>
 
 class Texture {
 
@@ -10,16 +11,18 @@ public:
 
 	GLuint getWidth() { return width; };
 	GLuint getHeight() { return height; };
+	GLuint getTextureID() { return textureID; };
 
-	void bind(GLuint slot);
+	GLuint* getTextureIDRef() { return &textureID; };
+
+	void bind(int slot);
 
 protected:
 
 	GLuint textureID = 0;
 
-
-	GLuint width;
-	GLuint height;
+	GLuint width = 0;
+	GLuint height = 0;
 
 };
 
@@ -28,6 +31,5 @@ class Texture2D : public Texture {
 public:
 
 	Texture2D(unsigned char* textureData, GLuint width, GLuint height, GLuint channels);
-
 
 };

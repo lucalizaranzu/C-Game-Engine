@@ -1,3 +1,5 @@
+C:\Users\Luca\source\repos\Shmungus\Libraries\lib\vendors\glad.c;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\glad.obj
+C:\Users\Luca\source\repos\Shmungus\Libraries\lib\vendors\stb_image.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\stb_image.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\display\DisplayManager.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\DisplayManager.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\display\Window.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Window.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\Input.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Input.obj
@@ -6,7 +8,6 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\ShmingoCore.cpp;C:\Users
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\main.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\main.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\sepch.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\sepch.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\Entity.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Entity.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\glad.c;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\glad.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\Layer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Layer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\LayerStack.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\LayerStack.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\PauseMenuLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\PauseMenuLayer.obj
@@ -15,6 +16,7 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\UniformBuffer.cpp;
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\VertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\VertexTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\Model.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Model.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\ModelTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ModelTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\player\Camera.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Camera.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\player\Player.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Player.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\renderEngine\MasterRenderer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MasterRenderer.obj
@@ -22,7 +24,8 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\renderEngine\Renderer.cpp;C:\Us
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\DefaultShader.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\DefaultShader.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\ShaderProgram.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShaderProgram.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\ShaderTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShaderTools.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\textures\Texture.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Texture.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\textures\TextureTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextureTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\MathTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MathTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\Matrices.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Matrices.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\MiscTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MiscTools.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\UniformTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformTools.obj

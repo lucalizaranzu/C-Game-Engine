@@ -1,8 +1,11 @@
 #pragma once
 
 #include <ShmingoCore.h>
+
+#include "Texture.h"
 #include "Vertex.h"
 #include "Entity.h"
+
 
 class VertexArray {
 
@@ -14,6 +17,8 @@ public:
 
 	//Main functions
 	void pushTestVertices();
+	void declareTextureSlot(std::shared_ptr<Texture> texture, GLuint slot);
+	void bindTextures();
 	
 	//Helper functions
 	void bind();
@@ -24,6 +29,9 @@ public:
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline GLuint getIndexCount() { return indexCount; };
 	inline unsigned int getAttribAmount() { return attribAmount; };
+
+	inline std::shared_ptr<Texture> getTexture(GLuint slot) { return textureList[slot]; };
+	float getTextureID(std::shared_ptr<Texture> texture);
 
 protected:
 
@@ -46,7 +54,9 @@ protected:
 
 	//Bookkeeping ---------------------------------------------------------------------------
 
-	
+	//Array of texture IDs to be bound before rendering, index corresponds to slot
+	std::vector<std::shared_ptr<Texture>> textureList;
+	GLuint maxTextureIndex = 0;
 
 
 	//Small helper functions ---------------------------------------------------------------------------

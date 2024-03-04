@@ -52,6 +52,7 @@ public:
 
 
 	void loadTextureMap(int slotAmount);
+	void loadSampler(const char* uniformName, GLuint value); //Pretty much just for testing
 
 
 protected:

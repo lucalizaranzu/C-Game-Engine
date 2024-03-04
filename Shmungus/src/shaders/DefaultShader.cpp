@@ -1,3 +1,4 @@
+#include <sepch.h>
 #include "DefaultShader.h"
 
 //Define uniform variable locations

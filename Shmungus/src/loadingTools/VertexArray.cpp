@@ -1,6 +1,8 @@
 #include <sepch.h>
 #include "VertexArray.h"
 
+#include "ModelTools.h"
+
 VertexArray::VertexArray(){
 
 	glGenVertexArrays(1, &vaoID); //Generate a VAO using the member variable vaoID
@@ -30,6 +32,24 @@ void VertexArray::unbind() {
 	glBindVertexArray(0);
 }
 
+float VertexArray::getTextureID(std::shared_ptr<Texture> texture){
+	// Find given element in vector
+	auto it = std::find(textureList.begin(), textureList.end(), texture);
+
+	float result = -1.0f;
+	if (it != textureList.end()) {
+		// If element is found, return its index
+		result = (float) std::distance(textureList.begin(), it);
+	}
+	else {
+		// If element is not found, return -1 (or any other value to indicate not found)
+		std::cerr << "Texture not found in texture list" << std::endl;
+		return result;
+	}
+
+	return result;
+}
+
 void VertexArray::bindVerticesVbo() {
 	bind();
 	glBindBuffer(GL_ARRAY_BUFFER, vertexVboID);
@@ -39,6 +59,32 @@ void VertexArray::bindIndicesVbo() {
 	bind();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVboID);
 }
+
+//Texture binding functions
+
+
+void VertexArray::declareTextureSlot(std::shared_ptr<Texture> texture, GLuint slot) {
+
+	//Declares the size of the array so we don't have to always loop through 32 slots
+	if ((slot + 1) > maxTextureIndex) {
+		maxTextureIndex = slot + 1;
+	}
+	//Inserts texture ID into array with index being slot. can be overriden
+	auto it = textureList.begin();
+	textureList.emplace(std::next(it,slot),texture);
+}
+
+void VertexArray::bindTextures() {
+
+	//Loops through all the texture IDs and binds them to their slot according to their index in the array
+	for (int i = 0; i < (int)maxTextureIndex; i++) {
+		textureList.at(i)->bind(i);
+	}
+}
+
+
+//Vertex Pushing Functions ---------------------------------------------------------------
+
 
 //Renders a square, known to work
 void VertexArray::pushTestVertices() {
@@ -127,9 +173,9 @@ EntityVertexArray::EntityVertexArray() {
 
 	//Set attrib pointers unique to this type of vertex array
 	bindVerticesVbo();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, positions));
-	glVertexAttribPointer(1, 2, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, texCoords));
-	glVertexAttribPointer(2, 1, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(EntityVertexArray), (const void*)offsetof(EntityVertex, textureID));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(EntityVertex), (const void*)offsetof(EntityVertex, positions));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(EntityVertex), (const void*)offsetof(EntityVertex, texCoords));
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(EntityVertex), (const void*)offsetof(EntityVertex, textureID));
 	//unbind VAO
 	unbind();
 
@@ -239,6 +285,7 @@ void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
 
 	vertexOffsetMap.insert(std::make_pair(entity, verticesEndIndex)); //Sets the offset of the model data as the current vertices end index
 	indexOffsetMap.insert(std::make_pair(entity, indicesEndIndex)); //Sets the offset of the model data as the current vertices end index
+	insertOrderVector.push_back(entity); //Pushes the entity into the insert order vector
 
 	Model model = entity->getModel();
 
@@ -249,16 +296,19 @@ void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
 	GLuint verticesByteSize = vertexAmt * sizeof(EntityVertex);
 	GLuint indicesByteSize = indexAmt * sizeof(int);
 
+	std::unique_ptr<int[]> newIndices = shiftIndices(model.getIndexData(), vertexCount, model.getIndexCount()); //Shifts the indices to match the new vertex offset
+
 	//Bind the vertices vbo and push the vertex data
 	bindVerticesVbo();
 	glBufferSubData(GL_ARRAY_BUFFER, verticesEndIndex, verticesByteSize, model.getVertexData());
 	//Bind the indices vbo and push the index data
 	bindIndicesVbo();
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesEndIndex, indicesByteSize, model.getIndexData());
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, indicesEndIndex, indicesByteSize, newIndices.get());
 
 	//Increment the starting point of the vertex and index buffers
 	verticesEndIndex += verticesByteSize; //Byte position of vertex end
 	indicesEndIndex += indicesByteSize; //Byte position of index end
+
 
 	//Increment the vertex and index counts
 	vertexCount += vertexAmt;

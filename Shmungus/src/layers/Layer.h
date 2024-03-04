@@ -50,6 +50,8 @@ public:
 	SandboxLayer();
 	~SandboxLayer();
 
+	static std::shared_ptr<Texture2D> getFunnyTexture();
+
 private:
 
 	void onAttach() override;

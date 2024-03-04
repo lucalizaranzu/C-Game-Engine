@@ -14,7 +14,7 @@ class Model{
 
 public:
 
-	Model(EntityVertex* vertices, GLuint vertexCount, int* indices, GLuint indexCount, Texture texture);
+	Model(EntityVertex* vertices, GLuint vertexCount, int* indices, GLuint indexCount, GLuint textureID);
 	~Model();
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline EntityVertex* getVertexData() {return vertexData; };
@@ -35,6 +35,6 @@ private:
 	int* indexData;
 
 	//Texture data
-	Texture texture;
+	GLuint textureID;
 };
 
