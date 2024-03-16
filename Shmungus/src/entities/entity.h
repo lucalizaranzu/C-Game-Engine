@@ -1,32 +1,26 @@
 #pragma once
 
-//EVERY TIME I CHANGE THE FILE NAME TO ENTITY WITH CAPITAL E IT CHANGES BACK I DONT KNOW WHY!
-
-#include <ShmingoCore.h>
-
+#include <sepch.h>
 #include "Model.h"
 
-class Entity{
+class Entity {
 
 public:
 
-	Entity(Model model);
+	Entity(Model model, vec3 position, vec3 rotation) : model(model), position(position), rotation(rotation) {};
 
-	//To be implemented
-	void move();
+	vec3 getPosition() { return position; };
+	vec3 getRotation() { return rotation; };
+	vec3 getDirection() { return direction; };
 
-	inline vec3 getPosition() { return position; };
-	inline vec3 getRotation() { return rotation; };
-	inline vec3 getDirection() { return direction; };
-
-	inline Model getModel() { return model; }
+	Model getModel() { return model; };
 
 protected:
 
+	vec3 position;
+	vec3 rotation;
+	vec3 direction = vec3(0.0f,0.0f,0.0f);
+
 	Model model;
 
-	vec3 position;
-	vec3 rotation; //No need to store a vector since we don't want entities rotating up or sideways
-	vec3 direction;
 };
-

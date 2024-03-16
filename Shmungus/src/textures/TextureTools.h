@@ -4,4 +4,4 @@
 #include "Texture.h"
 #include <stb_image.h>
 
-std::shared_ptr<Texture2D> createTexture2D(std::string filePath);
+Texture2D createTexture2D(std::string filePath);

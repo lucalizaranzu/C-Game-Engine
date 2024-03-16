@@ -75,7 +75,10 @@
     <ClInclude Include="src\engine\sepch.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\Entity.h">
+    <ClInclude Include="src\entities\InstancedEntity.h">
+      <Filter>src\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entities\EntitySpecificVertexData.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -92,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="src\layers\LayerStack.h">
       <Filter>src\layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\InstancedVertexArray.h">
+      <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderEngine\Renderer.h">
+      <Filter>src\loadingTools</Filter>
     </ClInclude>
     <ClInclude Include="src\loadingTools\UniformBuffer.h">
       <Filter>src\loadingTools</Filter>
@@ -123,9 +132,6 @@
     <ClInclude Include="src\renderEngine\RenderPair.h">
       <Filter>src\renderEngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderEngine\Renderer.h">
-      <Filter>src\renderEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\shaders\DefaultShader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
@@ -150,6 +156,7 @@
     <ClInclude Include="src\tools\MiscTools.h">
       <Filter>src\tools</Filter>
     </ClInclude>
+    <ClInclude Include="src\entities\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\lib\vendors\glad.c">
@@ -179,7 +186,7 @@
     <ClCompile Include="src\engine\sepch.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\Entity.cpp">
+    <ClCompile Include="src\entities\InstancedEntity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\Layer.cpp">
@@ -245,6 +252,7 @@
     <ClCompile Include="src\tools\MiscTools.cpp">
       <Filter>src\tools</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\entityFragment.glsl">

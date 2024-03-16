@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\loadingTools\vertexArrays;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\loadingTools\vertexArrays;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,7 +122,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\loadingTools\vertexArrays;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -151,11 +151,15 @@
     <ClInclude Include="src\engine\ShmingoCore.h" />
     <ClInclude Include="src\engine\sepch.h" />
     <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\entities\InstancedEntity.h" />
+    <ClInclude Include="src\entities\EntitySpecificVertexData.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventBus.h" />
     <ClInclude Include="src\events\EventHandler.h" />
     <ClInclude Include="src\layers\Layer.h" />
     <ClInclude Include="src\layers\LayerStack.h" />
+    <ClInclude Include="src\loadingTools\InstancedVertexArray.h" />
+    <ClInclude Include="src\renderEngine\Renderer.h" />
     <ClInclude Include="src\loadingTools\UniformBuffer.h" />
     <ClInclude Include="src\loadingTools\Vertex.h" />
     <ClInclude Include="src\loadingTools\VertexArray.h" />
@@ -166,7 +170,6 @@
     <ClInclude Include="src\player\Player.h" />
     <ClInclude Include="src\renderEngine\MasterRenderer.h" />
     <ClInclude Include="src\renderEngine\RenderPair.h" />
-    <ClInclude Include="src\renderEngine\Renderer.h" />
     <ClInclude Include="src\shaders\DefaultShader.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\shaders\ShaderTools.h" />
@@ -191,6 +194,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\entities\InstancedEntity.cpp" />
     <ClCompile Include="src\layers\Layer.cpp" />
     <ClCompile Include="src\layers\LayerStack.cpp" />
     <ClCompile Include="src\layers\PauseMenuLayer.cpp" />

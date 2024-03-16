@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ShmingoCore.h>
+#include <typeindex>
 
 #include "ShaderTools.h"
 #include "RenderPair.h"
@@ -22,6 +23,12 @@ public:
 	//Meant for shaders added by modders, which do not have a corresponding ShaderType enum. Pass the object directly into the function
 	void submitVertexArray(std::shared_ptr<VertexArray>, std::shared_ptr<ShaderProgram> shader);
 
+	template<typename E>
+	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray<E>> vertexArray) {
+
+		renderInstanced<E>(vertexArray, instancedShaderMap.at(typeid(E))); //Render with the shader that corresponds to the type of the instanced vertex array
+
+	}
 
 	void update();
 
@@ -33,7 +40,11 @@ public:
 private:
 
 	//Used to set which shader program and renderer a particular shader enum corresponds to
-	void declareRenderPair(ShaderType type, std::shared_ptr<ShaderProgram> shader);
+	void mapShader(ShaderType type, std::shared_ptr<ShaderProgram> shader);
+
+	//Needs to have type explicitly declared, also declares an amount of texture slots
+	void mapInstancedShader(std::type_index entityType, GLuint textureSlotAmount, std::shared_ptr<ShaderProgram> shader);
+
 	//Used to set sampler uniform
 	void declareShaderTextureMap(ShaderType type, int textureSlotAmount);
 
@@ -44,4 +55,6 @@ private:
 	std::vector<RenderPair> renderQueue; 
 
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> shaderMap;
+	std::map<std::type_index, std::shared_ptr<ShaderProgram>> instancedShaderMap;
 };
+

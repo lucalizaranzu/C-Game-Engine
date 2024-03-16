@@ -8,6 +8,7 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\ShmingoCore.cpp;C:\Users
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\main.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\main.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\sepch.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\sepch.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\Entity.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Entity.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\InstancedEntity.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedEntity.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\Layer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Layer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\LayerStack.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\LayerStack.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\PauseMenuLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\PauseMenuLayer.obj

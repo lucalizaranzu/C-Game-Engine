@@ -16,8 +16,7 @@ public:
 
 
 	//Main functions
-	void pushTestVertices();
-	void declareTextureSlot(std::shared_ptr<Texture> texture, GLuint slot);
+	void declareTextureSlot(Texture2D, GLuint slot);
 	void bindTextures();
 	
 	//Helper functions
@@ -30,8 +29,7 @@ public:
 	inline GLuint getIndexCount() { return indexCount; };
 	inline unsigned int getAttribAmount() { return attribAmount; };
 
-	inline std::shared_ptr<Texture> getTexture(GLuint slot) { return textureList[slot]; };
-	float getTextureID(std::shared_ptr<Texture> texture);
+	inline Texture2D getTexture(GLuint slot) { return textureList[slot]; };
 
 protected:
 
@@ -41,7 +39,6 @@ protected:
 	GLuint vertexCount = 0; //Amount of vertices
 	GLuint indexCount = 0; //Amount of indices
 
-	GLuint vertexVboID = 0; //Same idea, one VBO per VAO
 	GLuint indexVboID = 0; //Same idea, one VBO per VAO
 
 	unsigned int attribAmount = 0; //Defaults to 0, declare this in child constructors!
@@ -55,21 +52,34 @@ protected:
 	//Bookkeeping ---------------------------------------------------------------------------
 
 	//Array of texture IDs to be bound before rendering, index corresponds to slot
-	std::vector<std::shared_ptr<Texture>> textureList;
+	std::vector<Texture2D> textureList;
 	GLuint maxTextureIndex = 0;
 
 
 	//Small helper functions ---------------------------------------------------------------------------
-	void bindVerticesVbo(); //Bind the vertices VBO
 	void bindIndicesVbo(); //Bind the indices VBO
 
 };
 
 
+class InterleavedVertexArray : public VertexArray {
+
+public:
+
+	InterleavedVertexArray();
+
+protected:
+
+
+	GLuint vertexVboID = 0; //Interleaved vertex arrays have one VBO per VAO
+	void bindVerticesVbo(); //Bind the vertices VBO
+
+};
+
 //Child class declarations ----------------------
 //Basic vertex arrays - more or less just proof of concept
 
-class DefaultVertexArray : public VertexArray {
+class DefaultVertexArray : public InterleavedVertexArray {
 
 	DefaultVertexArray();
 
@@ -82,7 +92,7 @@ private:
 };
 
 
-class PositionsOnlyVertexArray : public VertexArray {
+class PositionsOnlyVertexArray : public InterleavedVertexArray {
 
 	PositionsOnlyVertexArray();
 
@@ -95,7 +105,7 @@ private:
 };
 
 
-class TexturedQuadVertexArray : public VertexArray {
+class TexturedQuadVertexArray : public InterleavedVertexArray {
 
 	TexturedQuadVertexArray();
 
@@ -108,7 +118,7 @@ private:
 };
 
 
-class ColorQuadVertexArray : public VertexArray {
+class ColorQuadVertexArray : public InterleavedVertexArray {
 
 public:
 
@@ -138,7 +148,9 @@ public:
 
 private:
 
-	GLuint tempBuffer = 0;
+	GLuint positionsVboID = 0;
+	GLuint texCoordsVboID = 0;
+	GLuint textureIDVboID = 0;
 
 	entityVec insertOrderVector;
 

@@ -8,24 +8,18 @@
 #include "TextureTools.h"
 #include "ModelTools.h"
 
+
 SandboxLayer::SandboxLayer() {
 	type = se_SANDBOX_LAYER;
 }
 
-std::shared_ptr<EntityVertexArray> vertexArray;
-std::shared_ptr<ColorQuadVertexArray> colorVertexArray;
+std::shared_ptr<InstancedVertexArray<DefaultEntity>> defaultInstancedVertexArray;
 
 std::shared_ptr<Player> player;
 
-std::shared_ptr<Entity> entity;
-std::shared_ptr<Entity> entity2;
-std::shared_ptr<Entity> entity3;
-std::shared_ptr<Entity> entity4;
+std::shared_ptr<Entity> regularEntity;
 
-std::shared_ptr<Texture2D> whiteTexture;
-std::shared_ptr<Texture2D> funnyTexture;
-std::shared_ptr<Texture2D> ramRanch;
-std::shared_ptr<Texture2D> redTexture;
+std::shared_ptr<Model> cubeModel;
 
 SandboxLayer::~SandboxLayer() {
 
@@ -33,53 +27,34 @@ SandboxLayer::~SandboxLayer() {
 
 void SandboxLayer::onAttach() {
 
+
+	Texture2D funnyTexture = createTexture2D("ramranch.png");
+
 	se_layerStack.addListener<SandboxLayer, KeyPressEvent>(se_SANDBOX_LAYER, this, &SandboxLayer::KeyboardCallback);
 
 	//Init functions
 	disableGLFWCursor();
 
-	//Creating engine objects
-	vertexArray = std::make_shared<EntityVertexArray>();
-	colorVertexArray = std::make_shared<ColorQuadVertexArray>();
-	std::array<ColorQuadVertex, 4> colorQuad = createColorQuad(vec2(0.0f, 0.0f), vec4(0.1f, 0.8f, 0.5f, 1.0f));
-
 	//Creating other objects
+	cubeModel.reset(createModelPointer(std::bind(createCubeModel, vec3(0.0f, 0.0f, 0.0f), funnyTexture)));
 
-	funnyTexture = createTexture2D("funnyimage.png");
-	whiteTexture = createTexture2D("white.png");
-	ramRanch = createTexture2D("ramranch.png");
-	redTexture = createTexture2D("red.png");
-
-	vertexArray->declareTextureSlot(funnyTexture, 0);
-	vertexArray->declareTextureSlot(ramRanch, 1);
-	vertexArray->declareTextureSlot(whiteTexture, 2);
-	vertexArray->declareTextureSlot(redTexture, 3);
+	defaultInstancedVertexArray = std::make_shared<InstancedVertexArray<DefaultEntity>>(cubeModel);
+	defaultInstancedVertexArray->linkTexture(funnyTexture, 0);
 
 	//Create an entity
 
-	Model cubeModel = createQuadModel(vec3(- 1.0f, 1.0f, -1.0f), vertexArray->getTextureID(funnyTexture));
-	Model cubeModel2 = createQuadModel(vec3(2.0f, 1.0f, -1.0f), vertexArray->getTextureID(ramRanch));
-	Model cubeModel3 = createQuadModel(vec3(5.0f, 1.0f, -1.0f), vertexArray->getTextureID(whiteTexture));
-	Model cubeModel4 = createQuadModel(vec3(8.0f, 1.0f, -1.0f), vertexArray->getTextureID(redTexture));
+	std::shared_ptr<DefaultEntity> entity = std::make_shared<DefaultEntity>(vec3(3.0f,2.0f,-1.0f),vec3(0.0f,0.0f,0.0f));
+	std::shared_ptr<DefaultEntity>entity2 = std::make_shared<DefaultEntity>(vec3(1.0f,0.0f,-1.0f),vec3(0.0f,0.0f,0.0f));
+	std::shared_ptr<DefaultEntity>entity3 = std::make_shared<DefaultEntity>(vec3(-2.0f,-1.0f,-2.0f),vec3(0.0f,0.0f,0.0f));
 
+	player.reset(new Player(createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
 
-	entity = std::make_shared<Entity>(cubeModel);
-	entity2 = std::make_shared<Entity>(cubeModel2);
-	entity3 = std::make_shared<Entity>(cubeModel3);
-	entity4 = std::make_shared<Entity>(cubeModel4);
-
-	player = std::make_shared<Player>(cubeModel);
-
-	vertexArray->pushVertexData(entity);
-	vertexArray->pushVertexData(entity2);
-	vertexArray->pushVertexData(entity3);
-	vertexArray->pushVertexData(entity4);
-
-	//vertexArray->removeVertexData(entity2);
-	colorVertexArray->pushVertexData(colorQuad.data(), 4);
+	defaultInstancedVertexArray->submitInstanceData(entity);
+	defaultInstancedVertexArray->submitInstanceData(entity2);
+	defaultInstancedVertexArray->submitInstanceData(entity3);
 
 	se_uniformBuffer.setAsActive();
-	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 1000.0f));
+	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
 
 }
 
@@ -87,9 +62,7 @@ void SandboxLayer::onUpdate() {
 
 	player->update();
 
-	se_masterRenderer.submitVertexArray(vertexArray, se_ENTITY_SHADER);
-	//se_masterRenderer.submitVertexArray(colorVertexArray, se_DEFAULT_SHADER);
-
+	se_masterRenderer.submitInstancedVertexArray(defaultInstancedVertexArray);
 }
 
 void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
@@ -103,8 +76,4 @@ void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
 
 void SandboxLayer::onDetach() {
 
-}
-
-std::shared_ptr<Texture2D> SandboxLayer::getFunnyTexture() {
-	return funnyTexture;
 }

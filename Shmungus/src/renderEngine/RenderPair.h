@@ -25,3 +25,22 @@ private:
 	std::shared_ptr<ShaderProgram> shader;
 
 };
+
+template<typename E> //The same as a default renderpair, except the vertexarray parameter is templated for use with a templated render method.
+class InstancedRenderPair {
+
+public:
+
+	InstancedRenderPair(std::shared_ptr<InstancedVertexArray<E>> vertexArray, std::shared_ptr<ShaderProgram> shader) : vertexArray(vertexArray), shader(shader) {}
+
+	GLuint getVertexArrayID() { return vertexArray->getVaoID(); };
+	inline std::shared_ptr<ShaderProgram> getShader() { return shader; };
+
+	inline void setShader(std::shared_ptr<ShaderProgram> newShader) { shader = newShader; };
+
+private:
+
+	std::shared_ptr<InstancedVertexArray<E>> vertexArray;
+	std::shared_ptr<ShaderProgram> shader;
+
+};

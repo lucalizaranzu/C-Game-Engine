@@ -4,12 +4,33 @@
 #include <stb_image.h>
 
 Texture::Texture() {
+
 	glCreateTextures(GL_TEXTURE_2D, 1, &textureID);
 }
 
 Texture::~Texture() {
+	//glDeleteTextures(1, textureID);
+}
 
-	glDeleteTextures(1, &textureID);
+Texture::Texture(const Texture& other) : textureID(other.textureID), width(other.width), height(other.height), vaoLocalSlot(other.vaoLocalSlot) {
+
+}
+
+
+Texture& Texture::operator=(const Texture& other){
+
+	if (this == &other) {
+		return *this;
+	}
+
+	//Reassign ID;
+
+	textureID = other.textureID;
+
+	//Reset other values
+	width = other.width;
+	height = other.height;
+	vaoLocalSlot = other.vaoLocalSlot;
 }
 
 Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height, GLuint channels) : Texture() {
@@ -26,6 +47,6 @@ Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height, GL
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::bind(int slot){
-	glBindTextureUnit(slot, textureID);
+void Texture::bind(){
+	glBindTextureUnit(vaoLocalSlot, textureID);
 }

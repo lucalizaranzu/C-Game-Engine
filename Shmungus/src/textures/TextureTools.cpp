@@ -3,7 +3,7 @@
 #include "TextureTools.h"
 #define STB_IMAGE_IMPLEMENTATION
 
-std::shared_ptr<Texture2D> createTexture2D(std::string filePath){
+Texture2D createTexture2D(std::string filePath){
 
 	std::string realFilePath = "assets/textures/" + filePath;
 
@@ -26,8 +26,8 @@ std::shared_ptr<Texture2D> createTexture2D(std::string filePath){
 	GLuint uWidth = width;
 	GLuint uHeight = height;
 
-	std::shared_ptr<Texture2D> texture = std::make_shared<Texture2D>(textureData, uWidth, uHeight, channels); //Creates texture object
-
+	Texture2D texture = Texture2D(textureData, uWidth, uHeight, channels); //Creates texture object
+	texture.printTextureInfo();
 	stbi_image_free(textureData); //Frees char 
 	return texture;
 }

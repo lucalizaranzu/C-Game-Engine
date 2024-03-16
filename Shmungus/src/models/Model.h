@@ -9,32 +9,51 @@
 //Future edits to this include animations and transforms.
 //Look into submitting SSBOs to the gpu instead of animating and transforming actual vertex data
 
-
+//Has dynamically allocated members, so we need to employ the rule of three to be able to copy and delete these objects
 class Model{
 
 public:
 
-	Model(EntityVertex* vertices, GLuint vertexCount, int* indices, GLuint indexCount, GLuint textureID);
+	//Explicit to avoid implicit casting for a copy constructor
+	explicit Model(float* positions, float* texCoords, Texture2D texture, GLuint vertexCount, int* indices, GLuint indexCount); 
+
+	//Copy constructor
+	Model(const Model& other);
 	~Model();
+
+	void instantiate();
+
+	Model& operator=(const Model& other);
+
+
 	inline GLuint getVertexCount() { return vertexCount; };
-	inline EntityVertex* getVertexData() {return vertexData; };
+
+
+	inline float* getPositionData() { return positionData; };
+	inline float* getTextureCoords() { return textureCoords; };
+
 	inline GLuint getVerticesByteSize() { return (vertexCount * sizeof(EntityVertex)); };
 
 	inline GLuint getIndexCount() { return indexCount; };
 	inline int* getIndexData() { return indexData; };
 	inline GLuint getIndicesByteSize() { return (indexCount * sizeof(int)); };
 
+	inline Texture2D getTexture() { return texture; };
+
+	std::unique_ptr<float[]> createTexIDArray();
+
 private:
+
 
 	//Vertex data
 	GLuint vertexCount;
-	EntityVertex* vertexData; //Needs to be a dynamically allocated pointer instead of a modern array, we can't specify size in advance
+
+	float* positionData;
+	float* textureCoords;
+	Texture2D texture;
 
 	//Index data
 	GLuint indexCount;
 	int* indexData;
-
-	//Texture data
-	GLuint textureID;
 };
 

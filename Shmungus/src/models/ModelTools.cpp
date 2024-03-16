@@ -2,25 +2,35 @@
 #include "ModelTools.h"
 
 
-Model createCubeModel(vec3 position, float textureID) {
+Model createCubeModel(vec3 position, Texture2D texture) {
 
-    if (textureID == -1.0f) {
-        std::cerr << "Could not create model given texture ID : " << textureID << "Check vertex array!" << std::endl;
-    }
+  float* positions = new float[24]{
+		//Front face
+		-1.0f + position.x, 1.0f + position.y, 1.0f + position.z,
+		-1.0f + position.x, -1.0f + position.y, 1.0f + position.z,
+		1.0f + position.x, -1.0f + position.y, 1.0f + position.z,
+		1.0f + position.x, 1.0f + position.y, 1.0f + position.z,
+		//Back face
+		-1.0f + position.x, 1.0f + position.y, -1.0f + position.z,
+		-1.0f + position.x, -1.0f + position.y, -1.0f + position.z,
+		1.0f + position.x, -1.0f + position.y, -1.0f + position.z,
+		1.0f + position.x, 1.0f + position.y, -1.0f + position.z
+	};
 
-  EntityVertex* vertexData = new EntityVertex[8]{
-        //Front face
-        EntityVertex{-1.0f + position.x,1.0f + position.y,1.0f + position.z,  0.0f,1.0f, textureID},
-        EntityVertex{-1.0f + position.x,-1.0f + position.y,1.0f + position.z,   0.0f,0.0f, textureID},
-        EntityVertex{1.0f + position.x,-1.0f + position.y,1.0f + position.z,   1.0f,0.0f, textureID},
-        EntityVertex{1.0f + position.x,1.0f + position.y,1.0f + position.z,    1.0f,1.0f, textureID},
-        EntityVertex{-1.0f + position.x,1.0f + position.y,-1.0f + position.z,  0.0f,1.0f, textureID},
-        EntityVertex{-1.0f + position.x,-1.0f + position.y,-1.0f + position.z,   0.0f,0.0f, textureID},
-        EntityVertex{1.0f + position.x,-1.0f + position.y,-1.0f + position.z,   1.0f,0.0f, textureID},
-        EntityVertex{1.0f + position.x,1.0f + position.y,-1.0f + position.z,    1.0f,1.0f, textureID},
-    };
+  float* texCoords = new float[16]{
+      //Front face
+      0.0f, 1.0f,
+      0.0f, 0.0f,
+      1.0f, 0.0f,
+      1.0f, 1.0f,
+          //Front face
+      0.0f, 1.0f,
+      0.0f, 0.0f,
+      1.0f, 0.0f,
+      1.0f, 1.0f,
+  };
 
-    int* indices = new int[36]{
+   int* indices = new int[36]{
         //Front
         0, 1, 3,
         3, 1, 2,
@@ -46,28 +56,44 @@ Model createCubeModel(vec3 position, float textureID) {
         4, 6, 5
     };
 
-    return Model(vertexData, 8, indices, 36, (GLuint) textureID);
+   return Model(positions, texCoords, texture, 8, indices, 36);
 }
 
-Model createQuadModel(vec3 position, float textureID) {
+Model createQuadModel(vec3 position, Texture2D texture) {
 
-    //Front face
-    EntityVertex* vertexData = new EntityVertex[8]{
-        EntityVertex{ -1.0f + position.x,1.0f + position.y,position.z,  0.0f,1.0f, textureID },
-        EntityVertex{ -1.0f + position.x,-1.0f + position.y,position.z,   0.0f,0.0f, textureID },
-        EntityVertex{ 1.0f + position.x,-1.0f + position.y,position.z,   1.0f,0.0f, textureID },
-        EntityVertex{ 1.0f + position.x,1.0f + position.y,position.z,    1.0f,1.0f, textureID },
+    float* positions = new float[12]{
+		-1.0f + position.x, 1.0f + position.y, position.z,
+		-1.0f + position.x, -1.0f + position.y, position.z,
+		1.0f + position.x, -1.0f + position.y, position.z,
+		1.0f + position.x, 1.0f + position.y, position.z
+	};
+
+    float* texCoords = new float[8]{
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f
     };
 
     int* indices = new int[6]{
         0,1,3,3,1,2
     };
 
-    return Model(vertexData, 4, indices, 6, (GLuint) textureID);
+    return Model(positions, texCoords, texture, 4, indices, 6);
 }
 
 
-//DO NOT USE THIS OUTSIDE OF SPECIFIED VERTEX ARRAY FUNCTIONS! THIS WILL CAUSE A MEMORY LEAK!
+//DO NOT FUCK WITH THIS FUNCTION! YOU WILL RANDOMLY CRASH AND WILL HAVE NO IDEA WHY, BUT IT WILL BE BECAUSE OF THE ASSIGNMENT OPERATOR OVERLOAD
+Model* createModelPointer(std::function<Model()> modelCreatingFunction){
+
+    Model* out = static_cast<Model*>(malloc(sizeof(Model))); //Bullshit that dynamically allocates memory for a model to write to
+
+    out->instantiate();
+    *out = modelCreatingFunction(); //Write to dynamically allocated memory
+
+    return out;
+}
+
 std::unique_ptr<int[]> shiftIndices(int* indices, int amount, int indexCount) {
     std::unique_ptr<int[]> newIndices = std::make_unique<int[]>(indexCount);
 

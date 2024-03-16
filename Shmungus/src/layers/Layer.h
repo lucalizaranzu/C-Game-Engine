@@ -4,6 +4,7 @@
 
 #include "EventBus.h"
 #include "VertexArray.h"
+#include "InstancedVertexArray.h"
 #include "Vertex.h"
 
 enum LayerType {
@@ -50,8 +51,6 @@ public:
 	SandboxLayer();
 	~SandboxLayer();
 
-	static std::shared_ptr<Texture2D> getFunnyTexture();
-
 private:
 
 	void onAttach() override;
@@ -61,6 +60,9 @@ private:
 	void KeyboardCallback(KeyPressEvent* e);
 
 };
+
+
+
 
 class PauseMenuLayer : public Layer {
 

@@ -13,7 +13,12 @@ public:
 
 	inline static LayerStack& get() { return instance; };
 
-	//Throws an event of any event type, use new here because all event handlers will delete the pointer
+	/// <summary>
+	/// Throws an event of type type to all layers in the stack starting from the highest layer to the lowest.
+	/// Will continue to propogate until a fucntion uses it which sets the handled flag
+	/// </summary>
+	/// <typeparam name="EventType">Type of event</typeparam>
+	/// <param name="event">pointer to event</param>
 	template<class EventType>
 	inline void throwEvent(EventType* event) {
 		for (auto it = eventIterator; it != stack.rend(); it++) { //Reverse iterate across all layers starting from highest to lowest in the list
@@ -24,7 +29,15 @@ public:
 			}
 		}
 	}
-	//Adds a function pointer as a listener, specify which layer should listen for the event, the instance of the class that will respond to the event, and a member function of the class to be called on event
+	
+	/// <summary>
+	/// Adds a function pointer as a listener for a specific event type on a specific layer
+	/// </summary>
+	/// <typeparam name="InstanceClass">The class type which will have its member function be called on event</typeparam>
+	/// <typeparam name="EventType">The event type</typeparam>
+	/// <param name="layerType">Enum corresponding to layers, look at Layer.h to see options</param>
+	/// <param name="instance">reference to the instance of the class whose member function will be called</param>
+	/// <param name="instanceFunction">Function pointer to member function of instance class</param>
 	template<class InstanceClass, class EventType>
 	void addListener(LayerType layerType, InstanceClass* instance, void (InstanceClass::* instanceFunction)(EventType*)) {
 
@@ -36,8 +49,11 @@ public:
 		}
 	}
 
+	//Emplace a layer at the beginning of the stack
 	void emplaceLayer(Layer* layer);
+	//Emplace a layer at the end of the normal layers section, and at the beginning of the overlays section
 	void emplaceOverlay(Layer* layer);
+	//Removes a layer from the stack
 	void removeLayer(LayerType layerType);
 
 private:

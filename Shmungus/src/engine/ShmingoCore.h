@@ -26,7 +26,15 @@ using mat4 = glm::mat4x4;
 #define se_uniformBuffer UniformBuffer::get()
 
 //Useful macros
-#define se_bit_left(x) 1 << x
+
+
+template<typename T>
+constexpr auto make_shared_ptr = [](auto&&... args) {
+	return std::make_shared<T>(std::forward<decltype(args)>(args)...);
+	};
+
+// Define a macro to create a shared_ptr with the given type
+#define se_ref(T, ...) make_shared_ptr<T>(__VA_ARGS__)
 
 struct se_bitfield { //Bit field of 8 bits
 	unsigned int bits : 8; //Access using .bits
