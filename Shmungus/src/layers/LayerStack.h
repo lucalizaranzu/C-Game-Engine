@@ -7,9 +7,13 @@
 
 class LayerStack {
 
-	friend class ShmingoApp;
-
 public:
+
+	void init();
+
+
+	void updateLayers();
+
 
 	inline static LayerStack& get() { return instance; };
 
@@ -39,7 +43,7 @@ public:
 	/// <param name="instance">reference to the instance of the class whose member function will be called</param>
 	/// <param name="instanceFunction">Function pointer to member function of instance class</param>
 	template<class InstanceClass, class EventType>
-	void addListener(LayerType layerType, InstanceClass* instance, void (InstanceClass::* instanceFunction)(EventType*)) {
+	void addListener(Shmingo::LayerType layerType, InstanceClass* instance, void (InstanceClass::* instanceFunction)(EventType*)) {
 
 		for (Layer* layer : stack) {
 			if (layer->type == layerType) {
@@ -54,17 +58,13 @@ public:
 	//Emplace a layer at the end of the normal layers section, and at the beginning of the overlays section
 	void emplaceOverlay(Layer* layer);
 	//Removes a layer from the stack
-	void removeLayer(LayerType layerType);
+	void removeLayer(Shmingo::LayerType layerType);
 
 private:
 
 	//Dont call this please 
 	LayerStack() {};
 	~LayerStack();
-
-	void init();
-
-	void updateLayers();
 
 	//Dont touch these from anywhere outside of this class implementation
 	std::vector<Layer*> stack;

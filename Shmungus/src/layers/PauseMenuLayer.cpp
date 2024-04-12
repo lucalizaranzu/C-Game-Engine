@@ -6,17 +6,17 @@
 #include "MiscTools.h"
 
 PauseMenuLayer::PauseMenuLayer() {
-	type = se_PAUSEMENU_LAYER;
+	type = Shmingo::PAUSEMENU_LAYER;
 }
 
 void PauseMenuLayer::onAttach() {
 
 	//Add new event listeners
-	se_layerStack.addListener<PauseMenuLayer, KeyPressEvent>(se_PAUSEMENU_LAYER, this, &PauseMenuLayer::keybordCallback);
-	se_layerStack.addListener<PauseMenuLayer, MouseDragEvent>(se_PAUSEMENU_LAYER, this, &PauseMenuLayer::mouseDragCallback);
+	se_layerStack.addListener<PauseMenuLayer, KeyPressEvent>(Shmingo::PAUSEMENU_LAYER, this, &PauseMenuLayer::keybordCallback);
+	se_layerStack.addListener<PauseMenuLayer, MouseDragEvent>(Shmingo::PAUSEMENU_LAYER, this, &PauseMenuLayer::mouseDragCallback);
 
-	enableGLFWCursor(); //Re enable glfw cursor
-	centerCursor();
+	Shmingo::enableGLFWCursor(); //Re enable glfw cursor
+	Shmingo::centerCursor();
 }
 
 
@@ -30,8 +30,8 @@ void PauseMenuLayer::keybordCallback(KeyPressEvent* e) {
 
 	if (e->getKey() == se_KEY_ESCAPE) {
 
-		disableGLFWCursor(); //This should be thrown into a function in SandboxLayer or some kind of onSwitchToSandboxLayer function here, will do eventually
-		se_layerStack.removeLayer(se_PAUSEMENU_LAYER); //Careful because this function deletes this pausemenulayer object, seems to work without issue though
+		Shmingo::disableGLFWCursor(); //This should be thrown into a function in SandboxLayer or some kind of onSwitchToSandboxLayer function here, will do eventually
+		se_layerStack.removeLayer(Shmingo::PAUSEMENU_LAYER); //Careful because this function deletes this pausemenulayer object, seems to work without issue though
 
 	}
 

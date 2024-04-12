@@ -2,7 +2,7 @@
 #include "ModelTools.h"
 
 
-Model createCubeModel(vec3 position, Texture2D texture) {
+Model Shmingo::createCubeModel(vec3 position, Texture2D texture) {
 
   float* positions = new float[24]{
 		//Front face
@@ -59,7 +59,7 @@ Model createCubeModel(vec3 position, Texture2D texture) {
    return Model(positions, texCoords, texture, 8, indices, 36);
 }
 
-Model createQuadModel(vec3 position, Texture2D texture) {
+Model Shmingo::createQuadModel(vec3 position, Texture2D texture) {
 
     float* positions = new float[12]{
 		-1.0f + position.x, 1.0f + position.y, position.z,
@@ -84,7 +84,7 @@ Model createQuadModel(vec3 position, Texture2D texture) {
 
 
 //DO NOT FUCK WITH THIS FUNCTION! YOU WILL RANDOMLY CRASH AND WILL HAVE NO IDEA WHY, BUT IT WILL BE BECAUSE OF THE ASSIGNMENT OPERATOR OVERLOAD
-Model* createModelPointer(std::function<Model()> modelCreatingFunction){
+Model* Shmingo::createModelPointer(std::function<Model()> modelCreatingFunction){
 
     Model* out = static_cast<Model*>(malloc(sizeof(Model))); //Bullshit that dynamically allocates memory for a model to write to
 
@@ -94,7 +94,7 @@ Model* createModelPointer(std::function<Model()> modelCreatingFunction){
     return out;
 }
 
-std::unique_ptr<int[]> shiftIndices(int* indices, int amount, int indexCount) {
+std::unique_ptr<int[]> Shmingo::shiftIndices(int* indices, int amount, int indexCount) {
     std::unique_ptr<int[]> newIndices = std::make_unique<int[]>(indexCount);
 
     for (int i = 0; i < indexCount; i++) {

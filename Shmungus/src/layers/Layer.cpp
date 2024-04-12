@@ -5,8 +5,8 @@ Layer::Layer() : eventBus(){
 
 }
 
-Layer::~Layer() {
-	//virtual destructor
-
+void Layer::cleanUp(){
 }
+
+
 

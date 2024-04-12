@@ -1,7 +1,7 @@
 #include <sepch.h>
 #include <ShmingoApp.h>
 
-ShmingoApp::ShmingoApp() :
+Shmingo::ShmingoApp::ShmingoApp() :
 	window(nullptr) //Can change default aspect ratio when options is implemented
 
 {
@@ -11,11 +11,15 @@ LayerStack LayerStack::instance;
 MasterRenderer MasterRenderer::instance;
 
 
-ShmingoApp::~ShmingoApp() {
+Shmingo::ShmingoApp::~ShmingoApp() {
 	delete window;
 }
 
-void ShmingoApp::run() {
+void Shmingo::ShmingoApp::declareEntiyType(EntityType type){
+	entityTypes.push_back(type);
+}
+
+void Shmingo::ShmingoApp::run() {
 
 	init();
 
@@ -25,9 +29,8 @@ void ShmingoApp::run() {
 	}
 }
 
-void ShmingoApp::init() {
-
-	ShmingoApp::window = createWindow(800, 600); //Can change default aspect ratio when options is implemented
+void Shmingo::ShmingoApp::init() {
+	ShmingoApp::window = Shmingo::createWindow(800, 600); //Can change default aspect ratio when options is implemented
 
 	glfwMakeContextCurrent(window->getGLFWwindow()); //Makes context current
 
@@ -38,6 +41,7 @@ void ShmingoApp::init() {
 		// Handle initialization failure
 	}
 	se_layerStack.init();
+	Shmingo::initModels();
 	se_masterRenderer.init();
 
 	se_layerStack.emplaceLayer(new SandboxLayer);
@@ -48,7 +52,7 @@ void ShmingoApp::init() {
 
 }
 
-void ShmingoApp::update() {
+void Shmingo::ShmingoApp::update() {
 
 	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
 

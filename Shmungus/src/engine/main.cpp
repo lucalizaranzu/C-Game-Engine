@@ -2,7 +2,7 @@
 #include <Engine.h>
 #include <ShmingoApp.h>
 
-ShmingoApp ShmingoApp::instance; //Declaration of singleton ShmingoApp
+Shmingo::ShmingoApp Shmingo::ShmingoApp::instance; //Declaration of singleton ShmingoApp
 
 int main() {
 

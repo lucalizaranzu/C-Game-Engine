@@ -51,6 +51,8 @@ Model& Model::operator=(const Model& other){
 	texture.textureID = other.texture.textureID;
 	indexCount = other.indexCount;
 	vertexCount = other.vertexCount;
+
+	return *this;
 }
 
 std::unique_ptr<float[]> Model::createTexIDArray(){

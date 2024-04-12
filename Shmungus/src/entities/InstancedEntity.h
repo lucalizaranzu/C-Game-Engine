@@ -2,15 +2,14 @@
 
 #include <ShmingoCore.h>
 
-#include "EntitySpecificVertexData.h"
-
+#include "DataStructures.h"
 
 
 class InstancedEntity{
 
 public:
 
-	typedef std::vector<EntitySpecificVertexDataInfo> InstancedAttributeInformation;
+	typedef std::vector<Shmingo::EntitySpecificVertexDataInfo> InstancedAttributeInformation;
 
 	//Actual information
 
@@ -67,10 +66,19 @@ protected:
 };
 
 
-constexpr void declareInstanceAttribute(std::vector<EntitySpecificVertexDataInfo>& attributeList, GLuint& counter, GLuint localIndex, const char* name, GLuint size) {
-	attributeList.emplace(attributeList.begin() + localIndex, EntitySpecificVertexDataInfo(name, size, counter, localIndex));
+
+
+
+
+constexpr void declareInstanceAttribute(std::vector<Shmingo::EntitySpecificVertexDataInfo>& attributeList, GLuint& counter, GLuint localIndex, const char* name, GLuint size) {
+	attributeList.emplace(attributeList.begin() + localIndex, Shmingo::EntitySpecificVertexDataInfo(name, size, counter, localIndex));
 	counter += size;
 }
+
+
+
+
+
 
 //Default entity used outside of instanced rendering, such as the batch renderer methods
 //Just a rewrite of the original entity class
@@ -87,7 +95,6 @@ public:
 	float getRotation();
 	float getTextureID();
 
-	static constexpr GLuint instancedAttributeAmount = 3;
 	static InstancedAttributeInformation setInstancedAttribInfo();
 
 	DefaultEntity(vec3 position, vec3 rotation);

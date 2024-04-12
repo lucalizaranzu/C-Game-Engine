@@ -6,13 +6,7 @@
 #include "VertexArray.h"
 #include "InstancedVertexArray.h"
 #include "Vertex.h"
-
-enum LayerType {
-
-	se_SANDBOX_LAYER,
-	se_PAUSEMENU_LAYER
-
-};
+#include "World.h"
 
 class LayerStack;
 
@@ -23,8 +17,9 @@ class Layer {
 public:
 
 	Layer(); //Takes in the layer stack it will be a part of
-	virtual ~Layer();
+	//virtual ~Layer();
 
+	virtual void cleanUp();
 
 	template<class T, class EventType>
 	void addListener(T* instance, void (T::* instanceFunction)(EventType*)) {
@@ -40,8 +35,9 @@ protected:
 
 	EventBus eventBus;
 
-	LayerType type;
+	Shmingo::LayerType type = Shmingo::SANDBOX_LAYER;
 };
+
 
 
 class SandboxLayer : public Layer {
@@ -51,11 +47,17 @@ public:
 	SandboxLayer();
 	~SandboxLayer();
 
-private:
+protected:
+
+	World world;
 
 	void onAttach() override;
 	void onDetach() override;
 	void onUpdate() override;
+
+	void cleanUp() override;
+
+private:
 
 	void KeyboardCallback(KeyPressEvent* e);
 
@@ -80,4 +82,3 @@ private:
 	void mouseDragCallback(MouseDragEvent* e);
 
 };
-

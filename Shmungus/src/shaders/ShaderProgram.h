@@ -39,7 +39,7 @@ private:
 
 public:
 
-	ShaderProgram(const char* vertexFile, const char* fragmentFile);
+	ShaderProgram(std::string vertexFile, std::string fragmentFile);
 
 	GLuint getProgramID();
 

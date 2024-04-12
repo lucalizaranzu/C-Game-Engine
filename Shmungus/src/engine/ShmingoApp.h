@@ -2,28 +2,40 @@
 
 #include <Engine.h>
 #include "Input.h"
+#include "ModelManager.h"
 
 //This class is a singleton, there will only ever be one Application
-class ShmingoApp {
 
-public:
+namespace Shmingo {
 
-	~ShmingoApp();
+	class ShmingoApp {
 
-	inline Window* getWindow() { return window; };
+	public:
 
-	inline static ShmingoApp& get() { return instance; };
+		~ShmingoApp();
 
-	void run();
+		inline Shmingo::Window* getWindow() { return window; };
 
-private:
+		inline static ShmingoApp& get() { return instance; };
 
-	ShmingoApp(); //Privated constructor
-	Window* window;
 
-	void init();
-	void update();
+		//Application wide information
+		void declareEntiyType(EntityType type);
 
-	static ShmingoApp instance;
+		std::vector<Shmingo::EntityType> entityTypes;
 
-};
+		void run();
+
+	private:
+
+		ShmingoApp(); //Privated constructor
+		Shmingo::Window* window;
+
+		void init();
+		void update();
+
+		static ShmingoApp instance;
+
+	};
+
+}

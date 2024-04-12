@@ -3,7 +3,6 @@
 #include <ShmingoCore.h>
 #include <typeindex>
 
-#include "ShaderTools.h"
 #include "RenderPair.h"
 #include "Renderer.h"
 #include "DefaultShader.h"
@@ -23,12 +22,7 @@ public:
 	//Meant for shaders added by modders, which do not have a corresponding ShaderType enum. Pass the object directly into the function
 	void submitVertexArray(std::shared_ptr<VertexArray>, std::shared_ptr<ShaderProgram> shader);
 
-	template<typename E>
-	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray<E>> vertexArray) {
-
-		renderInstanced<E>(vertexArray, instancedShaderMap.at(typeid(E))); //Render with the shader that corresponds to the type of the instanced vertex array
-
-	}
+	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray);
 
 	void update();
 
@@ -37,10 +31,25 @@ public:
 	void clearBatch();
 
 
+	//----------------------------------Related to entity attributes--------------------------------------
+	std::vector<Shmingo::EntitySpecificVertexDataInfo> getEntityVertexAttributeInfo(Shmingo::EntityType type);
+	GLuint getEntitySpecificAttribAmount(Shmingo::EntityType type);
+
+	void declareEntityVertexAttributes(Shmingo::EntityType type, std::vector<Shmingo::EntitySpecificVertexDataInfo> attributeInfo);
+	void declareEntitySpecificAttribAmount(Shmingo::EntityType type, GLuint amount);
+
+	//----------------------------------Related to entity models--------------------------------------
+	void declareEntityModel(Shmingo::EntityType type, std::shared_ptr<Model> model);
+	std::shared_ptr<Model> getEntityModel(Shmingo::EntityType type);
+
+	std::shared_ptr<ShaderProgram> getEntityShader(Shmingo::EntityType type); //Get an entity type's shader
+
 private:
 
 	//Used to set which shader program and renderer a particular shader enum corresponds to
 	void mapShader(ShaderType type, std::shared_ptr<ShaderProgram> shader);
+	//Used to set which shader program and renderer a particular entity type corresponds to
+	void mapEntityShader(Shmingo::EntityType type, std::shared_ptr<ShaderProgram> shader);
 
 	//Needs to have type explicitly declared, also declares an amount of texture slots
 	void mapInstancedShader(std::type_index entityType, GLuint textureSlotAmount, std::shared_ptr<ShaderProgram> shader);
@@ -56,5 +65,10 @@ private:
 
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> shaderMap;
 	std::map<std::type_index, std::shared_ptr<ShaderProgram>> instancedShaderMap;
-};
 
+	std::unordered_map<Shmingo::EntityType, std::vector<Shmingo::EntitySpecificVertexDataInfo>> entityVertexAttributeMap;
+	std::unordered_map<Shmingo::EntityType, GLuint> entitySpecificAttribAmountMap;
+
+	std::unordered_map<Shmingo::EntityType, std::shared_ptr<Model>> entityModelMap;
+	std::unordered_map<Shmingo::EntityType, std::shared_ptr<ShaderProgram>> entityShaderMap;
+};

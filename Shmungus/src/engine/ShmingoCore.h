@@ -1,8 +1,6 @@
 #pragma once
 
-using vec2 = glm::vec2; //Format ix x,y
-using vec3 = glm::vec3; //Format is x,y,z
-using vec4 = glm::vec4; //Format is x,y,z,w
+#include "DataStructures.h"
 
 #define se_bit_left(x) 1 << x
 
@@ -13,32 +11,11 @@ using vec4 = glm::vec4; //Format is x,y,z,w
 #define se_Log(x) 
 #endif
 
-using vec2 = glm::vec2; //Format ix x,y
-using vec3 = glm::vec3; //Format is x,y,z
-using vec4 = glm::vec4; //Format is x,y,z,w
-using mat3 = glm::mat3x3;
-using mat4 = glm::mat4x4;
-
 //Macros for singletons
 #define se_layerStack LayerStack::get()
-#define se_application ShmingoApp::get()
+#define se_application Shmingo::ShmingoApp::get()
 #define se_masterRenderer MasterRenderer::get()
 #define se_uniformBuffer UniformBuffer::get()
-
-//Useful macros
-
-
-template<typename T>
-constexpr auto make_shared_ptr = [](auto&&... args) {
-	return std::make_shared<T>(std::forward<decltype(args)>(args)...);
-	};
-
-// Define a macro to create a shared_ptr with the given type
-#define se_ref(T, ...) make_shared_ptr<T>(__VA_ARGS__)
-
-struct se_bitfield { //Bit field of 8 bits
-	unsigned int bits : 8; //Access using .bits
-};
 
 void clearOpenGLError();
 void checkOpenGLError();

@@ -4,36 +4,28 @@
 #include "VertexArray.h"
 #include "InstancedVertexArray.h"
 
-#ifndef RENDERER_H
-#define RENDERER_H
+namespace Shmingo {
 
-void render(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
-//Automatically enables vertex attributes
-void enableAttribs(GLuint attribAmount);
-//Automatically disables vertex attributes
-void disableAttribs(GLuint attribAmount);
+	/// <summary>
+	/// Renders a standard vertex array using the supplied shader
+	/// </summary>
+	/// <param name="vertexArray">
+	/// Vertex array to render
+	/// </param>
+	/// <param name="shader">
+	/// Shader program to use for rendering
+	/// </param>
+	void render(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
 
-//Templated because of the different templated vertex arrays
-template<typename E>
-void renderInstanced(std::shared_ptr<InstancedVertexArray<E>> vertexArray, std::shared_ptr<ShaderProgram> shader) {
-
-	shader->start(); //Start shader
-
-	vertexArray->bindTextures(); //Load textures into texture slots
-
-	glBindVertexArray(vertexArray->getVaoID()); //Bind VAO
-	enableAttribs(vertexArray->getAttribAmount()); //Enable attribute arrays
-
-	clearOpenGLError();
-	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceAmount());
-
-	checkOpenGLError();
-
-	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
-	glBindVertexArray(0); //Unbind VAO
-
-	shader->stop(); //Stop shader
+	/// <summary>
+	/// Renders an instanced vertex array using provided shader
+	/// </summary>
+	/// <param name="vertexArray">
+	/// Instanced vertex array to render
+	/// </param>
+	/// <param name="shader">
+	/// Pointer to shader program to use for rendering
+	/// </param>
+	void renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
 
 }
-
-#endif

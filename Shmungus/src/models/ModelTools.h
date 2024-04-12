@@ -7,19 +7,21 @@
 #include "Model.h"
 #include "TextureTools.h"
 
-Model createCubeModel(vec3 position, Texture2D texture);
-Model createQuadModel(vec3 position, Texture2D texture);
+namespace Shmingo {
+	Model createCubeModel(vec3 position, Texture2D texture);
+	Model createQuadModel(vec3 position, Texture2D texture);
 
-/// <summary>
-/// Used to create a dynamically allocated model from a function that returns a model value
-/// </summary>
-/// <param name="modelCreatingFunction"> 
-/// Function which returns a model value
-/// </param>
-/// <returns>
-/// Pointer to dynamically allocated model
-/// </returns>
-Model* createModelPointer(std::function<Model()> modelCreatingFunction);
+	/// <summary>
+	/// Used to create a dynamically allocated model from a function that returns a model value
+	/// </summary>
+	/// <param name="modelCreatingFunction"> 
+	/// Function which returns a model value
+	/// </param>
+	/// <returns>
+	/// Pointer to dynamically allocated model
+	/// </returns>
+	Model* createModelPointer(std::function<Model()> modelCreatingFunction);
 
 
-std::unique_ptr<int[]> shiftIndices(int* indices, int amount, int indexCount);
+	std::unique_ptr<int[]> shiftIndices(int* indices, int amount, int indexCount);
+}

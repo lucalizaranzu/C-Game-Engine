@@ -24,11 +24,11 @@ std::string get_file_contents(const char* filename)
 GLuint ShaderProgram::getProgramID() { return ID; }
 
 // Constructor that build the Shader Program from 2 different shaders
-ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
+ShaderProgram::ShaderProgram(std::string vertexFile, std::string fragmentFile)
 {
 	// Read vertexFile and fragmentFile and store the strings
-	std::string vertexCode = get_file_contents(vertexFile);
-	std::string fragmentCode = get_file_contents(fragmentFile);
+	std::string vertexCode = get_file_contents(("shaders/" + vertexFile).c_str());
+	std::string fragmentCode = get_file_contents(("shaders/" + fragmentFile).c_str());
 
 	// Convert the shader source strings into character arrays
 	const char* vertexSource = vertexCode.c_str();
@@ -36,6 +36,7 @@ ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
 
 	// Create Vertex Shader Object and get its reference
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
 	// Attach Vertex Shader source to the Vertex Shader Object
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	// Compile the Vertex Shader into machine code
@@ -51,7 +52,6 @@ ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
 	glCompileShader(fragmentShader);
 	// Checks if Shader compiled succesfully
 	compileErrors(fragmentShader, "FRAGMENT");
-
 	// Create Shader Program Object and get its reference
 	ID = glCreateProgram();
 	// Attach the Vertex and Fragment Shaders to the Shader Program
@@ -61,9 +61,7 @@ ShaderProgram::ShaderProgram(const char* vertexFile, const char* fragmentFile)
 	glLinkProgram(ID);
 	// Checks if Shaders linked succesfully
 	compileErrors(ID, "PROGRAM");
-
 	//Calls bindAttributes method, binding the attributes to be passed into the vertex shader
-
 	// Delete the now useless Vertex and Fragment Shader objects
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);

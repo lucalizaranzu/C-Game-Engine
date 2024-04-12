@@ -2,11 +2,11 @@
 #include "InstancedEntity.h"
 #include "ModelTools.h"
 #include "TextureTools.h"
+#include "MasterRenderer.h"
 
 
 //Initialize static variables
-std::vector<EntitySpecificVertexDataInfo> CubeEntity::instancedAttributeInfo = CubeEntity::setInstancedAttribInfo();
-std::vector<EntitySpecificVertexDataInfo> DefaultEntity::instancedAttributeInfo = DefaultEntity::setInstancedAttribInfo();
+std::vector<Shmingo::EntitySpecificVertexDataInfo> DefaultEntity::instancedAttributeInfo = DefaultEntity::setInstancedAttribInfo();
 
 
 InstancedEntity::InstancedEntity(vec3 position, vec3 rotation){}
@@ -41,7 +41,7 @@ void InstancedEntity::declareVertexData(GLuint localAttributeNumber, InstancedAt
 void InstancedEntity::instantiateVertexData(InstancedAttributeInformation& vertexDataInfo) {
 
 	GLuint size = 0;
-	for (EntitySpecificVertexDataInfo& info : vertexDataInfo) {
+	for (Shmingo::EntitySpecificVertexDataInfo& info : vertexDataInfo) {
 		size += info.size;
 	}
 	vertexData = std::make_unique<float[]>(size);
@@ -91,13 +91,15 @@ DefaultEntity::DefaultEntity(vec3 position, vec3 rotation) : InstancedEntity(pos
 	setTextureID(0);
 }
 
-std::vector<EntitySpecificVertexDataInfo> DefaultEntity::setInstancedAttribInfo() {
-	std::vector<EntitySpecificVertexDataInfo> vertexDataInfo;
+std::vector<Shmingo::EntitySpecificVertexDataInfo> DefaultEntity::setInstancedAttribInfo() {
+	std::vector<Shmingo::EntitySpecificVertexDataInfo> vertexDataInfo;
 	GLuint sizeCounter = 0;
 
 	declareInstanceAttribute(vertexDataInfo, sizeCounter, 0, "position", 3);
 	declareInstanceAttribute(vertexDataInfo, sizeCounter, 1, "rotation", 1);
 	declareInstanceAttribute(vertexDataInfo, sizeCounter, 2, "textureID", 1);
 
+	se_masterRenderer.declareEntitySpecificAttribAmount(Shmingo::DefaultEntity, 3); //Declares 3 custom attribute slots for DefaultEntity
+	se_masterRenderer.declareEntityVertexAttributes(Shmingo::DefaultEntity, vertexDataInfo); //Declares vertex attributes for other classes to access
 	return vertexDataInfo;
 }

@@ -275,7 +275,7 @@ void EntityVertexArray::pushVertexData(std::shared_ptr<Entity> entity) {
 	GLuint singleFloatByteSize = sizeof(float) * vertexAmt;
 	GLuint indicesByteSize = indexAmt * sizeof(int);
 
-	std::unique_ptr<int[]> newIndices = shiftIndices(model.getIndexData(), vertexCount, model.getIndexCount()); //Shifts the indices to match the new vertex offset
+	std::unique_ptr<int[]> newIndices = Shmingo::shiftIndices(model.getIndexData(), vertexCount, model.getIndexCount()); //Shifts the indices to match the new vertex offset
 
 	//Bind the vertices vbo and push the vertex data
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID); //Bind vertex buffer

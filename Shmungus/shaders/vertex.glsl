@@ -18,4 +18,3 @@ void main(){
    //vColor = vec3(positions.x + 0.5f,0.7f,positions.y + 0.7f);
    vColor = color;
 };
-

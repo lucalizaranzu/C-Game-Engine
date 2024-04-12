@@ -31,6 +31,8 @@ public:
 
 	inline Texture2D getTexture(GLuint slot) { return textureList[slot]; };
 
+	//Debugging functions
+
 protected:
 
 	//Attributes of buffer itself ------------------------------------------------------------

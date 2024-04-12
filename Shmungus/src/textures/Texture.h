@@ -24,7 +24,7 @@ public:
 
 	void bind();
 
-	void printTextureInfo() { se_log("Texture Address: " << textureID); };
+	void printTextureInfo() { se_log("Texture Address: " << &textureID); };
 
 protected:
 

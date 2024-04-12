@@ -2,38 +2,42 @@
 #include <ShmingoCore.h>
 
 //This is a custom wrapper containing a GLFW window pointer, and any data associated with it
-class Window {
 
-	friend class ShmingoApp;
+namespace Shmingo {
 
-public:
+	class Window {
 
-	Window(int width, int height);
+		friend class ShmingoApp;
 
-	void cleanUp();
+	public:
 
-	void setViewport();
-	void setViewport(float red, float green, float blue, float alpha);
+		Window(int width, int height);
 
-	//Wrappers for GLFW/Opengl functions to do with GLFWwindow
-	int shouldDisplayClose();
+		void cleanUp();
 
-	inline GLFWwindow* getGLFWwindow() { return window; }
+		void setViewport();
+		void setViewport(float red, float green, float blue, float alpha);
 
-	inline int getWidth() { return width; };
-	inline int getHeight() { return height; };
+		//Wrappers for GLFW/Opengl functions to do with GLFWwindow
+		int shouldDisplayClose();
 
-	void setDimensions(int newWidth, int newHeight);
+		inline GLFWwindow* getGLFWwindow() { return window; }
 
-private:
+		inline int getWidth() { return width; };
+		inline int getHeight() { return height; };
 
-	int width;
-	int height;
-	GLFWwindow* window;
+		void setDimensions(int newWidth, int newHeight);
 
-	void swapBuffers();
+	private:
 
-};
+		int width;
+		int height;
+		GLFWwindow* window;
 
-//This is so we can create our own type of window instead of a GLFWwindow, macro defined in engine
-Window* createWindow(int width, int height);
+		void swapBuffers();
+
+	};
+
+	//This is so we can create our own type of window instead of a GLFWwindow, macro defined in engine
+	Window* createWindow(int width, int height);
+}

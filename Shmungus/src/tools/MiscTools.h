@@ -3,6 +3,8 @@
 #include <ShmingoCore.h>
 #include "ShmingoApp.h"
 
-void disableGLFWCursor();
-void enableGLFWCursor();
-void centerCursor();
+namespace Shmingo {
+	void disableGLFWCursor();
+	void enableGLFWCursor();
+	void centerCursor();
+}

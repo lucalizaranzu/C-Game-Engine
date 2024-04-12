@@ -7,17 +7,14 @@
 #include "MiscTools.h"
 #include "TextureTools.h"
 #include "ModelTools.h"
+#include "Renderer.h"
 
 
-SandboxLayer::SandboxLayer() {
-	type = se_SANDBOX_LAYER;
+SandboxLayer::SandboxLayer() : world(World()) {
+	type = Shmingo::SANDBOX_LAYER;
 }
 
-std::shared_ptr<InstancedVertexArray<DefaultEntity>> defaultInstancedVertexArray;
-
 std::shared_ptr<Player> player;
-
-std::shared_ptr<Entity> regularEntity;
 
 std::shared_ptr<Model> cubeModel;
 
@@ -27,31 +24,22 @@ SandboxLayer::~SandboxLayer() {
 
 void SandboxLayer::onAttach() {
 
+	world.init();
 
-	Texture2D funnyTexture = createTexture2D("ramranch.png");
+	Texture2D funnyTexture = Shmingo::createTexture2D("funnyimage.png");
 
-	se_layerStack.addListener<SandboxLayer, KeyPressEvent>(se_SANDBOX_LAYER, this, &SandboxLayer::KeyboardCallback);
+	cubeModel.reset(Shmingo::createModelPointer(std::bind(Shmingo::createCubeModel, vec3(0.0f, 0.0f, 0.0f), funnyTexture)));
+
+	se_layerStack.addListener<SandboxLayer, KeyPressEvent>(Shmingo::SANDBOX_LAYER, this, &SandboxLayer::KeyboardCallback);
 
 	//Init functions
-	disableGLFWCursor();
+	Shmingo::disableGLFWCursor();
 
 	//Creating other objects
-	cubeModel.reset(createModelPointer(std::bind(createCubeModel, vec3(0.0f, 0.0f, 0.0f), funnyTexture)));
 
-	defaultInstancedVertexArray = std::make_shared<InstancedVertexArray<DefaultEntity>>(cubeModel);
-	defaultInstancedVertexArray->linkTexture(funnyTexture, 0);
+	player.reset(new Player(Shmingo::createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
+	world.createEntity(Shmingo::DefaultEntity, vec3(0.0f, 0.0f, -2.0f), vec3(0.0f, 0.0f, 0.0f));
 
-	//Create an entity
-
-	std::shared_ptr<DefaultEntity> entity = std::make_shared<DefaultEntity>(vec3(3.0f,2.0f,-1.0f),vec3(0.0f,0.0f,0.0f));
-	std::shared_ptr<DefaultEntity>entity2 = std::make_shared<DefaultEntity>(vec3(1.0f,0.0f,-1.0f),vec3(0.0f,0.0f,0.0f));
-	std::shared_ptr<DefaultEntity>entity3 = std::make_shared<DefaultEntity>(vec3(-2.0f,-1.0f,-2.0f),vec3(0.0f,0.0f,0.0f));
-
-	player.reset(new Player(createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
-
-	defaultInstancedVertexArray->submitInstanceData(entity);
-	defaultInstancedVertexArray->submitInstanceData(entity2);
-	defaultInstancedVertexArray->submitInstanceData(entity3);
 
 	se_uniformBuffer.setAsActive();
 	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
@@ -61,8 +49,8 @@ void SandboxLayer::onAttach() {
 void SandboxLayer::onUpdate() {
 
 	player->update();
+	world.update();
 
-	se_masterRenderer.submitInstancedVertexArray(defaultInstancedVertexArray);
 }
 
 void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
@@ -75,5 +63,9 @@ void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
 }
 
 void SandboxLayer::onDetach() {
+	cleanUp();
+}
 
+void SandboxLayer::cleanUp(){
+	world.cleanUp();
 }

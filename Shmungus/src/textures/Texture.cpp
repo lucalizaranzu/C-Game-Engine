@@ -31,6 +31,8 @@ Texture& Texture::operator=(const Texture& other){
 	width = other.width;
 	height = other.height;
 	vaoLocalSlot = other.vaoLocalSlot;
+
+	return *this;
 }
 
 Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height, GLuint channels) : Texture() {

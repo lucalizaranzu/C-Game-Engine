@@ -7,7 +7,7 @@
 #include "UniformBuffer.h"
 #include "Matrices.h"
 
-const float DEFAULT_ACCELERATION = 0.004f; //default acceleration of player
+const float DEFAULT_ACCELERATION = 0.0006f; //default acceleration of player
 const float MAX_SPEED = 0.003f; //Max velocity of player
 const float LOOK_SENSITIVITY = 0.002f;
 

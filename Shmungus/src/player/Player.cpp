@@ -9,9 +9,9 @@ short movementArray[6] = { 0,0,0,0,0,0 };
 //Initializes camera with all zeros, THIS IS TEMPORARY! Camera should eventually take in vector pointers so it can be attached to player
 Player::Player(Model model) : Entity(model, vec3(0.0f,0.0f,0.0f), vec3(0.0f,0.0f,0.0f)), camera(Camera(&position, &rotation, &direction)){
 
-	se_layerStack.addListener<Player, KeyPressEvent>(se_SANDBOX_LAYER, this, &Player::getKeyDown);
-	se_layerStack.addListener<Player, KeyReleaseEvent>(se_SANDBOX_LAYER, this, &Player::getKeyUp);
-	se_layerStack.addListener<Player, MouseDragEvent>(se_SANDBOX_LAYER, this, &Player::getMouseMovement);
+	se_layerStack.addListener<Player, KeyPressEvent>(Shmingo::SANDBOX_LAYER, this, &Player::getKeyDown);
+	se_layerStack.addListener<Player, KeyReleaseEvent>(Shmingo::SANDBOX_LAYER, this, &Player::getKeyUp);
+	se_layerStack.addListener<Player, MouseDragEvent>(Shmingo::SANDBOX_LAYER, this, &Player::getMouseMovement);
 
 }
 

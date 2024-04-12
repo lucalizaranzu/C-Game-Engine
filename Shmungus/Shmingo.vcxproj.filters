@@ -52,6 +52,9 @@
     <Filter Include="src\tools">
       <UniqueIdentifier>{8DED2DB6-F957-E22C-4296-93D2AE3FC081}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\world">
+      <UniqueIdentifier>{C44364B6-30AE-182D-79EC-C9D2E595F681}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\display\DisplayManager.h">
@@ -75,10 +78,10 @@
     <ClInclude Include="src\engine\sepch.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\InstancedEntity.h">
+    <ClInclude Include="src\entities\Entity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\EntitySpecificVertexData.h">
+    <ClInclude Include="src\entities\InstancedEntity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -99,9 +102,6 @@
     <ClInclude Include="src\loadingTools\InstancedVertexArray.h">
       <Filter>src\loadingTools</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderEngine\Renderer.h">
-      <Filter>src\loadingTools</Filter>
-    </ClInclude>
     <ClInclude Include="src\loadingTools\UniformBuffer.h">
       <Filter>src\loadingTools</Filter>
     </ClInclude>
@@ -115,6 +115,9 @@
       <Filter>src\loadingTools</Filter>
     </ClInclude>
     <ClInclude Include="src\models\Model.h">
+      <Filter>src\models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\ModelManager.h">
       <Filter>src\models</Filter>
     </ClInclude>
     <ClInclude Include="src\models\ModelTools.h">
@@ -132,13 +135,13 @@
     <ClInclude Include="src\renderEngine\RenderPair.h">
       <Filter>src\renderEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderEngine\Renderer.h">
+      <Filter>src\renderEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\shaders\DefaultShader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\shaders\ShaderProgram.h">
-      <Filter>src\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="src\shaders\ShaderTools.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\textures\Texture.h">
@@ -146,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="src\textures\TextureTools.h">
       <Filter>src\textures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\DataStructures.h">
+      <Filter>src\tools</Filter>
     </ClInclude>
     <ClInclude Include="src\tools\MathTools.h">
       <Filter>src\tools</Filter>
@@ -156,7 +162,9 @@
     <ClInclude Include="src\tools\MiscTools.h">
       <Filter>src\tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\Entity.h" />
+    <ClInclude Include="src\world\World.h">
+      <Filter>src\world</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Libraries\lib\vendors\glad.c">
@@ -186,6 +194,9 @@
     <ClCompile Include="src\engine\sepch.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\entities\Entity.cpp">
+      <Filter>src\entities</Filter>
+    </ClCompile>
     <ClCompile Include="src\entities\InstancedEntity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
@@ -201,6 +212,9 @@
     <ClCompile Include="src\layers\SandboxLayer.cpp">
       <Filter>src\layers</Filter>
     </ClCompile>
+    <ClCompile Include="src\loadingTools\InstancedVertexArray.cpp">
+      <Filter>src\loadingTools</Filter>
+    </ClCompile>
     <ClCompile Include="src\loadingTools\UniformBuffer.cpp">
       <Filter>src\loadingTools</Filter>
     </ClCompile>
@@ -211,6 +225,9 @@
       <Filter>src\loadingTools</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Model.cpp">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="src\models\ModelManager.cpp">
       <Filter>src\models</Filter>
     </ClCompile>
     <ClCompile Include="src\models\ModelTools.cpp">
@@ -234,9 +251,6 @@
     <ClCompile Include="src\shaders\ShaderProgram.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\shaders\ShaderTools.cpp">
-      <Filter>src\shaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\textures\Texture.cpp">
       <Filter>src\textures</Filter>
     </ClCompile>
@@ -252,7 +266,9 @@
     <ClCompile Include="src\tools\MiscTools.cpp">
       <Filter>src\tools</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\Entity.cpp" />
+    <ClCompile Include="src\world\World.cpp">
+      <Filter>src\world</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\entityFragment.glsl">

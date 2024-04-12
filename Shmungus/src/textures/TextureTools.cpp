@@ -3,7 +3,7 @@
 #include "TextureTools.h"
 #define STB_IMAGE_IMPLEMENTATION
 
-Texture2D createTexture2D(std::string filePath){
+Texture2D Shmingo::createTexture2D(std::string filePath){
 
 	std::string realFilePath = "assets/textures/" + filePath;
 
@@ -27,7 +27,6 @@ Texture2D createTexture2D(std::string filePath){
 	GLuint uHeight = height;
 
 	Texture2D texture = Texture2D(textureData, uWidth, uHeight, channels); //Creates texture object
-	texture.printTextureInfo();
 	stbi_image_free(textureData); //Frees char 
 	return texture;
 }

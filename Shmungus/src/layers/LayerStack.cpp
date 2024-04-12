@@ -36,7 +36,7 @@ void LayerStack::emplaceOverlay(Layer* layer) {
 	layer->onAttach();
 }
 
-void LayerStack::removeLayer(LayerType layerType) {
+void LayerStack::removeLayer(Shmingo::LayerType layerType) {
 
 	//Deletes layer from stack, may have to keep layer object intact in the future
 
@@ -63,4 +63,3 @@ void LayerStack::updateLayers() { //Can change this to use an update event in a 
 		layer->onUpdate();
 	}
 }
-
