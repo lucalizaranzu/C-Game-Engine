@@ -13,7 +13,7 @@ public:
 
 	//Actual information
 
-	InstancedEntity(vec3 position, vec3 rotation);
+	InstancedEntity(vec3 position, vec2 rotation);
 
 	/// <summary>
 	/// Returns pointer to beginning offset of the vertex data array corresponding to the desired attribute
@@ -29,6 +29,10 @@ public:
 
 	inline GLuint getOffsetInVao() { return offsetInVao; };
 	inline void setOffsetInVao(GLuint offset) { offsetInVao = offset; }; //Used when adding entity vertex data to a VAO
+	inline void decrementOffsetInVao() { offsetInVao--; }; //Used when deleting entity vertex data from a VAO	
+	inline void incrementOffsetInVao() { offsetInVao++; }; //Used when adding entity vertex data to a VAO, probably not used
+
+	virtual Shmingo::TransformComponent getTransformComponent() = 0;
 
 
 protected:
@@ -88,16 +92,18 @@ public:
 
 	//Getters and setters applicable to all entity types
 	void setPosition(vec3 newPosition);
-	void setRotation(float newRotation);
+	void setRotation(vec2 newRotation);
 	void setTextureID(float newTextureID);
 
 	vec3 getPosition();
-	float getRotation();
+	vec2 getRotation();
 	float getTextureID();
+
+	Shmingo::TransformComponent getTransformComponent() override;
 
 	static InstancedAttributeInformation setInstancedAttribInfo();
 
-	DefaultEntity(vec3 position, vec3 rotation);
+	DefaultEntity(vec3 position, vec2 rotation);
 
 	static InstancedAttributeInformation getInstancedAttributeInfo() { return instancedAttributeInfo; }; //Cant override since its technically not virtual, but should work in template context
 

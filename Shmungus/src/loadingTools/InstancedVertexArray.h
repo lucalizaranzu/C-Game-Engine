@@ -16,6 +16,11 @@ public:
 	//Constructor, sets up all necessary data
 	InstancedVertexArray(Shmingo::EntityType entityType, std::shared_ptr<Model> model);
 
+
+
+
+
+	//Vertex data functions ---------------------------------------------------
 	/// <summary>
 	/// Submits vertex data for instanced data
 	/// Takes main vertex data from model, and instanced data from entity
@@ -26,7 +31,15 @@ public:
 	void submitInstanceData(std::shared_ptr<InstancedEntity> instancedEntity);
 	void submitInstanceData(InstancedEntity* instancedEntity);
 
-	//Getters
+	/// <summary>
+	/// Removes entity data from the VAO and fills its slot with the last entity in the VAO
+	/// </summary>
+	/// <param name="offset"></param>
+	void removeInstancedData(GLuint offset);
+
+
+
+	//Getters ------------------------------------------------------------------
 	inline GLuint getVaoID() { return vaoID; };
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline GLuint getIndexCount() { return indexCount; };
@@ -35,6 +48,9 @@ public:
 	inline GLuint getAttribAmount() { return attribAmount; };
 
 
+
+
+	//Texture related functions ------------------------------------------------
 	/// <summary>
 	/// Links a texture object to a slot
 	/// </summary>
@@ -51,7 +67,12 @@ public:
 		return entityType;
 	}
 
-	//Debugging functions
+
+
+
+
+
+	//Debugging functions ----------------------------------------------
 	GLuint* getVaoIDRef() { return &vaoID; };
 
 protected:
@@ -76,10 +97,26 @@ protected:
 
 	std::shared_ptr<Model> instanceModel; //The model that this Vertex Array is based on
 
+	//Utility functions --------------------------------------------------------
+
 	inline void bindVao() {
 		glBindVertexArray(vaoID);
 	}
 	inline void bindIndicesVbo(){
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
 	}
+
+	/// <summary>
+	/// Copies part of a buffer to another part of the same buffer
+	/// </summary>
+	/// <param name="readOffset">
+	/// Offset where data will be read from
+	/// </param>
+	/// <param name="writeOffset">
+	/// Offset where data will be written to
+	/// </param>
+	/// <param name="size">
+	/// Size of data to be copied in bytes
+	/// </param>
+	void copyBufferData(GLuint readOffset, GLuint writeOffset, GLuint size);
 };

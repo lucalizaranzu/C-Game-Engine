@@ -48,10 +48,10 @@ Model& Model::operator=(const Model& other){
 	indexData = newIndices;
 
 	//Move other variables
-	texture.textureID = other.texture.textureID;
+	texture = other.texture;
 	indexCount = other.indexCount;
 	vertexCount = other.vertexCount;
-
+	 
 	return *this;
 }
 

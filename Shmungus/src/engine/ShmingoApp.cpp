@@ -1,9 +1,11 @@
 #include <sepch.h>
 #include <ShmingoApp.h>
 
-Shmingo::ShmingoApp::ShmingoApp() :
-	window(nullptr) //Can change default aspect ratio when options is implemented
+World tempWorld;
 
+Shmingo::ShmingoApp::ShmingoApp() :
+	window(nullptr), //Can change default aspect ratio when options is implemented,
+	currentWorld(tempWorld)
 {
 }
 

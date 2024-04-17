@@ -3,7 +3,11 @@
 #include "ShmingoApp.h"
 
 
-	//Disables cursor in order to use first person camera
+void Shmingo::setCurrentWorld(World& world){
+	se_application.setCurrentWorld(world);
+}
+
+//Disables cursor in order to use first person camera
 void Shmingo::disableGLFWCursor() {
 
 	glfwSetInputMode(se_application.getWindow()->getGLFWwindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);

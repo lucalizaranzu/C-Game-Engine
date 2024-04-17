@@ -41,7 +41,7 @@ namespace Shmingo {
 	struct EntitySpecificVertexDataInfo {
 
 		const char* name;
-		GLuint size;
+		GLuint size; //Size of the attribute in number of floats
 		GLuint localFloatOffset;
 		GLuint vaoIndex;
 	};
@@ -64,8 +64,9 @@ namespace Shmingo {
 	*/
 	struct EntityTypeInfo {
 
-		uint16_t offset;
-		uint16_t amount;
+		uint8_t vertexArrayOffset; //Offset of vertex array in VAO map
+		uint16_t offset; //Offset of first entity in entity map
+		uint16_t amount; //Amount of entities of this type
 
 	};
 
@@ -142,7 +143,7 @@ namespace Shmingo {
 		/// <param name="keyval">
 		/// Key to remove along with its value
 		/// </param>
-		void remove(T1 keyval) {
+		void erase(T1 keyval) {
 			map.erase(keyval); //Erase key value pair from map
 			keys.erase(std::remove(keys.begin(), keys.end(), keyval), keys.end()); //Erase key from keys vector
 		}

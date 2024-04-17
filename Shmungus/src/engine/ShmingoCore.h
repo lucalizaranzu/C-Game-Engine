@@ -17,6 +17,9 @@
 #define se_masterRenderer MasterRenderer::get()
 #define se_uniformBuffer UniformBuffer::get()
 
+//Other macros
+#define se_currentWorld Shmingo::getCurrentWorld()
+
 void clearOpenGLError();
 void checkOpenGLError();
 

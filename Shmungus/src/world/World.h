@@ -34,7 +34,7 @@ public:
 	/// Forwarded arguments to specific constructor
 	/// </param>
 	template<typename... Args>
-	void createEntity(Shmingo::EntityType type, vec3 position, vec3 rotation, Args&&... args) {
+	void createEntity(Shmingo::EntityType type, vec3 position, vec2 rotation, Args&&... args) {
 
 		InstancedEntity* e = nullptr; //return type
 
@@ -53,6 +53,8 @@ public:
 		addEntity(type, e); //Creates entity and adds to world
 
 	}
+
+	void deleteEntity(Shmingo::EntityType type, GLuint localOffset);
 
 	void cleanUp();
 
@@ -74,8 +76,7 @@ private:
 
 
 
-
-	void addEntity(Shmingo::EntityType type, InstancedEntity* entity);
+	void addEntity(Shmingo::EntityType type, InstancedEntity* entity); //Is there any reason for this to be a pointer? TODO - check if this can be refactored to avoid dereferencing
 
 
 };

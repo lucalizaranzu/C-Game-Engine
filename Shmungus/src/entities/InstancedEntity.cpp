@@ -9,7 +9,7 @@
 std::vector<Shmingo::EntitySpecificVertexDataInfo> DefaultEntity::instancedAttributeInfo = DefaultEntity::setInstancedAttribInfo();
 
 
-InstancedEntity::InstancedEntity(vec3 position, vec3 rotation){}
+InstancedEntity::InstancedEntity(vec3 position, vec2 rotation){}
 
 
 void InstancedEntity::declareVertexData(GLuint localAttributeNumber, InstancedAttributeInformation& attribInfo, float data) {
@@ -57,7 +57,7 @@ void DefaultEntity::setPosition(vec3 newPosition){
 	declareVertexData(0, instancedAttributeInfo, newPosition);
 }
 
-void DefaultEntity::setRotation(float newRotation){
+void DefaultEntity::setRotation(vec2 newRotation){
 	declareVertexData(1, instancedAttributeInfo, newRotation);
 }
 
@@ -70,24 +70,34 @@ vec3 DefaultEntity::getPosition(){
 	return vec3(positions[0],positions[1],positions[2]);
 }
 
-float DefaultEntity::getRotation(){
-	return getVertexData(1, instancedAttributeInfo)[0]; //Index 0 because it will spit out an array, and since your float is only one element long, you want the first one
+vec2 DefaultEntity::getRotation(){
+	float* rotation = getVertexData(1, instancedAttributeInfo);
+	return vec2(rotation[0], rotation[1]);
 }
 
 float DefaultEntity::getTextureID() {
 	return getVertexData(2, instancedAttributeInfo)[0];
 }
 
+Shmingo::TransformComponent DefaultEntity::getTransformComponent(){
+	Shmingo::TransformComponent transform;
+
+	transform.position = getPosition();
+	transform.rotation = getRotation();
+
+	return transform;
+}
+
 //DefaultEntity is a base implementation of InstancedEntity containing basic vertex attributes that all entities should have.
 //All subclasses will still have to manually declare the instanced attributes in the setInstancedAttribInfo method, however they will have
 //access to all of the getters and setters for that data without needing to redefine it.
 
-DefaultEntity::DefaultEntity(vec3 position, vec3 rotation) : InstancedEntity(position,rotation){
+DefaultEntity::DefaultEntity(vec3 position, vec2 rotation) : InstancedEntity(position,rotation){
 
 	instantiateVertexData(instancedAttributeInfo);
 
 	setPosition(position);
-	setRotation(rotation.z);
+	setRotation(rotation);
 	setTextureID(0);
 }
 
@@ -96,7 +106,7 @@ std::vector<Shmingo::EntitySpecificVertexDataInfo> DefaultEntity::setInstancedAt
 	GLuint sizeCounter = 0;
 
 	declareInstanceAttribute(vertexDataInfo, sizeCounter, 0, "position", 3);
-	declareInstanceAttribute(vertexDataInfo, sizeCounter, 1, "rotation", 1);
+	declareInstanceAttribute(vertexDataInfo, sizeCounter, 1, "rotation", 2);
 	declareInstanceAttribute(vertexDataInfo, sizeCounter, 2, "textureID", 1);
 
 	se_masterRenderer.declareEntitySpecificAttribAmount(Shmingo::DefaultEntity, 3); //Declares 3 custom attribute slots for DefaultEntity
