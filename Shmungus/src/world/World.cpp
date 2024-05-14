@@ -58,7 +58,6 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 		instancedVAOMap.erase(type);
 		initializedInstancedVaoMap[type] = false;
 
-		se_log("Deleted entity type " << type << " with offset " << typeInfo.offset << " and amount " << typeInfo.amount);	
 	}
 
 	//Condition where we are removing an entity that is not the last entity of a certain type
@@ -112,8 +111,6 @@ void World::addEntity(Shmingo::EntityType type, InstancedEntity* entity){
 
 	Shmingo::TransformComponent currentTransform = entityTransformList[entityTypeInfoMap.map[type].offset];
 
-	se_log(currentTransform.position.x << " " << currentTransform.position.y << " " << currentTransform.position.z << " Rotation: " << currentTransform.rotation.x << " " << currentTransform.rotation.y);
-	se_log(emplaceOffset);
 
 	//Update information about all succeeding entity types
 	for(auto it = entityTypeInfoMap.keys.begin() + entityTypeInfoMap.map[type].vertexArrayOffset + 1; it < entityTypeInfoMap.keys.end(); it++){ //Start updating from the next entity type

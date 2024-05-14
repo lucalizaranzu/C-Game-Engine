@@ -60,6 +60,11 @@ public:
 	//Removes a layer from the stack
 	void removeLayer(Shmingo::LayerType layerType);
 
+	/// <summary>
+	/// Clears the stack after the application is terminated
+	/// </summary>
+	void cleanUp();
+
 private:
 
 	//Dont call this please 

@@ -57,6 +57,14 @@ void LayerStack::removeLayer(Shmingo::LayerType layerType) {
 	delete selectedLayer; //Remember this function can be called from inside the specified layer, which essentially is calling "delete this" - Be careful
 }
 
+void LayerStack::cleanUp(){
+	for (Layer* layer : stack) {
+		layer->onDetach();
+		delete layer;
+	}
+	stack.clear();
+}
+
 void LayerStack::updateLayers() { //Can change this to use an update event in a tick-controlled environment
 
 	for (const auto& layer : stack) {

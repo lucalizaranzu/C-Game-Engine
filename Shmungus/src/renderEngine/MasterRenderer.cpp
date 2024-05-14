@@ -18,9 +18,10 @@ void MasterRenderer::init() {
 	se_uniformBuffer.init();
 	se_application.declareEntiyType(Shmingo::DefaultEntity);
 
-	std::shared_ptr<DefaultShader> defaultShader = std::make_shared<DefaultShader>("vertex.glsl", "fragment.glsl");
 	std::shared_ptr<DefaultShader> entityShader = std::make_shared<DefaultShader>("entityVertex.glsl", "entityFragment.glsl");
-	mapShader(se_DEFAULT_SHADER, defaultShader);
+
+	entityShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK, Shmingo::UTIL_BLOCK);
+
 	mapShader(se_ENTITY_SHADER, entityShader);
 
 	mapEntityShader(Shmingo::DefaultEntity, entityShader);

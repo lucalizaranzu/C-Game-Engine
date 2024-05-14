@@ -12,6 +12,7 @@
 #include "ShmingoCore.h"
 #include "UniformBuffer.h"
 
+
 enum ShaderType {
 
 	se_SHADER_NONE,
@@ -50,9 +51,32 @@ public:
 
 	void cleanUp();
 
+	void link();
+
 
 	void loadTextureMap(int slotAmount);
 	void loadSampler(const char* uniformName, GLuint value); //Pretty much just for testing
+
+	template<typename... Args>
+	void bindUniformBlocks(Args&&... blocks) {
+		auto bindFunc = [&](auto&& block) {
+			GLuint blockIndex = glGetUniformBlockIndex(ID, se_uniformBuffer.getBlockInfo(block).name);
+			if (blockIndex == GL_INVALID_INDEX) {
+				std::cerr << "Could not get index of uniform block " << se_uniformBuffer.getBlockInfo(block).name << std::endl;
+				return; // Skip binding this block
+			}
+
+			// Ensure unique binding points for each block
+			GLuint bindingPoint = se_uniformBuffer.getBlockInfo(block).bindingPoint;
+
+			glUniformBlockBinding(ID, blockIndex, bindingPoint);
+
+			};
+
+		(bindFunc(std::forward<Args>(blocks)), ...);
+	}
+
+	void bindUniformBlock(Shmingo::UniformBlock block);
 
 
 protected:

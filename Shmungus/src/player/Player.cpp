@@ -1,5 +1,6 @@
 #include <sepch.h>
 #include "Player.h"
+#include "ShmingoApp.h"
 
 float roundToNearestThird(float num);
 
@@ -192,9 +193,9 @@ void Player::getMouseMovement(MouseDragEvent* e) {
 //Turns velocity into position change, useful for eventual animation code etc.
 void Player::move() {
 
-	position.z += (velocity.z * cos(rotation.x) - velocity.x * sin(rotation.x));
-	position.y += velocity.y;
-	position.x += (velocity.x * cos(rotation.x) + velocity.z * sin(rotation.x));
+	position.z += se_deltaTime * (velocity.z * cos(rotation.x) - velocity.x * sin(rotation.x));
+	position.y += se_deltaTime * velocity.y;
+	position.x += se_deltaTime * (velocity.x * cos(rotation.x) + velocity.z * sin(rotation.x));
 }
 
 float roundToNearestThird(float num) {

@@ -5,9 +5,6 @@
 
 DefaultShader::DefaultShader(const char* vertexFile, const char* fragmentFile) : ShaderProgram(vertexFile, fragmentFile) {
 
-	GLuint matrixBlockIndex = glGetUniformBlockIndex(ID, "MatrixData");
-	glUniformBlockBinding(ID, matrixBlockIndex, 0); //Sets uniform binding point 0 to matrices
-
 	bindAttributes();
 }
 

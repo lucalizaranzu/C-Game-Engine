@@ -17,6 +17,8 @@ namespace Shmingo {
 
 		inline Shmingo::Window* getWindow() { return window; };
 		inline World& getCurrentWorld() { return currentWorld; };
+		inline float getDeltaTime() { return deltaTime; }
+		inline float getTimeElapsed() { return timeElapsed; }
 
 		void setCurrentWorld(World& world) { currentWorld = world; };
 
@@ -30,6 +32,9 @@ namespace Shmingo {
 
 		void run();
 
+		//Global getters
+		inline int getMinimumUniformBlockOffset() { return minimumUniformBlockOffset; }
+
 	private:
 
 		ShmingoApp(); //Privated constructor
@@ -41,6 +46,13 @@ namespace Shmingo {
 		void update();
 
 		static ShmingoApp instance;
+
+		float deltaTime = 0; //Time since last frame
+		float timeElapsed = 0; //Time since start of application
+
+		//Global variables
+		void initGlobalVariables();
+		int minimumUniformBlockOffset = 0;
 
 	};
 

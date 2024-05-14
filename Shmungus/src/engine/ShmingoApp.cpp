@@ -2,6 +2,7 @@
 #include <ShmingoApp.h>
 
 World tempWorld;
+float lastFrameTime = 0.0f;
 
 Shmingo::ShmingoApp::ShmingoApp() :
 	window(nullptr), //Can change default aspect ratio when options is implemented,
@@ -29,6 +30,8 @@ void Shmingo::ShmingoApp::run() {
 	while (!window->shouldDisplayClose()) {
 		update();
 	}
+
+	se_layerStack.cleanUp();
 }
 
 void Shmingo::ShmingoApp::init() {
@@ -42,6 +45,9 @@ void Shmingo::ShmingoApp::init() {
 		std::cerr << "Failed to initialize OpenGL context\n";
 		// Handle initialization failure
 	}
+
+	initGlobalVariables(); //Initialize global variables after GLAD is loaded
+
 	se_layerStack.init();
 	Shmingo::initModels();
 	se_masterRenderer.init();
@@ -56,13 +62,24 @@ void Shmingo::ShmingoApp::init() {
 
 void Shmingo::ShmingoApp::update() {
 
+	float time = (float)glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
+	deltaTime = time - lastFrameTime;
+
+	lastFrameTime = time;
+	timeElapsed += deltaTime;
+
 	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
 
 	se_layerStack.updateLayers();
 
 	se_masterRenderer.update();
+	se_uniformBuffer.setElapsedTime(timeElapsed);
 
 	window->swapBuffers();
 	glfwPollEvents();
 
+}
+
+void Shmingo::ShmingoApp::initGlobalVariables(){
+	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &minimumUniformBlockOffset);
 }

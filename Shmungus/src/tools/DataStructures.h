@@ -26,6 +26,12 @@ namespace Shmingo {
 
 	};
 
+	enum UniformBlock {
+
+		MATRIX_BLOCK,
+		UTIL_BLOCK
+	};
+
 
 
 
@@ -69,6 +75,19 @@ namespace Shmingo {
 		uint16_t amount; //Amount of entities of this type
 
 	};
+
+
+	/*
+	Represents information about a uniform block in a uniform buffer
+	*/
+	struct UniformBlockInfo {
+
+		const char* name;
+		GLuint size;
+		GLuint offset;
+		GLuint bindingPoint;
+
+	};	
 
 	/// <summary>
 	/// Represents a map that follows insertion order.
@@ -129,7 +148,7 @@ namespace Shmingo {
 		/// <returns>
 		/// Key's value
 		/// </returns>
-		T2 get(T1 keyval) {
+		T2 at(T1 keyval) {
 			return map[keyval]; //Return value from map given key	
 		}
 
@@ -177,7 +196,7 @@ namespace Shmingo {
 		/// </summary>
 		/// <param name="key"></param>
 		/// <returns></returns>
-		T get(E key) {
+		T at(E key) {
 			return values[indicesMap[key]];
 		}
 

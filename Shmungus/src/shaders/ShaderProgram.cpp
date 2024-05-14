@@ -57,14 +57,26 @@ ShaderProgram::ShaderProgram(std::string vertexFile, std::string fragmentFile)
 	// Attach the Vertex and Fragment Shaders to the Shader Program
 	glAttachShader(ID, vertexShader);
 	glAttachShader(ID, fragmentShader);
-	// Wrap-up/Link all the shaders together into the Shader Program
+
+	glBindBuffer(GL_UNIFORM_BUFFER, se_uniformBuffer.getUboID());
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, se_uniformBuffer.getUboID(), 0, 128);
+	glBindBufferRange(GL_UNIFORM_BUFFER, 1, se_uniformBuffer.getUboID(), 256, 16);
+
+	glLinkProgram(ID);
+
+	// Checks if Shaders linked succesfully
+	compileErrors(ID, "PROGRAM");
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+}
+
+void ShaderProgram::link() {
 	glLinkProgram(ID);
 	// Checks if Shaders linked succesfully
 	compileErrors(ID, "PROGRAM");
-	//Calls bindAttributes method, binding the attributes to be passed into the vertex shader
-	// Delete the now useless Vertex and Fragment Shader objects
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 }
 
 //Binds VAO attributes to the shader program in the specified layout position
@@ -75,6 +87,13 @@ void ShaderProgram::bindAttribute(GLuint attribLocation, const GLchar* attribNam
 	glBindAttribLocation(ID, attribLocation, attribName);
 
 }
+void ShaderProgram::bindUniformBlock(Shmingo::UniformBlock block){
+
+	GLuint blockIndex = glGetUniformBlockIndex(ID, se_uniformBuffer.getBlockInfo(block).name);
+	glUniformBlockBinding(ID, blockIndex, se_uniformBuffer.getBlockInfo(block).bindingPoint);
+	se_uniformBuffer.bindUniformBlock(block);
+}
+
 //Pure virtual function, needs to be implemented in child classes in order to load all uniforms
 void ShaderProgram::getAllUniformLocations() {}
 
@@ -189,3 +208,5 @@ void ShaderProgram::cleanUp() {
 
 
 }
+
+

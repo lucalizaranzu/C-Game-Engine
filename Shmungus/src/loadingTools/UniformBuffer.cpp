@@ -1,5 +1,6 @@
 #include <sepch.h>
 #include "UniformBuffer.h"
+#include <ShmingoApp.h>
 
 //Im hardcoding all the offsets of the uniforms in the buffer object to avoid having to look up values in a hashmap every frame, get over it
 // 
@@ -11,48 +12,59 @@
 //Size of int / float = 4
 //Make sure to format properly according to STD140 protocol!
 
-//Incrementing based on size of data type
-#define OFFSET_VIEWMATRIX 0
-#define OFFSET_PROJECTIONMATRIX 64
+//Incrementing based on size of data type, TODO make this not terrible and abstract to a list or something
+#define OFFSET_VIEWMATRIX 64
+#define OFFSET_PROJECTIONMATRIX 0
+
+#define OFFSET_ELAPSEDTIME 128
 
 
 
 //Indices of blocks are defined here. Add an incremented macro every time you want to add a new type of block
 #define INDEX_MATRIXBLOCK 0
+#define INDEX_UTILBLOCK 1
+
+GLuint matrixBlockSize = 128;
+GLuint utilBlockSize = 4;
+
+UniformBuffer::UniformBuffer() {}
 
 
-UniformBuffer::UniformBuffer() {
-
-} 
 
 void UniformBuffer::init() {
 
 	//Add size of uniform type when adding a new uniform
-	GLuint uboSize = (2 * sizeof(mat4));
+	GLuint uboSize = (64 * 8);
 
 	glGenBuffers(1, &uboID);
 	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
-	glBufferData(GL_UNIFORM_BUFFER, uboSize, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_UNIFORM_BUFFER, uboSize, nullptr, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	/*glBindBufferRange specifies the size of a uniform block.
-	* I have opted to use the method of having only one buffer corresponding to multiple blocks instead
-	* of one buffer per block. Because its all so abstracted here I really don't see a reason to have to bind
-	* and unbind different buffer objects and use different UBOs for everything
-	* */
+	createUniformBlock(Shmingo::MATRIX_BLOCK, 128, "Matrices", 0); //Range 0
+	createUniformBlock(Shmingo::UTIL_BLOCK, 16, "Util", 1); //Range 1
 
-	glBindBufferRange(GL_UNIFORM_BUFFER, INDEX_MATRIXBLOCK, uboID, 0, (2 * sizeof(mat4))); //Range 1
-
+	bindUniformBlock(Shmingo::MATRIX_BLOCK);
+	bindUniformBlock(Shmingo::UTIL_BLOCK);
 }
 
 void UniformBuffer::setProjectionMatrix(mat4 projectionMatrix){
 	glBindBuffer(GL_UNIFORM_BUFFER,uboID);
-	setUniformMat4(projectionMatrix, OFFSET_PROJECTIONMATRIX, INDEX_MATRIXBLOCK);
+	setUniformMat4(projectionMatrix, OFFSET_PROJECTIONMATRIX);
 }
 
 void UniformBuffer::setViewMatrix(mat4 viewMatrix){
 	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
-	setUniformMat4(viewMatrix, OFFSET_VIEWMATRIX, INDEX_MATRIXBLOCK);
+	setUniformMat4(viewMatrix, OFFSET_VIEWMATRIX);
 }
+
+void UniformBuffer::setElapsedTime(float time) {
+	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
+	setUniform1f(time, 256 + 12);
+}
+
+
+
 
 
 void UniformBuffer::setAsActive() {
@@ -60,46 +72,78 @@ void UniformBuffer::setAsActive() {
 }
 
 
-void UniformBuffer::setUniform1f(float value, GLint offset, GLuint index) {
+void UniformBuffer::setUniform1f(float value, GLint offset) {
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(float), &value);
 }
 
 
-void UniformBuffer::setUniform1i(int value, GLint offset, GLuint index) {
+void UniformBuffer::setUniform1i(int value, GLint offset) {
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(int), &value);
 }
 
 
-void UniformBuffer::setUniformVec2(vec2 value, GLint offset, GLuint index) {
+void UniformBuffer::setUniformVec2(vec2 value, GLint offset) {
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(vec2), &value);
 }
 
 
-void UniformBuffer::setUniformVec3(vec3 value, GLint offset, GLuint index) {
+void UniformBuffer::setUniformVec3(vec3 value, GLint offset) {
 
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(vec3), &value);
 }
 
 
-void UniformBuffer::setUniformVec4(vec4 value, GLint offset, GLuint index) {
+void UniformBuffer::setUniformVec4(vec4 value, GLint offset) {
 
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(vec4), &value);
 }
 
 
-void UniformBuffer::setUniformMat3(mat3 value, GLint offset, GLuint index) {
+void UniformBuffer::setUniformMat3(mat3 value, GLint offset) {
 
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(mat3), glm::value_ptr(value));
 }
 
 
-void UniformBuffer::setUniformMat4(mat4 value, GLint offset, GLuint index) {
+void UniformBuffer::setUniformMat4(mat4 value, GLint offset) {
 
 
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(mat4), glm::value_ptr(value));
+}
+
+
+void UniformBuffer::createUniformBlock(Shmingo::UniformBlock block, GLuint size, const char* name, GLuint bindingPoint) {
+
+	//If empty
+	if (blockInfo.keys.size() == 0) {
+
+		blockInfo.insert(block,Shmingo::UniformBlockInfo{ name, size, 0, 0 });
+		se_log("Block " << name << " created at binding point 0 with offset 0");
+	}
+	else {
+		Shmingo::UniformBlockInfo currentLast = blockInfo.at(blockInfo.keys.back());
+		int newOffset = currentLast.offset + currentLast.size;
+
+		int uniformBlockAlignment = se_application.getMinimumUniformBlockOffset();
+
+		if (newOffset % uniformBlockAlignment != 0) {
+			newOffset = newOffset + (256 - (newOffset % uniformBlockAlignment));
+		}
+
+		blockInfo.insert(block, Shmingo::UniformBlockInfo{ name, size, (GLuint)newOffset, bindingPoint });
+		se_log("Block " << name << " created at binding point " << bindingPoint << ", with offset " << newOffset);
+	}
+}
+
+void UniformBuffer::bindUniformBlock(Shmingo::UniformBlock block){
+	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
+	Shmingo::UniformBlockInfo currentBlockInfo = blockInfo.at(block);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, currentBlockInfo.bindingPoint, uboID, currentBlockInfo.offset, currentBlockInfo.size);
+	se_log("Mapping uniform block " << currentBlockInfo.name << " to binding point " << currentBlockInfo.bindingPoint);
 }

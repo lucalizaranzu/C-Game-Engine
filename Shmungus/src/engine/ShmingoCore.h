@@ -19,6 +19,8 @@
 
 //Other macros
 #define se_currentWorld Shmingo::getCurrentWorld()
+#define se_deltaTime se_application.getDeltaTime()
+#define se_timeElapsed se_application.getTimeElapsed()
 
 void clearOpenGLError();
 void checkOpenGLError();
