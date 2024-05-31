@@ -10,8 +10,7 @@ InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared
 
 	GLuint perInstanceAttributeAmount = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(type); //Set total number of uniforms to be bound and unbound in the render method
 	attribAmount = 2 + perInstanceAttributeAmount; //Set total number of attributes to be bound and unbound in the render method
-	se_log("Instanced Attrib amount: " << perInstanceAttributeAmount);
-	se_log("Total Attrib amount: " << attribAmount);
+
 	GLuint modelVertexCount = model->getVertexCount();
 
 	glGenVertexArrays(1, &vaoID); //Creates VAO using member variable
@@ -51,8 +50,6 @@ InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared
 		glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[i]); //Bind vertex buffer
 		glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(float) * currentAttributeInfo.size, nullptr, GL_DYNAMIC_DRAW); //Sets buffer data arguments for vertex buffer, allocates space for 1000 entities, will have to change
 
-		se_log("Setting pointer for real attribute " << currentAttribNumber << " with size " << adjustedAttribSize << ", stride " << currentAttributeInfo.size << ", and offset " << 0);
-
 		glVertexAttribPointer(currentAttribNumber, adjustedAttribSize, GL_FLOAT, GL_FALSE, currentAttributeInfo.size * sizeof(float), (void*)0);
 		glVertexAttribDivisor(currentAttribNumber, 1); //Sets vertex attribute divisor to once per instance
 
@@ -61,11 +58,7 @@ InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared
 			GLuint fullSizeAttribs = currentAttributeInfo.size / 4;
 			GLuint remainderAttribSize = currentAttributeInfo.size % 4;
 
-			se_log("Setting pointer for real attribute " << currentAttribNumber << " with size " << currentAttributeInfo.size);
-
 			for (GLuint j = 1; j < fullSizeAttribs; j++) {
-
-				se_log("Setting pointer for real attribute " << currentAttribNumber + j << " with size 4" << adjustedAttribSize << ", stride " << currentAttributeInfo.size << ", and offset " << 0);
 
 
 				glVertexAttribPointer(currentAttribNumber + j, 4, GL_FLOAT, GL_FALSE, currentAttributeInfo.size * sizeof(float), (void*)((sizeof(float) * (4 * j)))); //Set attrib pointer with correct offset and size 4
@@ -179,13 +172,12 @@ void InstancedVertexArray::removeInstancedData(GLuint offset){
 
 			GLuint dataSize = perInstanceAttributeInfo[i].size * sizeof(float);
 
-			copyBufferData((instanceAmount - 1) * dataSize,
+			copyBufferData((instanceAmount-1) * dataSize,
 				offset * dataSize, dataSize); //Copies data from last instance to the instance being removed
 		}
 	}
 	instanceAmount -= 1; //Decrement instance amount
 	indexCount -= instanceModel->getIndexCount(); //Decrement index count
-	se_log("Instance amount: " << instanceAmount);
 }
 
 

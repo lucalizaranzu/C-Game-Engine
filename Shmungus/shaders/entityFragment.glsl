@@ -10,7 +10,7 @@ out vec4 FragColor;
 
 void main(){
 
-   //FragColor = texture(textures[texID],pass_textureCoords);
-   FragColor = vec4(abs(sin(time)), abs(cos(time)), cos(time), 1.0f);
+   FragColor = texture(textures[texID],pass_textureCoords);
+   //FragColor = vec4(abs(sin(time)), abs(cos(time)), cos(time), 1.0f);
 
 };

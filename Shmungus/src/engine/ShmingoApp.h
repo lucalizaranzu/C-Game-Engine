@@ -18,7 +18,7 @@ namespace Shmingo {
 
 		inline Shmingo::Window* getWindow() { return window; };
 		inline World* getCurrentWorld() { return currentWorld; };
-		inline float getDeltaTime() { return deltaTime; }
+		inline double getDeltaTime() { return deltaTime; }
 		inline double getTimeElapsed() { return timeElapsed; }
 		inline bool getOnTick() { return onTick; }
 

@@ -29,9 +29,6 @@ void World::update(){
 }
 
 void World::updateEntities() {
-	if (entityList.size() != 0) {
-		se_log("First entity vao offest: " << entityList[0]->getOffsetInVao());
-	}
 	for (InstancedEntity* entity : entityList) {
 		entity->update();
 	}
@@ -76,20 +73,21 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 		GLuint lastEntityIndex = typeInfo.offset + typeInfo.amount - 1;
 
 		if (selectedEntityIndex != lastEntityIndex) {
-			se_log("Selected entity index: " << selectedEntityIndex << "Last index: " << lastEntityIndex);
-			se_log("Switching entity at VAO offset " << entityList[selectedEntityIndex]->getOffsetInVao() << " with entity at VAO offset " << entityList[lastEntityIndex]->getOffsetInVao())
-				entityList[lastEntityIndex]->setOffsetInVao(entityList[selectedEntityIndex]->getOffsetInVao()); //Set offset in VAO of entity at the end to the offset in VAO of removed entity
+			
+			delete entityList[selectedEntityIndex]; //Delete entity
 
-			//Removal process involves replacing the entity to be removed with the last entity of the same type, and removing the last entity to reduce shifting of entities and maintain consistency with VAO
 			entityList[selectedEntityIndex] = entityList[lastEntityIndex]; //Replace entity with last entity of the same type
 			entityTransformList[selectedEntityIndex] = entityTransformList[lastEntityIndex]; //Replace transform with last transform of the same type
+
+			entityList[selectedEntityIndex]->setOffsetInVao(localOffset);
+
+			//Removal process involves replacing the entity to be removed with the last entity of the same type, and removing the last entity to reduce shifting of entities and maintain consistency with VAO
 		}
 		
 		else {
-			se_log("Deleting most recently added entity of its type");
+			delete entityList[lastEntityIndex]; //Delete entity that was moved to the position of the entity to be removed
 
 		}
-		delete entityList[lastEntityIndex]; //Delete entity that was moved to the position of the entity to be removed
 
 		entityList.erase(entityList.begin() + lastEntityIndex); //Erase last entity of the same type
 		entityTransformList.erase(entityTransformList.begin() + lastEntityIndex); //Erase last transform of the same type
@@ -106,7 +104,7 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 
 	//Update local VAO offset of all succeding entities of the same type
 	auto entityOffset = entityTypeInfoMap.map[type].offset;
-	for (auto it = entityList.begin() + entityTypeInfoMap.map[type].offset + localOffset; it < entityList.begin() + entityOffset + entityTypeInfoMap.map[type].amount; it++) {
+	for (auto it = entityList.begin() + entityTypeInfoMap.map[type].offset + localOffset + 1; it < entityList.begin() + entityOffset + entityTypeInfoMap.map[type].amount; it++) {
 		(*it)->decrementOffsetInVao();
 	}
 }
