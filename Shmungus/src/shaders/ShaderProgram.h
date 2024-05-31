@@ -55,8 +55,9 @@ public:
 
 
 	void loadTextureMap(int slotAmount);
-	void loadSampler(const char* uniformName, GLuint value); //Pretty much just for testing
+	void loadSampler(const char* uniformName, GLuint value); //Pretty much just for testingp
 
+	//Sets block binding paramters for shader
 	template<typename... Args>
 	void bindUniformBlocks(Args&&... blocks) {
 		auto bindFunc = [&](auto&& block) {
@@ -70,7 +71,6 @@ public:
 			GLuint bindingPoint = se_uniformBuffer.getBlockInfo(block).bindingPoint;
 
 			glUniformBlockBinding(ID, blockIndex, bindingPoint);
-
 			};
 
 		(bindFunc(std::forward<Args>(blocks)), ...);

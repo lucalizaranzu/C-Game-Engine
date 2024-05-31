@@ -3,13 +3,15 @@
 #include "MasterRenderer.h"
 
 
-InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared_ptr<Model> model) : instanceModel(model), entityType(type) {
+InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared_ptr<Model> model) : instanceModel(model), entityType(type),
+	perInstanceAttributeInfo(se_masterRenderer.getEntitySpecificInstanceAttributeInfoRef(type)){
 
 	linkTexture(model->getTexture(), 0); //Links the texture to the VAO
 
-	GLuint instancedAttribAmount = se_masterRenderer.getEntitySpecificAttribAmount(type); //Set total number of attributes to be bound and unbound in the render method
-	attribAmount = 3 + instancedAttribAmount; //Set total number of attributes to be bound and unbound in the render method
-
+	GLuint perInstanceAttributeAmount = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(type); //Set total number of uniforms to be bound and unbound in the render method
+	attribAmount = 2 + perInstanceAttributeAmount; //Set total number of attributes to be bound and unbound in the render method
+	se_log("Instanced Attrib amount: " << perInstanceAttributeAmount);
+	se_log("Total Attrib amount: " << attribAmount);
 	GLuint modelVertexCount = model->getVertexCount();
 
 	glGenVertexArrays(1, &vaoID); //Creates VAO using member variable
@@ -31,91 +33,133 @@ InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model->getIndexCount() * sizeof(int), model->getIndexData(), GL_STATIC_DRAW);
 
-	auto instancedAttributeInfo = se_masterRenderer.getEntityVertexAttributeInfo(type);
+	//Set attributes for per instance data
+	for (GLuint i = 0; i < perInstanceAttributeAmount; i++) {
+		perInstanceVboIDs.emplace_back(0); //Adds 0 to vbo ids
 
-	for (GLuint i = 0; i < instancedAttribAmount; i++) {
+		Shmingo::EntitySpecificInstanceDataInfo currentAttributeInfo = perInstanceAttributeInfo[i];
 
-		instancedVboIDs.emplace_back(0); //Adds 0 to vbo ids
+		GLuint currentAttribNumber = 2 + currentAttributeInfo.attributeNumber;
 
-		Shmingo::EntitySpecificVertexDataInfo currentAttributeInfo = instancedAttributeInfo[i];
-		instancedVboIDs[i] = 0;
-		glGenBuffers(1, &instancedVboIDs[i]); //Generates a vertex buffer for instanced attributes
-		glBindBuffer(GL_ARRAY_BUFFER, instancedVboIDs[i]); //Bind vertex buffer
+		GLuint adjustedAttribSize = currentAttributeInfo.size;
+		if (currentAttributeInfo.size > 4) { //Done in case we have a size greater than 4, in which case we need to adjust the size to 4 to correctly set the stride
+			adjustedAttribSize = 4;
+		}
 
-		glBufferData(GL_ARRAY_BUFFER, MAX_FLOATS * sizeof(float) * currentAttributeInfo.size, nullptr, GL_DYNAMIC_DRAW); //Sets buffer data arguments for vertex buffer
-		glVertexAttribPointer(2 + currentAttributeInfo.vaoIndex, currentAttributeInfo.size, GL_FLOAT, GL_FALSE, currentAttributeInfo.size * sizeof(float), nullptr);
-		glVertexAttribDivisor(2 + currentAttributeInfo.vaoIndex, 1); //Sets vertex attribute divisor to once per instance
+		perInstanceVboIDs[i] = 0;
+		glGenBuffers(1, &perInstanceVboIDs[i]); //Generates a vertex buffer for instanced attributes
+		glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[i]); //Bind vertex buffer
+		glBufferData(GL_ARRAY_BUFFER, 1000 * sizeof(float) * currentAttributeInfo.size, nullptr, GL_DYNAMIC_DRAW); //Sets buffer data arguments for vertex buffer, allocates space for 1000 entities, will have to change
+
+		se_log("Setting pointer for real attribute " << currentAttribNumber << " with size " << adjustedAttribSize << ", stride " << currentAttributeInfo.size << ", and offset " << 0);
+
+		glVertexAttribPointer(currentAttribNumber, adjustedAttribSize, GL_FLOAT, GL_FALSE, currentAttributeInfo.size * sizeof(float), (void*)0);
+		glVertexAttribDivisor(currentAttribNumber, 1); //Sets vertex attribute divisor to once per instance
+
+		if (currentAttributeInfo.size > 4) {
+
+			GLuint fullSizeAttribs = currentAttributeInfo.size / 4;
+			GLuint remainderAttribSize = currentAttributeInfo.size % 4;
+
+			se_log("Setting pointer for real attribute " << currentAttribNumber << " with size " << currentAttributeInfo.size);
+
+			for (GLuint j = 1; j < fullSizeAttribs; j++) {
+
+				se_log("Setting pointer for real attribute " << currentAttribNumber + j << " with size 4" << adjustedAttribSize << ", stride " << currentAttributeInfo.size << ", and offset " << 0);
+
+
+				glVertexAttribPointer(currentAttribNumber + j, 4, GL_FLOAT, GL_FALSE, currentAttributeInfo.size * sizeof(float), (void*)((sizeof(float) * (4 * j)))); //Set attrib pointer with correct offset and size 4
+				glVertexAttribDivisor(currentAttribNumber + j, 1); //Sets vertex attribute divisor to once per vertex
+			}
+
+			if (remainderAttribSize != 0) {
+				glVertexAttribPointer(currentAttribNumber + fullSizeAttribs, currentAttributeInfo.size * sizeof(float), GL_FLOAT, GL_FALSE,
+					currentAttributeInfo.size * sizeof(float), (void*)(sizeof(float) * (4 * fullSizeAttribs)));
+				glVertexAttribDivisor(currentAttribNumber + fullSizeAttribs, 1); //Sets vertex attribute divisor to once per vertex
+			}
+		}
+		unbindBuffer();
 	}
 
 	glBindVertexArray(0); //Unbind vertex buffer 
 }
 
+//For shared pointer (unused)
 void InstancedVertexArray::submitInstanceData(std::shared_ptr<InstancedEntity> instancedEntity) {
 
-	glBindVertexArray(vaoID); //Bind VAO
-
-	const GLuint instancedAttribAmt = se_masterRenderer.getEntitySpecificAttribAmount(entityType);
+	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType);
 
 	instancedEntity->setOffsetInVao(instanceAmount);
-
+	se_log("Offset in VAO: " << instancedEntity->getOffsetInVao());
 	bindVao();
 
-	std::vector<Shmingo::EntitySpecificVertexDataInfo> instancedAttributeInfo = se_masterRenderer.getEntityVertexAttributeInfo(entityType);
-	for (int i = 0; i < instancedAttributeInfo.size(); i++) {
-		se_log("Instanced attribute info #" << i << ": " << instancedAttributeInfo[i].name << " - " << instancedAttributeInfo[i].size << " - " << instancedAttributeInfo[i].vaoIndex << " - " << instancedAttributeInfo[i].localFloatOffset << std::endl);
-	}
+	for (GLuint i = 0; i < perInstanceInstanceAttribAmt; i++) {
 
-	for (GLuint i = 0; i < instancedAttribAmt; i++) {
+		float* instancedData = instancedEntity->getInstanceData(i);
 
-		float* instancedData = instancedEntity->getVertexData(i, instancedAttributeInfo);
-
-		glBindBuffer(GL_ARRAY_BUFFER, instancedVboIDs[i]); //Bind vertex buffer
-		glBufferSubData(GL_ARRAY_BUFFER, instancedEntity->getOffsetInVao() * instancedAttributeInfo[i].size * sizeof(float),
-			instancedAttributeInfo[i].size * sizeof(float), instancedData); //Sets buffer data arguments for vertex buffer	
+		glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[i]); //Bind vertex buffer
+		glBufferSubData(GL_ARRAY_BUFFER, instancedEntity->getOffsetInVao() * perInstanceAttributeInfo[i].size * sizeof(float),
+			perInstanceAttributeInfo[i].size * sizeof(float), instancedData); //Sets buffer data arguments for vertex buffer	
 	}
 
 	instanceAmount += 1;
 	indexCount += instanceModel->getIndexCount();
 }
 
+
+//For raw pointers
 void InstancedVertexArray::submitInstanceData(InstancedEntity* instancedEntity) {
 
-	const GLuint instancedAttribAmt = se_masterRenderer.getEntitySpecificAttribAmount(entityType);
+	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType);
 
 	instancedEntity->setOffsetInVao(instanceAmount);
 
 	bindVao();
 
-	std::vector<Shmingo::EntitySpecificVertexDataInfo> instancedAttributeInfo = se_masterRenderer.getEntityVertexAttributeInfo(entityType);
 
-	for (GLuint i = 0; i < instancedAttribAmt; i++) {
+	for (GLuint i = 0; i < perInstanceInstanceAttribAmt; i++) {
 
-		float* instancedData = instancedEntity->getVertexData(i, instancedAttributeInfo);
+		float* instancedData = instancedEntity->getInstanceData(i);
+		GLuint size = perInstanceAttributeInfo[i].size;
 
-		glBindBuffer(GL_ARRAY_BUFFER, instancedVboIDs[i]); //Bind vertex buffer
-		glBufferSubData(GL_ARRAY_BUFFER, instancedEntity->getOffsetInVao() * instancedAttributeInfo[i].size * sizeof(float),
-			instancedAttributeInfo[i].size * sizeof(float), instancedData); //Sets buffer data arguments for vertex buffer	
+		glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[i]); //Bind vertex buffer
+		glBufferSubData(GL_ARRAY_BUFFER, instancedEntity->getOffsetInVao() * perInstanceAttributeInfo[i].size * sizeof(float),
+			perInstanceAttributeInfo[i].size * sizeof(float), instancedData); //Sets buffer data arguments for vertex buffer	
 	}
+	glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[0]); //Unbind vertex buffer
 
 	instanceAmount += 1;
 	indexCount += instanceModel->getIndexCount();
 }
 
 
+
+void InstancedVertexArray::updateInstanceData(InstancedEntity* entity, GLuint attributePositionInArray){
+
+	GLuint dataSize = perInstanceAttributeInfo[attributePositionInArray].size * sizeof(float);
+	GLuint realAttributeNumber = perInstanceAttributeInfo[attributePositionInArray].attributeNumber;
+	GLuint vaoOffset = entity->getOffsetInVao();
+
+	glBindVertexArray(vaoID); //Bind VAO
+	glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[attributePositionInArray]); //Bind vertex buffer)
+	glBufferSubData(GL_ARRAY_BUFFER, vaoOffset * dataSize, dataSize, entity->getInstanceData(realAttributeNumber)); //Sets buffer data arguments for vertex buffer)
+	glBindBuffer(GL_ARRAY_BUFFER, 0); //Unbind vertex buffer)
+	glBindVertexArray(0); //Unbind VAO
+}
 
 void InstancedVertexArray::removeInstancedData(GLuint offset){
 
 	bindVao();
 
-	const GLuint instancedAttribAmt = se_masterRenderer.getEntitySpecificAttribAmount(entityType); //Get instanced attribute amount
-	std::vector<Shmingo::EntitySpecificVertexDataInfo> instancedAttributeInfo = se_masterRenderer.getEntityVertexAttributeInfo(entityType); //Get instanced attribute info
+	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType); //Get instanced attribute amount
 
 	//Condition where there is only one entity in the vertex array
 	if (instanceAmount == 1) {
-		for (GLuint i = 0; i < instancedAttribAmt; i++) {
+		for (GLuint i = 0; i < perInstanceInstanceAttribAmt; i++) {
 
-			glDeleteBuffers(1, &instancedVboIDs[i]); //Deletes vertex buffers
+			glDeleteBuffers(1, &perInstanceVboIDs[i]); //Deletes vertex buffers
 		}
+
 		glDeleteVertexArrays(1, &vaoID); //Deletes VAO
 
 		return; //Exits function, make sure to delete vertex array class after
@@ -124,21 +168,24 @@ void InstancedVertexArray::removeInstancedData(GLuint offset){
 	//Condition where the entity being removed is the last entity in the vertex array
 	if (offset == instanceAmount - 1) {
 
-		instanceAmount -= 1; //Decrement instance amount
-		indexCount -= instanceModel->getIndexCount(); //Decrement index count
-
-		return; //No need to copy data, just decrement values
+		//No need to do anything
 	}
 
-	for (GLuint i = 0; i < instancedAttribAmt; i++) {
+	else {
+		//For instance data
+		for (GLuint i = 0; i < perInstanceInstanceAttribAmt; i++) {
 
-		glBindBuffer(GL_ARRAY_BUFFER, instancedVboIDs[i]); //Bind vertex buffer
-		copyBufferData((instanceAmount - 1) * instancedAttributeInfo[i].size * sizeof(float),
-			offset * instancedAttributeInfo[i].size * sizeof(float), instancedAttributeInfo[i].size * sizeof(float)); //Copies data from last instance to the instance being removed
+			glBindBuffer(GL_ARRAY_BUFFER, perInstanceVboIDs[i]); //Bind vertex buffer
+
+			GLuint dataSize = perInstanceAttributeInfo[i].size * sizeof(float);
+
+			copyBufferData((instanceAmount - 1) * dataSize,
+				offset * dataSize, dataSize); //Copies data from last instance to the instance being removed
+		}
 	}
-
 	instanceAmount -= 1; //Decrement instance amount
 	indexCount -= instanceModel->getIndexCount(); //Decrement index count
+	se_log("Instance amount: " << instanceAmount);
 }
 
 

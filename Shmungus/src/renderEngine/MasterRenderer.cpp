@@ -16,7 +16,6 @@ UniformBuffer UniformBuffer::instance;
 void MasterRenderer::init() {
 
 	se_uniformBuffer.init();
-	se_application.declareEntiyType(Shmingo::DefaultEntity);
 
 	std::shared_ptr<DefaultShader> entityShader = std::make_shared<DefaultShader>("entityVertex.glsl", "entityFragment.glsl");
 
@@ -100,17 +99,33 @@ void MasterRenderer::mapInstancedShader(std::type_index entityType, GLuint textu
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-std::vector<Shmingo::EntitySpecificVertexDataInfo> MasterRenderer::getEntityVertexAttributeInfo(Shmingo::EntityType type){
-	return entityVertexAttributeMap.at(type);
-}
 
 /// <summary>
-/// Returns the amount of entity specific attributes for an entity type
+/// Returns a reference to the stored vector of information about each vertex attribute for a specific entity type
 /// </summary>
 /// <param name="type"></param>
 /// <returns></returns>
-GLuint MasterRenderer::getEntitySpecificAttribAmount(Shmingo::EntityType type){
-	return entitySpecificAttribAmountMap.at(type);
+
+std::vector<Shmingo::EntitySpecificInstanceDataInfo> MasterRenderer::getEntitySpecificInstanceAttributeInfo(Shmingo::EntityType type) {
+	return entityUniformMap.at(type);
+}
+
+std::vector<Shmingo::EntitySpecificInstanceDataInfo>& MasterRenderer::getEntitySpecificInstanceAttributeInfoRef(Shmingo::EntityType type) {
+	return entityUniformMap.at(type);
+}
+
+/// <summary>
+/// Returns the amount of entity specific attributes for an entity type, major is amount of actual attributes, total is the amount of attributes including excess attribute lists corresponding to the same attribute
+/// </summary>
+/// <param name="type">Entity type</param>
+/// <returns></returns>
+
+//Gets amount of uniforms for a specific entity type
+GLuint MasterRenderer::getEntitySpecificMajorInstanceAttribAmount(Shmingo::EntityType type) {
+		return entitySpecificInstanceAttribAmountMap.at(type).front();
+}
+GLuint MasterRenderer::getEntitySpecificTotalInstanceAttribAmount(Shmingo::EntityType type) {
+		return entitySpecificInstanceAttribAmountMap.at(type).back();
 }
 
 /// <summary>
@@ -120,12 +135,14 @@ GLuint MasterRenderer::getEntitySpecificAttribAmount(Shmingo::EntityType type){
 /// <param name="attributeInfo">
 /// Vector of information about each vertex attribute for the entity type in a vector
 /// </param>
-void MasterRenderer::declareEntityVertexAttributes(Shmingo::EntityType type, std::vector<Shmingo::EntitySpecificVertexDataInfo> attributeInfo){
-	entityVertexAttributeMap.insert(std::make_pair(type, attributeInfo));
+
+void MasterRenderer::declareEntityInstanceAttributes(Shmingo::EntityType type, std::vector<Shmingo::EntitySpecificInstanceDataInfo> uniformInfo) {
+	entityUniformMap.insert(std::make_pair(type, uniformInfo));
 }
 
-void MasterRenderer::declareEntitySpecificAttribAmount(Shmingo::EntityType type, GLuint amount){
-	entitySpecificAttribAmountMap.insert(std::make_pair(type, amount));
+void MasterRenderer::declareEntitySpecificInstanceAttribAmount(Shmingo::EntityType type, GLuint majorAmount, GLuint totalAmount) {
+	std::list<GLuint> list = { majorAmount, totalAmount };
+	entitySpecificInstanceAttribAmountMap.insert(std::make_pair(type, list));
 }
 
 /// <summary>

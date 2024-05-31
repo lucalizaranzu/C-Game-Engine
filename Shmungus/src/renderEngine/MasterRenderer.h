@@ -31,12 +31,14 @@ public:
 	void clearBatch();
 
 
-	//----------------------------------Related to entity attributes--------------------------------------
-	std::vector<Shmingo::EntitySpecificVertexDataInfo> getEntityVertexAttributeInfo(Shmingo::EntityType type);
-	GLuint getEntitySpecificAttribAmount(Shmingo::EntityType type);
+	//----------------------------------Related to entity instance attributes--------------------------------------
+	std::vector<Shmingo::EntitySpecificInstanceDataInfo> getEntitySpecificInstanceAttributeInfo(Shmingo::EntityType type);
+	std::vector<Shmingo::EntitySpecificInstanceDataInfo>& getEntitySpecificInstanceAttributeInfoRef(Shmingo::EntityType type);
+	GLuint getEntitySpecificMajorInstanceAttribAmount(Shmingo::EntityType type);
+	GLuint getEntitySpecificTotalInstanceAttribAmount(Shmingo::EntityType type);
 
-	void declareEntityVertexAttributes(Shmingo::EntityType type, std::vector<Shmingo::EntitySpecificVertexDataInfo> attributeInfo);
-	void declareEntitySpecificAttribAmount(Shmingo::EntityType type, GLuint amount);
+	void declareEntityInstanceAttributes(Shmingo::EntityType type, std::vector<Shmingo::EntitySpecificInstanceDataInfo> uniformInfo);
+	void declareEntitySpecificInstanceAttribAmount(Shmingo::EntityType type, GLuint majorAmount, GLuint totalAmount);
 
 	//----------------------------------Related to entity models--------------------------------------
 	void declareEntityModel(Shmingo::EntityType type, std::shared_ptr<Model> model);
@@ -67,7 +69,12 @@ private:
 	std::map<std::type_index, std::shared_ptr<ShaderProgram>> instancedShaderMap;
 
 	std::unordered_map<Shmingo::EntityType, std::vector<Shmingo::EntitySpecificVertexDataInfo>> entityVertexAttributeMap;
-	std::unordered_map<Shmingo::EntityType, GLuint> entitySpecificAttribAmountMap;
+	std::unordered_map<Shmingo::EntityType, std::list<GLuint>> entitySpecificVertexAttribAmountMap;
+
+
+	std::unordered_map<Shmingo::EntityType, std::vector<Shmingo::EntitySpecificInstanceDataInfo>> entityUniformMap;
+	std::unordered_map<Shmingo::EntityType, std::list<GLuint>> entitySpecificInstanceAttribAmountMap;
+
 
 	std::unordered_map<Shmingo::EntityType, std::shared_ptr<Model>> entityModelMap;
 	std::unordered_map<Shmingo::EntityType, std::shared_ptr<ShaderProgram>> entityShaderMap;

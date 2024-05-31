@@ -123,7 +123,6 @@ void UniformBuffer::createUniformBlock(Shmingo::UniformBlock block, GLuint size,
 	if (blockInfo.keys.size() == 0) {
 
 		blockInfo.insert(block,Shmingo::UniformBlockInfo{ name, size, 0, 0 });
-		se_log("Block " << name << " created at binding point 0 with offset 0");
 	}
 	else {
 		Shmingo::UniformBlockInfo currentLast = blockInfo.at(blockInfo.keys.back());
@@ -136,7 +135,6 @@ void UniformBuffer::createUniformBlock(Shmingo::UniformBlock block, GLuint size,
 		}
 
 		blockInfo.insert(block, Shmingo::UniformBlockInfo{ name, size, (GLuint)newOffset, bindingPoint });
-		se_log("Block " << name << " created at binding point " << bindingPoint << ", with offset " << newOffset);
 	}
 }
 
@@ -145,5 +143,4 @@ void UniformBuffer::bindUniformBlock(Shmingo::UniformBlock block){
 	Shmingo::UniformBlockInfo currentBlockInfo = blockInfo.at(block);
 
 	glBindBufferRange(GL_UNIFORM_BUFFER, currentBlockInfo.bindingPoint, uboID, currentBlockInfo.offset, currentBlockInfo.size);
-	se_log("Mapping uniform block " << currentBlockInfo.name << " to binding point " << currentBlockInfo.bindingPoint);
 }

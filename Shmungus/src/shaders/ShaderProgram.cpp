@@ -60,9 +60,6 @@ ShaderProgram::ShaderProgram(std::string vertexFile, std::string fragmentFile)
 
 	glBindBuffer(GL_UNIFORM_BUFFER, se_uniformBuffer.getUboID());
 
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, se_uniformBuffer.getUboID(), 0, 128);
-	glBindBufferRange(GL_UNIFORM_BUFFER, 1, se_uniformBuffer.getUboID(), 256, 16);
-
 	glLinkProgram(ID);
 
 	// Checks if Shaders linked succesfully

@@ -26,8 +26,8 @@ int thingyIndex = 0;
 
 void SandboxLayer::onAttach() {
 
-	Shmingo::setCurrentWorld(world); //Sets current world to this layer's world
 	world.init();
+	//Shmingo::setCurrentWorld(world); //Sets current world to this layer's world
 
 	Texture2D funnyTexture = Shmingo::createTexture2D("funnyimage.png");
 
@@ -43,7 +43,7 @@ void SandboxLayer::onAttach() {
 	player.reset(new Player(Shmingo::createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
 
 	se_uniformBuffer.setAsActive();
-	se_uniformBuffer.setProjectionMatrix(createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
+	se_uniformBuffer.setProjectionMatrix(Shmingo::createViewMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
 
 }
 
@@ -62,13 +62,13 @@ void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
 	}
 
 	else if (e->getKey() == se_KEY_L) {
-		world.createEntity(Shmingo::DefaultEntity, vec3(3 * (float)(thingyIndex % 6), 3 * (float)(thingyIndex / 6), -4.0f), vec2(0.0f, 0.0f));
+		world.createEntity(Shmingo::DefaultEntity, vec3(3 * (float)(thingyIndex % 6), 3 * (float)(thingyIndex / 6), -4.0f), vec2(0.0f,0.0f), vec3(1.2f,1.2f,1.2f));
 		thingyIndex++;
 	}
 
 	else if (e->getKey() == se_KEY_K) {
 		if (thingyIndex > 0) {
-			world.deleteEntity(Shmingo::DefaultEntity, thingyIndex);
+			world.deleteEntity(Shmingo::DefaultEntity, thingyIndex - 1);
 			thingyIndex--;
 		}
 	}

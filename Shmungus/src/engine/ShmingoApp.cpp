@@ -1,12 +1,12 @@
 #include <sepch.h>
 #include <ShmingoApp.h>
 
-World tempWorld;
-float lastFrameTime = 0.0f;
+
+double lastFrameTime = 0.0f;
 
 Shmingo::ShmingoApp::ShmingoApp() :
-	window(nullptr), //Can change default aspect ratio when options is implemented,
-	currentWorld(tempWorld)
+	window(nullptr) //Can change default aspect ratio when options is implemented,
+
 {
 }
 
@@ -18,7 +18,11 @@ Shmingo::ShmingoApp::~ShmingoApp() {
 	delete window;
 }
 
-void Shmingo::ShmingoApp::declareEntiyType(EntityType type){
+void Shmingo::ShmingoApp::setCurrentWorld(World* world){
+	currentWorld = world;
+}
+
+void Shmingo::ShmingoApp::declareEntityType(std::type_index typeIndex, EntityType type){
 	entityTypes.push_back(type);
 }
 
@@ -49,7 +53,10 @@ void Shmingo::ShmingoApp::init() {
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
 	se_layerStack.init();
+
 	Shmingo::initModels();
+	Shmingo::declareTypeCorrespondence();
+
 	se_masterRenderer.init();
 
 	se_layerStack.emplaceLayer(new SandboxLayer);
@@ -62,7 +69,7 @@ void Shmingo::ShmingoApp::init() {
 
 void Shmingo::ShmingoApp::update() {
 
-	float time = (float)glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
+	double time = glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
 	deltaTime = time - lastFrameTime;
 
 	lastFrameTime = time;
@@ -73,7 +80,7 @@ void Shmingo::ShmingoApp::update() {
 	se_layerStack.updateLayers();
 
 	se_masterRenderer.update();
-	se_uniformBuffer.setElapsedTime(timeElapsed);
+	se_uniformBuffer.setElapsedTime((float)timeElapsed);
 
 	window->swapBuffers();
 	glfwPollEvents();

@@ -3,7 +3,7 @@
 #include "ShmingoApp.h"
 
 
-void Shmingo::setCurrentWorld(World& world){
+void Shmingo::setCurrentWorld(World* world){
 	se_application.setCurrentWorld(world);
 }
 

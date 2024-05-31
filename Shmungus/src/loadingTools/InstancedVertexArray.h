@@ -32,6 +32,14 @@ public:
 	void submitInstanceData(InstancedEntity* instancedEntity);
 
 	/// <summary>
+	/// Updates the instance data of an entity in the VAO
+	/// </summary>
+	/// <param name="entity">Reference to entity</param>
+	/// <param name="attributePositionInArray">Index of the information of an attribute in the attrib info array (If an entity has attributes mat4, float, pass a 1 to 
+	/// update the float even though a mat4 takes up 4 attributes)</param>
+	void updateInstanceData(InstancedEntity* entity, GLuint attributePositionInArray);
+
+	/// <summary>
 	/// Removes entity data from the VAO and fills its slot with the last entity in the VAO
 	/// </summary>
 	/// <param name="offset"></param>
@@ -87,7 +95,7 @@ protected:
 	GLuint vertexPositionsVboID = 0;
 	GLuint texCoordsVboID = 0;
 
-	std::vector<GLuint> instancedVboIDs; //Per instance VBO IDs
+	std::vector<GLuint> perInstanceVboIDs; //Per instance uniform VBO IDs
 	std::vector<Texture2D> textureList;
 
 	GLuint vertexCount = 0; //Amount of vertices
@@ -96,6 +104,7 @@ protected:
 	GLuint maxTextureIndex = 0;
 
 	std::shared_ptr<Model> instanceModel; //The model that this Vertex Array is based on
+	std::vector<Shmingo::EntitySpecificInstanceDataInfo>& perInstanceAttributeInfo;
 
 	//Utility functions --------------------------------------------------------
 
@@ -104,6 +113,9 @@ protected:
 	}
 	inline void bindIndicesVbo(){
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
+	}
+	inline void unbindBuffer() {
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	/// <summary>

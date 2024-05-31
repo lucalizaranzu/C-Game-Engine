@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine.h>
+#include <typeindex>
 #include "Input.h"
 #include "ModelManager.h"
 #include "World.h"
@@ -16,20 +17,20 @@ namespace Shmingo {
 		~ShmingoApp();
 
 		inline Shmingo::Window* getWindow() { return window; };
-		inline World& getCurrentWorld() { return currentWorld; };
+		inline World* getCurrentWorld() { return currentWorld; };
 		inline float getDeltaTime() { return deltaTime; }
-		inline float getTimeElapsed() { return timeElapsed; }
+		inline double getTimeElapsed() { return timeElapsed; }
+		inline bool getOnTick() { return onTick; }
 
-		void setCurrentWorld(World& world) { currentWorld = world; };
+		void setCurrentWorld(World* world);
 
 		inline static ShmingoApp& get() { return instance; };
 
 
 		//Application wide information
-		void declareEntiyType(EntityType type);
+		void declareEntityType(std::type_index typeIndex, EntityType type); //Type index not needed anymore but going to keep to make sure all entity type enums are real types
 
 		std::vector<Shmingo::EntityType> entityTypes;
-
 		void run();
 
 		//Global getters
@@ -40,19 +41,22 @@ namespace Shmingo {
 		ShmingoApp(); //Privated constructor
 
 		Shmingo::Window* window; //Window object
-		World& currentWorld; //Reference to current world object
+		World* currentWorld; //Reference to current world object
 
 		void init();
 		void update();
 
 		static ShmingoApp instance;
 
-		float deltaTime = 0; //Time since last frame
-		float timeElapsed = 0; //Time since start of application
+		double deltaTime = 0; //Time since last frame
+		double timeElapsed = 0; //Time since start of application
+		bool onTick = false;
 
 		//Global variables
 		void initGlobalVariables();
-		int minimumUniformBlockOffset = 0;
+		int minimumUniformBlockOffset = 0; //Minimum offset for uniform blocks
+
+		//Application wide information
 
 	};
 

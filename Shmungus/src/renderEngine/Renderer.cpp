@@ -30,7 +30,7 @@ void Shmingo::render(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<S
 
 	clearOpenGLError();
 	glDrawElements(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, NULL);
-
+	checkOpenGLError();
 	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
 	glBindVertexArray(0); //Unbind VAO
 
@@ -45,7 +45,7 @@ void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray,
 	vertexArray->bindTextures(); //Load textures into texture slots
 
 	glBindVertexArray(vertexArray->getVaoID()); //Bind VAO
-	enableAttribs(vertexArray->getAttribAmount()); //Enable attribute arrays
+	enableAttribs(7); //Enable attribute arrays
 
 	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceAmount());
 

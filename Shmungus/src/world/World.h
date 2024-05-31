@@ -13,6 +13,9 @@ This class manages terrain, entities, and all game logic in the gameplay stage
 */
 class World {
 
+	friend class InstancedEntity;
+	friend class DefaultEntity;
+
 public:
 	
 	World();
@@ -34,14 +37,14 @@ public:
 	/// Forwarded arguments to specific constructor
 	/// </param>
 	template<typename... Args>
-	void createEntity(Shmingo::EntityType type, vec3 position, vec2 rotation, Args&&... args) {
+	void createEntity(Shmingo::EntityType type, vec3 position, vec2 rotation, vec3 scale) {
 
 		InstancedEntity* e = nullptr; //return type
 
 		switch (type) {
 
 		case Shmingo::DefaultEntity:
-			e = new DefaultEntity(position, rotation);
+			e = new DefaultEntity(position, rotation, scale);
 			break;
 
 		default:
@@ -61,7 +64,6 @@ public:
 	void init(); //Initializes world
 	void update(); //Updates world
 
-
 private:
 
 	//-------------------------------Information about the world--------------------------------------------
@@ -75,6 +77,7 @@ private:
 	std::unordered_map<Shmingo::EntityType, std::shared_ptr<InstancedVertexArray>> instancedVAOMap; //Contains all of the world's instanced VAOs, which typically includes entities.
 
 
+	void updateEntities(); //Updates all entities in the world
 
 	void addEntity(Shmingo::EntityType type, InstancedEntity* entity); //Is there any reason for this to be a pointer? TODO - check if this can be refactored to avoid dereferencing
 

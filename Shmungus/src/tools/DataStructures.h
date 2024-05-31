@@ -40,18 +40,33 @@ namespace Shmingo {
 
 
 	/*
+	This type of instanced data is VERTEX data, meaning that it contains one value per VERTEX.
 	Designed to be put in an array which is specific for each entity type.
 	Represents the layout of vertex data specific to a certain type of entity, such as wool color for sheep, or size for a slime.
-	This is probably going to be remade into an NBT tag, but for now it's just a struct.
+	On the technical side, glVertexAttribDivisor is set to 0 for each of these attributes.
 	*/
 	struct EntitySpecificVertexDataInfo {
 
 		const char* name;
 		GLuint size; //Size of the attribute in number of floats
-		GLuint localFloatOffset;
+		GLuint localFloatOffset; //Total offset into buffer where this attribute starts
 		GLuint vaoIndex;
 	};
 
+	/*
+	This type of instanced data is not technically uniform data, but it acts like uniform data would in a normal shader.
+	Each single unit of this data corresponds to one instance, while each unit of vertex data corresponds to one vertex.
+	Use this data assuming it is uniform for all vertices of one entity instance.
+	On the technical side, glVertexAttribDivisor is set to 1 for each of these attributes.
+	
+	*/
+	struct EntitySpecificInstanceDataInfo {
+
+		const char* name;
+		GLuint size; //Size of the uniform in number of floats
+		GLuint localFloatOffset;
+		GLuint attributeNumber;
+	};
 
 	/*
 	Represents a transform for an entity
@@ -70,9 +85,9 @@ namespace Shmingo {
 	*/
 	struct EntityTypeInfo {
 
-		uint8_t vertexArrayOffset; //Offset of vertex array in VAO map
-		uint16_t offset; //Offset of first entity in entity map
-		uint16_t amount; //Amount of entities of this type
+		GLuint vertexArrayOffset; //Offset of vertex array in VAO map
+		GLuint offset; //Offset of first entity in entity map
+		GLuint amount; //Amount of entities of this type
 
 	};
 

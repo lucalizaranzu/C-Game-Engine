@@ -18,9 +18,10 @@
 #define se_uniformBuffer UniformBuffer::get()
 
 //Other macros
-#define se_currentWorld Shmingo::getCurrentWorld()
+#define se_currentWorld se_application.getCurrentWorld()
 #define se_deltaTime se_application.getDeltaTime()
 #define se_timeElapsed se_application.getTimeElapsed()
+#define se_onTick se_application.getOnTick()
 
 void clearOpenGLError();
 void checkOpenGLError();

@@ -22,7 +22,7 @@ void Player::update() {
 	direction = calcDirection(rotation);
 	move();
 
-	se_uniformBuffer.setViewMatrix(createViewMatrix(camera));
+	se_uniformBuffer.setViewMatrix(Shmingo::createViewMatrix(camera));
 }
  
 //Sets flag to 1 and sets acceleration on key press
