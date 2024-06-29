@@ -7,6 +7,9 @@ using vec3 = glm::vec3; //Format is x,y,z
 using vec4 = glm::vec4; //Format is x,y,z,w
 using mat3 = glm::mat3x3;
 using mat4 = glm::mat4x4;
+using ivec2 = glm::ivec2;
+using ivec3 = glm::ivec3;
+using ivec4 = glm::ivec4;
 
 
 namespace Shmingo {
@@ -31,12 +34,6 @@ namespace Shmingo {
 		MATRIX_BLOCK,
 		UTIL_BLOCK
 	};
-
-
-
-
-
-
 
 
 	/*
@@ -119,7 +116,7 @@ namespace Shmingo {
 	public:
 
 		std::vector<T1> keys;
-		std::unordered_map<T1, T2> map;
+		std::map<T1, T2> map;
 
 		/// <summary>
 		/// Inserts key into back of keys vector

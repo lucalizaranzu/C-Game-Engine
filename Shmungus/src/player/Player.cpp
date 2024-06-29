@@ -4,6 +4,10 @@
 
 float roundToNearestThird(float num);
 
+short stoppingArray[3] = { 0,0,0 };
+//Axis on which player is decelerating to 0
+//Format is                X,Z,Y
+
 short movementArray[6] = { 0,0,0,0,0,0 };
 //Format is                D,S,A,W,SPACE,CTRL
 
@@ -34,6 +38,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[1] == 1) {
 			acceleration.z = 0;
 		}
+		else { stoppingArray[1] = 0; }
 	}
 	else if (e->getKey() == se_KEY_A) {
 		acceleration.x = -DEFAULT_ACCELERATION;
@@ -41,6 +46,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[0] == 1) {
 			acceleration.x = 0;
 		}
+		else { stoppingArray[0] = 0; }
 	}
 	else if (e->getKey() == se_KEY_S) {
 		acceleration.z = DEFAULT_ACCELERATION;
@@ -48,6 +54,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[3] == 1) {
 			acceleration.z = 0;
 		}
+		else { stoppingArray[1] = 0; }
 	}
 	else if (e->getKey() == se_KEY_D) {
 		acceleration.x = DEFAULT_ACCELERATION;
@@ -55,6 +62,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[2] == 1) {
 			acceleration.x = 0;
 		}
+		else { stoppingArray[0] = 0; }
 	}
 	else if (e->getKey() == se_KEY_SPACE) {
 		acceleration.y = DEFAULT_ACCELERATION;
@@ -62,6 +70,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[5] == 1) {
 			acceleration.y = 0;
 		}
+		else { stoppingArray[2] = 0; }
 	}
 	else if (e->getKey() == se_KEY_LEFT_CONTROL) {
 		acceleration.y = -DEFAULT_ACCELERATION;
@@ -69,6 +78,7 @@ void Player::getKeyDown(KeyPressEvent* e) {
 		if (movementArray[4] == 1) {
 			acceleration.y = 0;
 		}
+		else {stoppingArray[2] = 0; }
 	}
 	else {
 		return;
@@ -86,36 +96,42 @@ void Player::getKeyUp(KeyReleaseEvent* e) {
 		movementArray[3] = 0;
 		if (movementArray[1] == 1) {
 			acceleration.z = DEFAULT_ACCELERATION;
+			stoppingArray[1] = 0;
 		}
 	}
 	else if (e->getKey() == se_KEY_A) {
 		movementArray[2] = 0;
 		if (movementArray[0] == 1) {
 			acceleration.x = DEFAULT_ACCELERATION;
+			stoppingArray[0] = 0;
 		}
 	}
 	else if (e->getKey() == se_KEY_S) {
 		movementArray[1] = 0;
 		if (movementArray[3] == 1) {
 			acceleration.z = -DEFAULT_ACCELERATION;
+			stoppingArray[1] = 0;
 		}
 	}
 	else if (e->getKey() == se_KEY_D) {
 		movementArray[0] = 0;
 		if (movementArray[2] == 1) {
 			acceleration.x = -DEFAULT_ACCELERATION;
+			stoppingArray[0] = 0;
 		}
 	}
 	else if (e->getKey() == se_KEY_SPACE) {
 		movementArray[4] = 0;
 		if (movementArray[5] == 1) {
 			acceleration.y = -DEFAULT_ACCELERATION;
+			stoppingArray[2] = 0;
 		}
 	}
 	else if (e->getKey() == se_KEY_LEFT_CONTROL) {
 		movementArray[5] = 0;
 		if (movementArray[4] == 1) {
 			acceleration.y = DEFAULT_ACCELERATION;
+			stoppingArray[2] = 0;
 		}
 	}
 	else {
@@ -128,9 +144,9 @@ void Player::getKeyUp(KeyReleaseEvent* e) {
 void Player::calcVelocity() {
 
 	//Set first to avoid being set to 0
-	velocity.x = roundToNearestThird(velocity.x + acceleration.x);
-	velocity.y = roundToNearestThird(velocity.y + acceleration.y);
-	velocity.z = roundToNearestThird(velocity.z + acceleration.z);
+	velocity.x = roundToNearestThird(velocity.x + se_deltaTime * acceleration.x);
+	velocity.y = roundToNearestThird(velocity.y + se_deltaTime * acceleration.y);
+	velocity.z = roundToNearestThird(velocity.z + se_deltaTime * acceleration.z);
 
 	//temporary, will remove when I do the whole direction thing
 	if (abs(velocity.x) >= MAX_SPEED) { acceleration.x = 0; }
@@ -148,6 +164,9 @@ void Player::calcVelocity() {
 		else if (velocity.z < 0) {
 			acceleration.z = (0 + DEFAULT_ACCELERATION);
 		}
+		if (velocity.z != 0.0f) {
+			stoppingArray[1] = 1;
+		}
 	}
 	if (movementArray[2] == movementArray[0]) {
 		if (velocity.x == 0.0f) {
@@ -158,6 +177,9 @@ void Player::calcVelocity() {
 		}
 		else if (velocity.x < 0) {
 			acceleration.x = (0 + DEFAULT_ACCELERATION);
+		}
+		if (velocity.x != 0.0f) {
+			stoppingArray[0] = 1;
 		}
 	}
 	if (movementArray[4] == movementArray[5]) {
@@ -170,7 +192,42 @@ void Player::calcVelocity() {
 		else if (velocity.y < 0) {
 			acceleration.y = (0 + DEFAULT_ACCELERATION);
 		}
+		if (velocity.y != 0.0f) {
+			stoppingArray[2] = 1;
+		}
 	}
+
+	if ((abs(velocity.x) < DEFAULT_ACCELERATION) && (abs(velocity.x > STOPPING_SPEED))) {
+		if (stoppingArray[0] = 1) {
+			if (velocity.x < 0) {
+				acceleration.x = STOPPING_SPEED;
+			}
+			else {
+				acceleration.x = -1 * STOPPING_SPEED;
+			}
+		}
+	}
+	else if ((abs(velocity.z) < DEFAULT_ACCELERATION) && (abs(velocity.z > STOPPING_SPEED))) {
+		if (stoppingArray[1] = 1) {
+			if (velocity.z < 0) {
+				acceleration.z = STOPPING_SPEED;
+			}
+			else {
+				acceleration.z = -1 * STOPPING_SPEED;
+			}
+		}
+	}
+	else if ((abs(velocity.y) < DEFAULT_ACCELERATION) && (abs(velocity.y > STOPPING_SPEED))) {
+		if (stoppingArray[2] = 1) {
+			if (velocity.y < 0) {
+				acceleration.y = STOPPING_SPEED;
+			}
+			else {
+				acceleration.y = -1 * STOPPING_SPEED;
+			}
+		}
+	}
+
 }
 
 void Player::getMouseMovement(MouseDragEvent* e) {

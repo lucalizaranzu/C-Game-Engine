@@ -135,11 +135,12 @@ void World::addEntity(Shmingo::EntityType type, InstancedEntity* entity){
 	Shmingo::TransformComponent currentTransform = entityTransformList[entityTypeInfoMap.map[type].offset];
 
 
-	//Update information about all succeeding entity types
-	for(auto it = entityTypeInfoMap.keys.begin() + entityTypeInfoMap.map[type].vertexArrayOffset + 1; it < entityTypeInfoMap.keys.end(); it++){ //Start updating from the next entity type
-		entityTypeInfoMap.map[*it].offset++; //Increment offset of all succeeding entity types
+	//Update information about all succeeding entity types as long as this entity isnt the last in the vector
+	if (type != entityTypeInfoMap.keys[entityTypeInfoMap.keys.size() - 1]) {
+		for (auto it = entityTypeInfoMap.keys.begin() + entityTypeInfoMap.map[type].vertexArrayOffset + 1; it < entityTypeInfoMap.keys.end(); it++) { //Start updating from the next entity type
+			entityTypeInfoMap.map[*it].offset++; //Increment offset of all succeeding entity types
+		}
 	}
-
 	entityTypeInfoMap.map[type].amount++; //Increment amount of entities of the given type
 
 }

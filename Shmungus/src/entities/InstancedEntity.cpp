@@ -217,7 +217,6 @@ DefaultEntity::DefaultEntity(vec3 position, vec2 rotation, vec3 scale) : Instanc
 }
 
 void DefaultEntity::update() {
-    setRotation(vec2(rotation.x + (0.5f * se_deltaTime), rotation.y + (0.5f * se_deltaTime)));
 }
 
 

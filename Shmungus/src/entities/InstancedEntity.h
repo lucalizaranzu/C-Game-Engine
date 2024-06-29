@@ -49,6 +49,8 @@ public:
 
 	virtual perInstanceInstanceInfo getInstancedInstanceAttributeInfo() = 0;
 
+	virtual vec3 getPosition() = 0;
+
 
 protected:
 
@@ -155,7 +157,7 @@ public:
 	void setTextureID(float newTextureID);
 
 	//Not using an instanced data getter for these two because our position and rotation data automatically put in a transformation matrix, they are stored separately
-	vec3 getPosition() {return position;};
+	vec3 getPosition() override {return position;};
 	vec2 getRotation() {return rotation;};
 	float getTextureID();
 

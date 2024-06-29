@@ -24,7 +24,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
@@ -80,15 +80,17 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\utilities;src\layers\info layers;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>..\Libraries\lib\configs\glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;freetype.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -98,13 +100,13 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\utilities;src\layers\info layers;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -112,7 +114,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\Libraries\lib\configs\glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;freetype.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -122,14 +124,14 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Libraries\include;src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;shaders;..\Libraries\vendors\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\utilities;src\layers\info layers;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -138,18 +140,19 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\Libraries\lib\configs\glfw3_mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;freetype.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\Libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\display\DisplayManager.h" />
     <ClInclude Include="src\display\Window.h" />
-    <ClInclude Include="src\engine\Engine.h" />
-    <ClInclude Include="src\engine\Input.h" />
     <ClInclude Include="src\engine\ShmingoApp.h" />
-    <ClInclude Include="src\engine\ShmingoCore.h" />
-    <ClInclude Include="src\engine\sepch.h" />
+    <ClInclude Include="src\engine\core\Engine.h" />
+    <ClInclude Include="src\engine\core\ShmingoCore.h" />
+    <ClInclude Include="src\engine\core\sepch.h" />
+    <ClInclude Include="src\engine\utilities\FontUtil.h" />
+    <ClInclude Include="src\engine\utilities\Input.h" />
     <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\entities\InstancedEntity.h" />
     <ClInclude Include="src\events\Event.h" />
@@ -157,11 +160,14 @@
     <ClInclude Include="src\events\EventHandler.h" />
     <ClInclude Include="src\layers\Layer.h" />
     <ClInclude Include="src\layers\LayerStack.h" />
-    <ClInclude Include="src\loadingTools\InstancedVertexArray.h" />
-    <ClInclude Include="src\loadingTools\UniformBuffer.h" />
-    <ClInclude Include="src\loadingTools\Vertex.h" />
-    <ClInclude Include="src\loadingTools\VertexArray.h" />
     <ClInclude Include="src\loadingTools\VertexTools.h" />
+    <ClInclude Include="src\loadingTools\batch loading\Vertex.h" />
+    <ClInclude Include="src\loadingTools\batch loading\VertexArray.h" />
+    <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h" />
+    <ClInclude Include="src\loadingTools\text loading\TextBox.h" />
+    <ClInclude Include="src\loadingTools\text loading\TextVertexArray.h" />
+    <ClInclude Include="src\loadingTools\uniform loading\UniformBuffer.h" />
+    <ClInclude Include="src\menus\InfoSpace.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\models\ModelManager.h" />
     <ClInclude Include="src\models\ModelTools.h" />
@@ -175,35 +181,39 @@
     <ClInclude Include="src\textures\Texture.h" />
     <ClInclude Include="src\textures\TextureTools.h" />
     <ClInclude Include="src\tools\DataStructures.h" />
-    <ClInclude Include="src\tools\MathTools.h" />
-    <ClInclude Include="src\tools\Matrices.h" />
     <ClInclude Include="src\tools\MiscTools.h" />
+    <ClInclude Include="src\tools\math\MathTools.h" />
+    <ClInclude Include="src\tools\math\Matrices.h" />
     <ClInclude Include="src\world\World.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libraries\lib\vendors\glad.c">
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\lib\vendors\stb_image.cpp" />
     <ClCompile Include="src\display\DisplayManager.cpp" />
     <ClCompile Include="src\display\Window.cpp" />
-    <ClCompile Include="src\engine\Input.cpp" />
     <ClCompile Include="src\engine\ShmingoApp.cpp" />
-    <ClCompile Include="src\engine\ShmingoCore.cpp" />
-    <ClCompile Include="src\engine\main.cpp" />
-    <ClCompile Include="src\engine\sepch.cpp">
+    <ClCompile Include="src\engine\core\ShmingoCore.cpp" />
+    <ClCompile Include="src\engine\core\sepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\engine\main.cpp" />
+    <ClCompile Include="src\engine\utilities\FontUtil.cpp" />
+    <ClCompile Include="src\engine\utilities\Input.cpp" />
+    <ClCompile Include="src\engine\utilities\glad.c">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\engine\utilities\stb_image.cpp" />
     <ClCompile Include="src\entities\Entity.cpp" />
     <ClCompile Include="src\entities\InstancedEntity.cpp" />
     <ClCompile Include="src\layers\Layer.cpp" />
     <ClCompile Include="src\layers\LayerStack.cpp" />
-    <ClCompile Include="src\layers\PauseMenuLayer.cpp" />
-    <ClCompile Include="src\layers\SandboxLayer.cpp" />
-    <ClCompile Include="src\loadingTools\InstancedVertexArray.cpp" />
-    <ClCompile Include="src\loadingTools\UniformBuffer.cpp" />
-    <ClCompile Include="src\loadingTools\VertexArray.cpp" />
+    <ClCompile Include="src\layers\info layers\InfoLayer.cpp" />
+    <ClCompile Include="src\layers\menu layers\PauseMenuLayer.cpp" />
+    <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp" />
     <ClCompile Include="src\loadingTools\VertexTools.cpp" />
+    <ClCompile Include="src\loadingTools\batch loading\VertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\text loading\TextBox.cpp" />
+    <ClCompile Include="src\loadingTools\text loading\TextVertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\uniform loading\UniformBuffer.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
     <ClCompile Include="src\models\ModelManager.cpp" />
     <ClCompile Include="src\models\ModelTools.cpp" />
@@ -215,9 +225,9 @@
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\textures\Texture.cpp" />
     <ClCompile Include="src\textures\TextureTools.cpp" />
-    <ClCompile Include="src\tools\MathTools.cpp" />
-    <ClCompile Include="src\tools\Matrices.cpp" />
     <ClCompile Include="src\tools\MiscTools.cpp" />
+    <ClCompile Include="src\tools\math\MathTools.cpp" />
+    <ClCompile Include="src\tools\math\Matrices.cpp" />
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -82,3 +82,18 @@ private:
 	void mouseDragCallback(MouseDragEvent* e);
 
 };
+
+
+class InfoLayer : public Layer {
+
+public:
+
+	InfoLayer();
+
+protected:
+
+	void onAttach() override;
+	void onDetach() override;
+	void onUpdate() override;
+
+};

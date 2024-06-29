@@ -10,12 +10,6 @@ void LayerStack::init() {
 
 LayerStack::~LayerStack() {
 
-	//Deletes all layers when stack is destroyed, may be changed later if all layers need to be 
-	//Destroyed to change levels etc
-	for (const auto& layer : stack) {
-		layer->onDetach();
-		delete layer;
-	}
 }
 
 void LayerStack::emplaceLayer(Layer* layer) {

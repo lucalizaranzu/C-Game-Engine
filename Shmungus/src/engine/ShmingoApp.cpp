@@ -3,10 +3,10 @@
 
 
 double lastFrameTime = 0.0f;
-
+World* dummyWorld;
 Shmingo::ShmingoApp::ShmingoApp() :
-	window(nullptr) //Can change default aspect ratio when options is implemented,
-
+	window(nullptr), //Can change default aspect ratio when options is implemented,
+	currentWorld(dummyWorld)
 {
 }
 
@@ -18,13 +18,6 @@ Shmingo::ShmingoApp::~ShmingoApp() {
 	delete window;
 }
 
-void Shmingo::ShmingoApp::setCurrentWorld(World* world){
-	currentWorld = world;
-}
-
-void Shmingo::ShmingoApp::declareEntityType(std::type_index typeIndex, EntityType type){
-	entityTypes.push_back(type);
-}
 
 void Shmingo::ShmingoApp::run() {
 
@@ -38,6 +31,8 @@ void Shmingo::ShmingoApp::run() {
 	se_layerStack.cleanUp();
 }
 
+
+
 void Shmingo::ShmingoApp::init() {
 	ShmingoApp::window = Shmingo::createWindow(800, 600); //Can change default aspect ratio when options is implemented
 
@@ -50,12 +45,17 @@ void Shmingo::ShmingoApp::init() {
 		// Handle initialization failure
 	}
 
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
 	se_layerStack.init();
 
 	Shmingo::initModels();
 	Shmingo::declareTypeCorrespondence();
+	Shmingo::loadFont("arial");
 
 	se_masterRenderer.init();
 
@@ -69,13 +69,17 @@ void Shmingo::ShmingoApp::init() {
 
 void Shmingo::ShmingoApp::update() {
 
+	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
+
 	double time = glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
 	deltaTime = time - lastFrameTime;
 
 	lastFrameTime = time;
 	timeElapsed += deltaTime;
 
-	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
+	setApplicationInfo("FPS", std::to_string(1.0f / deltaTime));
+
+
 
 	se_layerStack.updateLayers();
 
@@ -87,6 +91,26 @@ void Shmingo::ShmingoApp::update() {
 
 }
 
+
+
+
 void Shmingo::ShmingoApp::initGlobalVariables(){
 	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &minimumUniformBlockOffset);
+}
+
+void Shmingo::ShmingoApp::setApplicationInfo(std::string key, std::string value){
+
+	applicationInfo[key] = value;
+}
+
+void Shmingo::ShmingoApp::setCurrentWorld(World* world) {
+	currentWorld = world;
+}
+
+void Shmingo::ShmingoApp::declareEntityType(std::type_index typeIndex, EntityType type) {
+	entityTypes.push_back(type);
+}
+
+void Shmingo::ShmingoApp::setFontTextureArrayID(std::string font, GLuint newID){
+	fontTextureArrayMap[font] = newID;
 }

@@ -1,83 +1,72 @@
 workspace "Shmingo"
-	architecture "x64"
+   architecture "x64"
 
-	configurations{
-
-		"Debug",
-		"Release",
-		"Distribution"
-	}
+   configurations {
+      "Debug",
+      "Release",
+      "Distribution"
+   }
 
 outputDirectory = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
-srcDirectory = "Shmungus/src/"
-libDirectory = "Libraries/"
 
 project "Shmingo"
-	location "Shmungus"
-	kind "ConsoleApp"
-	language "C++"
+   location "Shmungus"
+   kind "ConsoleApp"
+   language "C++"
 
-	targetdir ("bin/" .. outputDirectory .."/%{prj.name}")
-	objdir ("bin-obj/" .. outputDirectory .."/%{prj.name}")
+   targetdir ("bin/" .. outputDirectory .."/%{prj.name}")
+   objdir ("bin-obj/" .. outputDirectory .."/%{prj.name}")
 
-	pchheader ("sepch.h")
-	pchsource(srcDirectory .. "engine/sepch.cpp")
+   pchheader ("sepch.h")
+   pchsource("Shmungus/src/engine/core/sepch.cpp")
 
-	files{
+   files {
+      "Shmungus/src/**.cpp",
+      "Shmungus/src/**.c",
+      "Shmungus/src/**.h",
+      "Shmungus/shaders/**.glsl",
+   }
 
-		(srcDirectory .. "**/*.h"),
-		(srcDirectory .. "**/*.cpp"),
-		(srcDirectory .. "*.cpp"),
-		"Shmungus/shaders/**.glsl",
-		libDirectory .. "lib/vendors/*.cpp",
-		libDirectory .. "lib/vendors/*.c",
+   includedirs {
+      -- Main include directories
+      "Shmungus/src/**",
+      "Libraries/include",
 
+      -- Directories of libraries which need to be included in root
+      "Libraries/include/freetype",
+      "Libraries/include/stb_image",
+      "Libraries/include/glad"
+   }
 
-	}
+   libdirs {
+      "Libraries/lib"
+   }
 
-	includedirs{
+   links {
+      "glfw3",
+      "freetype",
+      "opengl32"
+   }
 
-		libDirectory .. "include",
-		(srcDirectory .. "**"),
-		"Shmungus/shaders",
-		libDirectory .. "vendors/stb_image"
-	}
+   filter "files:**.c"
+      flags { "NoPCH" }
 
-	libdirs{
+   filter "system:windows"
+      cppdialect "C++20"
+      systemversion "latest"
 
-		libDirectory .. "lib"
-	}
+   filter "configurations:Debug"
+      runtime "Debug"
+      symbols "On"
+      defines { "se_DEBUG" }
 
-	links{
+   filter "configurations:Release"
+      runtime "Release"
+      optimize "On"
+      defines { "se_RELEASE" }
 
-		libDirectory .. "lib/configs/glfw3_mt.lib",
-		libDirectory .. "lib/configs/glfw3.dll"
-	}
-
-	filter "files:**.c"
-		flags {"NoPCH"}
-
-	filter "system:windows"
-		cppdialect "C++20"
-		staticruntime "On"
-		systemversion "latest"
-		filter "system:windows"
-
-	filter "configurations:Debug"
-		defines{
-			"se_DEBUG"
-		}
-		
-	filter "configurations:Release"
-		optimize "On"
-		defines{
-			"se_RELEASE"
-		}
-		
-
-	filter "configurations:Distribution"
-		optimize "On"
-		symbols "Off"
-		defines{
-			"se_DISTRIBUTION"
-		}
+   filter "configurations:Distribution"
+      runtime "Release"
+      optimize "Full"
+      symbols "Off"
+      defines { "se_DISTRIBUTION" }

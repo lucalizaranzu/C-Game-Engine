@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Libraries">
-      <UniqueIdentifier>{0259E1F6-6EC3-956D-B701-471323AB73C2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\lib">
-      <UniqueIdentifier>{28A925CA-9469-A100-5DA4-EA7DC923E6DC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Libraries\lib\vendors">
-      <UniqueIdentifier>{98B33648-0420-F242-CD13-8AA0393F14AB}</UniqueIdentifier>
-    </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{0F45D591-7B24-542D-843C-DF03F09ABA8E}</UniqueIdentifier>
     </Filter>
@@ -22,6 +13,12 @@
     <Filter Include="src\engine">
       <UniqueIdentifier>{32B5D758-1E6D-19A6-8774-F201734BB496}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\engine\core">
+      <UniqueIdentifier>{EA741D25-5600-8BE9-5F11-0EDECB1BE7E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\engine\utilities">
+      <UniqueIdentifier>{3DA0BBC8-292F-4592-D24D-598DBEBB5538}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\entities">
       <UniqueIdentifier>{A142F00B-8DA5-7FB0-362B-B866226D4B33}</UniqueIdentifier>
     </Filter>
@@ -31,8 +28,32 @@
     <Filter Include="src\layers">
       <UniqueIdentifier>{6C614A68-5819-8CB5-C120-6511ADF726A6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\layers\info layers">
+      <UniqueIdentifier>{972BAF8E-8325-D8E0-6C92-6EF1582B3E4D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layers\menu layers">
+      <UniqueIdentifier>{C06B31AD-AC65-5AFF-95D2-F00F816BC06B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layers\sandbox layers">
+      <UniqueIdentifier>{BA3FC3DF-2602-F769-6FB2-85F6DBB3CF47}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\loadingTools">
       <UniqueIdentifier>{EB1B37DF-D714-5631-0047-3BB6EC9E353D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\batch loading">
+      <UniqueIdentifier>{DAA5714A-C6CB-3BB1-AF11-C17C9BD6607D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\instance loading">
+      <UniqueIdentifier>{ADF17118-1960-C797-6249-8297CEF6BC33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\text loading">
+      <UniqueIdentifier>{5D7610E2-C98E-F70B-923B-87A5FE128CA5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\uniform loading">
+      <UniqueIdentifier>{D8A9B1DC-C4FA-9C1E-ED5E-8BE0D90E3088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\menus">
+      <UniqueIdentifier>{24C3A9B5-902D-5E2C-D96B-0FD245153C81}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\models">
       <UniqueIdentifier>{605C916B-4C14-D3B8-B51B-AC14A1F26DA9}</UniqueIdentifier>
@@ -52,6 +73,9 @@
     <Filter Include="src\tools">
       <UniqueIdentifier>{8DED2DB6-F957-E22C-4296-93D2AE3FC081}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\tools\math">
+      <UniqueIdentifier>{A65E61BD-922C-55C3-7BC0-C5E9672D3128}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\world">
       <UniqueIdentifier>{C44364B6-30AE-182D-79EC-C9D2E595F681}</UniqueIdentifier>
     </Filter>
@@ -63,20 +87,23 @@
     <ClInclude Include="src\display\Window.h">
       <Filter>src\display</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\Engine.h">
-      <Filter>src\engine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\engine\Input.h">
-      <Filter>src\engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\ShmingoApp.h">
       <Filter>src\engine</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ShmingoCore.h">
-      <Filter>src\engine</Filter>
+    <ClInclude Include="src\engine\core\Engine.h">
+      <Filter>src\engine\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\sepch.h">
-      <Filter>src\engine</Filter>
+    <ClInclude Include="src\engine\core\ShmingoCore.h">
+      <Filter>src\engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\core\sepch.h">
+      <Filter>src\engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\utilities\FontUtil.h">
+      <Filter>src\engine\utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\utilities\Input.h">
+      <Filter>src\engine\utilities</Filter>
     </ClInclude>
     <ClInclude Include="src\entities\Entity.h">
       <Filter>src\entities</Filter>
@@ -99,20 +126,29 @@
     <ClInclude Include="src\layers\LayerStack.h">
       <Filter>src\layers</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadingTools\InstancedVertexArray.h">
-      <Filter>src\loadingTools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\loadingTools\UniformBuffer.h">
-      <Filter>src\loadingTools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\loadingTools\Vertex.h">
-      <Filter>src\loadingTools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\loadingTools\VertexArray.h">
-      <Filter>src\loadingTools</Filter>
-    </ClInclude>
     <ClInclude Include="src\loadingTools\VertexTools.h">
       <Filter>src\loadingTools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\batch loading\Vertex.h">
+      <Filter>src\loadingTools\batch loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\batch loading\VertexArray.h">
+      <Filter>src\loadingTools\batch loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h">
+      <Filter>src\loadingTools\instance loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\text loading\TextBox.h">
+      <Filter>src\loadingTools\text loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\text loading\TextVertexArray.h">
+      <Filter>src\loadingTools\text loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\uniform loading\UniformBuffer.h">
+      <Filter>src\loadingTools\uniform loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menus\InfoSpace.h">
+      <Filter>src\menus</Filter>
     </ClInclude>
     <ClInclude Include="src\models\Model.h">
       <Filter>src\models</Filter>
@@ -153,46 +189,49 @@
     <ClInclude Include="src\tools\DataStructures.h">
       <Filter>src\tools</Filter>
     </ClInclude>
-    <ClInclude Include="src\tools\MathTools.h">
-      <Filter>src\tools</Filter>
-    </ClInclude>
-    <ClInclude Include="src\tools\Matrices.h">
-      <Filter>src\tools</Filter>
-    </ClInclude>
     <ClInclude Include="src\tools\MiscTools.h">
       <Filter>src\tools</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\math\MathTools.h">
+      <Filter>src\tools\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tools\math\Matrices.h">
+      <Filter>src\tools\math</Filter>
     </ClInclude>
     <ClInclude Include="src\world\World.h">
       <Filter>src\world</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Libraries\lib\vendors\glad.c">
-      <Filter>Libraries\lib\vendors</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Libraries\lib\vendors\stb_image.cpp">
-      <Filter>Libraries\lib\vendors</Filter>
-    </ClCompile>
     <ClCompile Include="src\display\DisplayManager.cpp">
       <Filter>src\display</Filter>
     </ClCompile>
     <ClCompile Include="src\display\Window.cpp">
       <Filter>src\display</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\Input.cpp">
-      <Filter>src\engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\ShmingoApp.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ShmingoCore.cpp">
-      <Filter>src\engine</Filter>
+    <ClCompile Include="src\engine\core\ShmingoCore.cpp">
+      <Filter>src\engine\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\core\sepch.cpp">
+      <Filter>src\engine\core</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\main.cpp">
       <Filter>src\engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\sepch.cpp">
-      <Filter>src\engine</Filter>
+    <ClCompile Include="src\engine\utilities\FontUtil.cpp">
+      <Filter>src\engine\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\utilities\Input.cpp">
+      <Filter>src\engine\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\utilities\glad.c">
+      <Filter>src\engine\utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\utilities\stb_image.cpp">
+      <Filter>src\engine\utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\Entity.cpp">
       <Filter>src\entities</Filter>
@@ -206,23 +245,32 @@
     <ClCompile Include="src\layers\LayerStack.cpp">
       <Filter>src\layers</Filter>
     </ClCompile>
-    <ClCompile Include="src\layers\PauseMenuLayer.cpp">
-      <Filter>src\layers</Filter>
+    <ClCompile Include="src\layers\info layers\InfoLayer.cpp">
+      <Filter>src\layers\info layers</Filter>
     </ClCompile>
-    <ClCompile Include="src\layers\SandboxLayer.cpp">
-      <Filter>src\layers</Filter>
+    <ClCompile Include="src\layers\menu layers\PauseMenuLayer.cpp">
+      <Filter>src\layers\menu layers</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadingTools\InstancedVertexArray.cpp">
-      <Filter>src\loadingTools</Filter>
-    </ClCompile>
-    <ClCompile Include="src\loadingTools\UniformBuffer.cpp">
-      <Filter>src\loadingTools</Filter>
-    </ClCompile>
-    <ClCompile Include="src\loadingTools\VertexArray.cpp">
-      <Filter>src\loadingTools</Filter>
+    <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp">
+      <Filter>src\layers\sandbox layers</Filter>
     </ClCompile>
     <ClCompile Include="src\loadingTools\VertexTools.cpp">
       <Filter>src\loadingTools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\batch loading\VertexArray.cpp">
+      <Filter>src\loadingTools\batch loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp">
+      <Filter>src\loadingTools\instance loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\text loading\TextBox.cpp">
+      <Filter>src\loadingTools\text loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\text loading\TextVertexArray.cpp">
+      <Filter>src\loadingTools\text loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\uniform loading\UniformBuffer.cpp">
+      <Filter>src\loadingTools\uniform loading</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Model.cpp">
       <Filter>src\models</Filter>
@@ -257,14 +305,14 @@
     <ClCompile Include="src\textures\TextureTools.cpp">
       <Filter>src\textures</Filter>
     </ClCompile>
-    <ClCompile Include="src\tools\MathTools.cpp">
-      <Filter>src\tools</Filter>
-    </ClCompile>
-    <ClCompile Include="src\tools\Matrices.cpp">
-      <Filter>src\tools</Filter>
-    </ClCompile>
     <ClCompile Include="src\tools\MiscTools.cpp">
       <Filter>src\tools</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\math\MathTools.cpp">
+      <Filter>src\tools\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tools\math\Matrices.cpp">
+      <Filter>src\tools\math</Filter>
     </ClCompile>
     <ClCompile Include="src\world\World.cpp">
       <Filter>src\world</Filter>
