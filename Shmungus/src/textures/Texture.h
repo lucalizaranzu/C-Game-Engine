@@ -17,7 +17,7 @@ public:
 
 	GLuint getWidth() { return width; };
 	GLuint getHeight() { return height; };
-	GLuint getTextureID() { return textureID; };
+	GLuint& getTextureID() { return textureID; };
 
 	GLuint getVaoLocalSlot() { return vaoLocalSlot; };
 	void setVaoLocalSlot(GLuint id) { vaoLocalSlot = id; };

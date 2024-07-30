@@ -21,6 +21,7 @@ public:
 
 	//Independent loader functions for each uniform to avoid needing to look up types in a hashmap multiple times per frame
 	void setProjectionMatrix(mat4 projectionMatrix);
+	void setOrthoMatrix(mat4 orthoMatrix);
 	void setViewMatrix(mat4 viewMatrix);
 	void setElapsedTime(float time);
 

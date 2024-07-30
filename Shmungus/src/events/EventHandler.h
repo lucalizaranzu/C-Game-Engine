@@ -34,5 +34,3 @@ private:
     CallerFunction callerFunction;
 
 };
-
-

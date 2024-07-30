@@ -18,6 +18,12 @@ Shmingo::ShmingoApp::~ShmingoApp() {
 	delete window;
 }
 
+void Shmingo::ShmingoApp::recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHeight, float newDisplayWidth, float newDisplayHeight){
+	for (auto& infoSpace : infoSpaces) {
+		infoSpace->recalculateTextSpacing(oldDisplayWidth, oldDisplayHeight, newDisplayWidth, newDisplayHeight); //Recalculates text spacing of all info spaces
+	}
+}
+
 
 void Shmingo::ShmingoApp::run() {
 
@@ -45,6 +51,11 @@ void Shmingo::ShmingoApp::init() {
 		// Handle initialization failure
 	}
 
+	//Set up monitor aspect ratio as a global variable
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	setApplicationInfo(Shmingo::se_PRIMARY_MONITOR_WIDTH, "primary_monitor_width", std::to_string(mode->width));
+	setApplicationInfo(Shmingo::se_PRIMARY_MONITOR_HEIGHT, "primary_monitor_height", std::to_string(mode->height));
+
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -62,6 +73,7 @@ void Shmingo::ShmingoApp::init() {
 	se_layerStack.emplaceLayer(new SandboxLayer);
 
 	setGLFWkeyCallback();
+	setGLFWMouseButtonCallback();
 	setGLFWWindowCallbacks();
 	setGLFWCursorPosCallback();
 
@@ -77,7 +89,7 @@ void Shmingo::ShmingoApp::update() {
 	lastFrameTime = time;
 	timeElapsed += deltaTime;
 
-	setApplicationInfo("FPS", std::to_string(1.0f / deltaTime));
+	setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(1.0f / deltaTime));
 
 
 
@@ -98,9 +110,27 @@ void Shmingo::ShmingoApp::initGlobalVariables(){
 	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &minimumUniformBlockOffset);
 }
 
-void Shmingo::ShmingoApp::setApplicationInfo(std::string key, std::string value){
+void Shmingo::ShmingoApp::setApplicationInfo(Shmingo::ApplicationInfoKey key, std::string stringKey, std::string value){
 
+	applicationInfoStringToKeyMap[stringKey] = key;
 	applicationInfo[key] = value;
+}
+
+uint8_t Shmingo::ShmingoApp::getTextColor(char c){
+
+	if (c >= '0' && c <= '9') {
+		return c - '0';
+	}
+	else if (c >= 'a' && c <= 'z') {
+		return c - 'a' + 10;
+	}
+	else if (c >= 'A' && c <= 'Z') {
+		return c - 'A' + 36;
+	}
+	else {
+		// Return an invalid value if the character is not in the expected range
+		return 0xFF; //Default to 0
+	}
 }
 
 void Shmingo::ShmingoApp::setCurrentWorld(World* world) {

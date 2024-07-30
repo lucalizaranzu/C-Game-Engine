@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ShmingoCore.h>
+#include "ShaderProgram.h"
 
 namespace Shmingo {
 
@@ -15,6 +16,6 @@ namespace Shmingo {
 	void loadFont(std::string name);
 
 
-
+    void bindFontTextureToShader(std::shared_ptr<ShaderProgram> shader, std::string fontName);
 
 }

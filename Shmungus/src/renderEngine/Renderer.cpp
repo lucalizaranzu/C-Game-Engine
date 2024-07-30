@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "TextureTools.h"
 #include "Layer.h"
+#include "ShmingoApp.h"
 
 void enableAttribs(GLuint attribAmount) {
 	for (GLuint i = 0; i < attribAmount; i++) {
@@ -48,6 +49,24 @@ void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray,
 	enableAttribs(7); //Enable attribute arrays
 
 	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceAmount());
+
+	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
+	glBindVertexArray(0); //Unbind VAO
+
+	shader->stop(); //Stop shader
+
+}
+
+void Shmingo::renderText(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
+
+	shader->start();
+
+	Shmingo::bindFontTextureToShader(shader, vertexArray->getFont());
+
+	glBindVertexArray(vertexArray->getVaoID()); //Bind VAO
+
+	enableAttribs(6);
+	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, vertexArray->getInstanceAmount());
 
 	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
 	glBindVertexArray(0); //Unbind VAO

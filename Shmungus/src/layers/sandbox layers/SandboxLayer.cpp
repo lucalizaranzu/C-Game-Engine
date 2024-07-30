@@ -9,6 +9,7 @@
 #include "ModelTools.h"
 #include "Renderer.h"
 #include "TextBox.h"
+#include "TextVertexArray.h"
 
 
 SandboxLayer::SandboxLayer() : world(World()) {
@@ -26,7 +27,6 @@ SandboxLayer::~SandboxLayer() {
 int thingyIndex = 0;
 
 void SandboxLayer::onAttach() {
-
 	world.init();
 
 	Texture2D funnyTexture = Shmingo::createTexture2D("funnyimage.png");
@@ -43,9 +43,8 @@ void SandboxLayer::onAttach() {
 	player.reset(new Player(Shmingo::createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
 
 	se_uniformBuffer.setAsActive();
-	se_uniformBuffer.setProjectionMatrix(Shmingo::createViewMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
-
-	TextBox textBox = TextBox("This is a test to see how the lines functions work, lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll I am using correct english this time so I can identify what is going on", ivec2(1, 2), ivec2(250000, 100000), 4, 2);
+	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
+	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(800, 600));
 
 }
 
@@ -53,14 +52,18 @@ void SandboxLayer::onUpdate() {
 
 	player->update();
 	world.update();
-
 }
+
 
 void SandboxLayer::KeyboardCallback(KeyPressEvent* e){
 
 	if (e->getKey() == se_KEY_ESCAPE) {
 
 		se_layerStack.emplaceOverlay(new PauseMenuLayer());
+	}
+	else if (e->getKey() == se_KEY_F3) {
+
+		se_layerStack.emplaceOverlay(new InfoLayer());
 	}
 
 	else if (e->getKey() == se_KEY_L) {

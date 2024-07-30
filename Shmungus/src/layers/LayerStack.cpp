@@ -4,8 +4,12 @@
 
 void LayerStack::init() {
 
+	stack.emplace_back(new TopLayer());
+	stack.back()->onAttach(); //Attaches the top layer
+
 	layerInsertPosition = stack.begin();
 	eventIterator = stack.rbegin();
+
 }
 
 LayerStack::~LayerStack() {
@@ -22,7 +26,8 @@ void LayerStack::emplaceLayer(Layer* layer) {
 
 void LayerStack::emplaceOverlay(Layer* layer) {
 	//Overlays are emplaced at the back, so no need for special iterator
-	stack.emplace_back(layer);
+
+	stack.emplace(stack.end() - 1, layer); //-1 because we always want the toplayer to be the last element in order to monitor events
 
 	layerInsertPosition = stack.begin();
 	eventIterator = stack.rbegin();

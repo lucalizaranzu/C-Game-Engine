@@ -40,7 +40,7 @@ void World::updateEntities() {
 
 void World::submitVertexArrays(){
  	for (auto it = instancedVAOMap.begin(); it != instancedVAOMap.end(); it++) {
-		Shmingo::renderInstanced(it->second, se_masterRenderer.getEntityShader(it->first));
+		se_masterRenderer.submitInstancedVertexArray(it->second);
 	}
 }
 
@@ -97,15 +97,19 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 		entityTypeInfoMap.map[type].amount--; //Decrement amount of entities of the given type
 	}
 
-	//Update information about all succeeding entity types - happens regardless of whether the entity is the last entity of a certain type
-	for (auto it = entityTypeInfoMap.keys.begin() + entityTypeInfoMap.map[type].vertexArrayOffset + 1; it < entityTypeInfoMap.keys.end(); it++) { //Start updating from the next entity type
-		entityTypeInfoMap.map[*it].offset--; //Increment offset of all succeeding entity types
-	}
+	//Update information about all succeeding entity types - happens regardless of whether the entity is the last entity of a certain type, except when entity is the last entity in the vector
 
-	//Update local VAO offset of all succeding entities of the same type
-	auto entityOffset = entityTypeInfoMap.map[type].offset;
-	for (auto it = entityList.begin() + entityTypeInfoMap.map[type].offset + localOffset + 1; it < entityList.begin() + entityOffset + entityTypeInfoMap.map[type].amount; it++) {
-		(*it)->decrementOffsetInVao();
+	if (typeInfo.offset + localOffset != entityList.size()) {
+
+		for (auto it = entityTypeInfoMap.keys.begin() + entityTypeInfoMap.map[type].vertexArrayOffset + 1; it < entityTypeInfoMap.keys.end(); it++) { //Start updating from the next entity type
+			entityTypeInfoMap.map[*it].offset--; //Increment offset of all succeeding entity types
+		}
+
+		//Update local VAO offset of all succeding entities of the same type
+		auto entityOffset = entityTypeInfoMap.map[type].offset;
+		for (auto it = entityList.begin() + entityTypeInfoMap.map[type].offset + localOffset + 1; it < entityList.begin() + entityOffset + entityTypeInfoMap.map[type].amount; it++) {
+			(*it)->decrementOffsetInVao();
+		}
 	}
 }
 

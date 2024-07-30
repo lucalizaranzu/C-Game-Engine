@@ -54,9 +54,9 @@ bool DynamicTextBox::isSectionDynamic(std::string section){
     return false;
 }
 
-TextBox::TextBox(std::string text, ivec2 position, ivec2 size, unsigned int fontSize, unsigned int lineSpacing) : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize){
+TextBox::TextBox(std::string text, vec2 position, ivec2 size, unsigned int fontSize, unsigned int lineSpacing) : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text){
 
-    convertTextToLines(text);
+    //convertTextToLines(text);
 }
 
 void TextBox::convertTextToLines(std::string text){
@@ -70,10 +70,7 @@ void TextBox::convertTextToLines(std::string text){
     for (c = text.begin(); c != text.end(); c++) {
         Shmingo::Character currentChar = se_application.getCharacterFontInfo(*c);
 
-        char creal = *c;
-        se_log("Char: " << creal << ", Advance: " << currentChar.Advance << ", size: " << currentChar.Size.x);
-
-        float totalCharSpace = currentChar.Size.x + currentChar.Advance; //Total space taken up by a character
+        int totalCharSpace =  (currentChar.Advance >> 6) * fontSize; //Total space taken up by a character
         if (currentLineWidth + totalCharSpace > size.x || c == text.end() - 1) { //Checks if line width is greater than text box width
 
             if (c == text.end() - 1) { //Adds before on last line
@@ -98,11 +95,6 @@ void TextBox::convertTextToLines(std::string text){
         currentLineWidth += totalCharSpace; //Add space taken up by character to line width
         currentIndex++; //Increment index
 
-        
-
-    }
-    for (std::string line : lines) {
-        se_log(line);
     }
 }
  

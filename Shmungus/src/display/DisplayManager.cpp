@@ -41,6 +41,9 @@ void setGLFWViewport(GLFWwindow* window, int width, int height, float clearRed, 
 	glViewport(0, 0, width, height);
 
 	glClearColor(clearRed, clearGreen, clearBlue, clearAlpha);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_DEPTH_BUFFER_BIT);

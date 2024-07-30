@@ -144,9 +144,9 @@ void Player::getKeyUp(KeyReleaseEvent* e) {
 void Player::calcVelocity() {
 
 	//Set first to avoid being set to 0
-	velocity.x = roundToNearestThird(velocity.x + se_deltaTime * acceleration.x);
-	velocity.y = roundToNearestThird(velocity.y + se_deltaTime * acceleration.y);
-	velocity.z = roundToNearestThird(velocity.z + se_deltaTime * acceleration.z);
+	velocity.x = roundToNearestThird(velocity.x + acceleration.x);
+	velocity.y = roundToNearestThird(velocity.y + acceleration.y);
+	velocity.z = roundToNearestThird(velocity.z + acceleration.z);
 
 	//temporary, will remove when I do the whole direction thing
 	if (abs(velocity.x) >= MAX_SPEED) { acceleration.x = 0; }

@@ -10,7 +10,7 @@ layout(std140) uniform Matrices {
 
 	mat4 projectionMatrix;
 	mat4 viewMatrix;
-    vec3 padding;
+    mat4 ortho;
 
 } matrices;
 

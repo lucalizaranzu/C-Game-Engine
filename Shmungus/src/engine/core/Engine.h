@@ -10,6 +10,5 @@
 #include "LayerStack.h"
 #include "MasterRenderer.h"
 #include "VertexArray.h"
-#include "VertexTools.h"
 #include "Event.h"
 #include "MasterRenderer.h"

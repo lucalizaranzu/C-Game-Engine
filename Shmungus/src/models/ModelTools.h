@@ -2,7 +2,6 @@
 
 #include <sepch.h>
 #include <ShmingoCore.h>
-#include "VertexTools.h"
 
 #include "Model.h"
 #include "TextureTools.h"

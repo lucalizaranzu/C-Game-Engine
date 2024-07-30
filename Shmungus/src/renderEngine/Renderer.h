@@ -3,6 +3,7 @@
 #include "DefaultShader.h"
 #include "VertexArray.h"
 #include "InstancedVertexArray.h"
+#include "TextVertexArray.h"
 
 namespace Shmingo {
 
@@ -27,5 +28,16 @@ namespace Shmingo {
 	/// Pointer to shader program to use for rendering
 	/// </param>
 	void renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
+
+	/// <summary>
+	/// Renders an instanced vertex array designed for text using provided shader
+	/// </summary>
+	/// <param name="vertexArray">
+	/// Instanced vertex array to render
+	/// </param>
+	/// <param name="shader">
+	/// Pointer to shader program to use for rendering
+	/// </param>
+	void renderText(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
 
 }

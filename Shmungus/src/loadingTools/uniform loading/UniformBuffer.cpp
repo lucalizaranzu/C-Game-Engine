@@ -13,6 +13,7 @@
 //Make sure to format properly according to STD140 protocol!
 
 //Incrementing based on size of data type, TODO make this not terrible and abstract to a list or something
+#define OFFSET_ORTHOGRAPHICMATRIX 128
 #define OFFSET_VIEWMATRIX 64
 #define OFFSET_PROJECTIONMATRIX 0
 
@@ -41,7 +42,7 @@ void UniformBuffer::init() {
 	glBufferData(GL_UNIFORM_BUFFER, uboSize, nullptr, GL_STATIC_DRAW);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-	createUniformBlock(Shmingo::MATRIX_BLOCK, 128, "Matrices", 0); //Range 0
+	createUniformBlock(Shmingo::MATRIX_BLOCK, 196, "Matrices", 0); //Range 0
 	createUniformBlock(Shmingo::UTIL_BLOCK, 16, "Util", 1); //Range 1
 
 	bindUniformBlock(Shmingo::MATRIX_BLOCK);
@@ -51,6 +52,12 @@ void UniformBuffer::init() {
 void UniformBuffer::setProjectionMatrix(mat4 projectionMatrix){
 	glBindBuffer(GL_UNIFORM_BUFFER,uboID);
 	setUniformMat4(projectionMatrix, OFFSET_PROJECTIONMATRIX);
+}
+
+
+void UniformBuffer::setOrthoMatrix(mat4 orthoMatrix) {
+	glBindBuffer(GL_UNIFORM_BUFFER, uboID);
+	setUniformMat4(orthoMatrix, OFFSET_ORTHOGRAPHICMATRIX);
 }
 
 void UniformBuffer::setViewMatrix(mat4 viewMatrix){

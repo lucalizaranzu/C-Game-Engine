@@ -4,23 +4,24 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\ShmingoApp.cpp;C:\Users\
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\core\ShmingoCore.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShmingoCore.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\core\sepch.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\sepch.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\main.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\main.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\FontUtil.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\FontUtil.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\Input.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Input.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\glad.c;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\glad.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\stb_image.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\stb_image.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\extern\glad.c;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\glad.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\extern\stb_image.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\stb_image.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\font\FontUtil.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\FontUtil.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\engine\utilities\input\Input.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Input.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\Entity.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Entity.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\entities\InstancedEntity.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedEntity.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\Layer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Layer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\LayerStack.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\LayerStack.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\info layers\InfoLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InfoLayer.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\info layers\TopLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TopLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\menu layers\PauseMenuLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\PauseMenuLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\sandbox layers\SandboxLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\SandboxLayer.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\VertexTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\batch loading\VertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\instance loading\InstancedVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextBox.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextBox.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\uniform loading\UniformBuffer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformBuffer.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\menus\InfoSpace.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InfoSpace.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\Model.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Model.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\ModelManager.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ModelManager.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\ModelTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ModelTools.obj

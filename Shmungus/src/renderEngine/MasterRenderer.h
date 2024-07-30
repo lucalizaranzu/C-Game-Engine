@@ -20,15 +20,22 @@ public:
 	//This function is how you render an object using shaders provided by the engine, custom shaders pass in a custom shader object in a shared pointer
 	void submitVertexArray(std::shared_ptr<VertexArray> vertexArray, ShaderType type);
 	//Meant for shaders added by modders, which do not have a corresponding ShaderType enum. Pass the object directly into the function
+	void submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, ShaderType type);
+
 	void submitVertexArray(std::shared_ptr<VertexArray>, std::shared_ptr<ShaderProgram> shader);
 
 	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray);
+
+	void submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
 
 	void update();
 
 
 	void renderBatch();
-	void clearBatch();
+	void renderInstancedBatch();
+	void renderTextBatch();
+
+	void clearBatches();
 
 
 	//----------------------------------Related to entity instance attributes--------------------------------------
@@ -64,6 +71,8 @@ private:
 	static MasterRenderer instance;
 
 	std::vector<RenderPair> renderQueue; 
+	std::vector<InstancedRenderPair> instancedRenderQueue; 
+	std::vector<TextRenderPair> textRenderQueue; 
 
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> shaderMap;
 	std::map<std::type_index, std::shared_ptr<ShaderProgram>> instancedShaderMap;

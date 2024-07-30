@@ -8,6 +8,9 @@
 //Key callback function
 void setGLFWkeyCallback();
 
+//Mouse button callback function
+void setGLFWMouseButtonCallback();
+
 //Mouse callback function
 void setGLFWWindowCallbacks();
 

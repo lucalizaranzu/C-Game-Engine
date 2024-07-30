@@ -7,9 +7,11 @@
 #include "MathTools.h"
 
 namespace Shmingo {
-	mat4 createViewMatrix(GLfloat FOV, float displayWidth, float displayHeight, float nearPlane, float farPlane);
+	mat4 createProjectionMatrix(GLfloat FOV, float displayWidth, float displayHeight, float nearPlane, float farPlane);
 
 	mat4 createViewMatrix(Camera camera);
+
+	mat4 createOrthoMatrix(float displayWidth, float displayHeight);
 
 	mat4 createTransformationMatrix(vec3 translation, vec2 rotation, vec3 scale);
 }

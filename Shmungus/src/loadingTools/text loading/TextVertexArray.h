@@ -15,7 +15,7 @@ class TextVertexArray {
 public:
 
 	//Constructor, sets up all necessary data
-	TextVertexArray();
+	TextVertexArray(std::string fontName);
 	~TextVertexArray();
 
 
@@ -31,6 +31,9 @@ public:
 	void removeTextBox(GLuint offset); //TODO change this to take in correct params
 
 
+	void recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight); //Recalculates the spacing between characters when the screen is resized
+
+
 
 	//Getters ------------------------------------------------------------------
 	inline GLuint getVaoID() { return vaoID; };
@@ -40,12 +43,17 @@ public:
 
 	inline GLuint getAttribAmount() { return attribAmount; };
 
+	inline std::string getFont() { return fontName; };
+
+	//Utility functions --------------------------------------------------------
+
+	void cleanUp();
+
 protected:
 
 	GLuint attribAmount = 0;
 
 	GLuint vaoID = 0; //VAO ID
-	GLuint eboID = 0; //Index Buffer ID
 
 	GLuint vertexPositionsVboID = 0;
 	GLuint texCoordsVboID = 0;
@@ -62,16 +70,21 @@ protected:
 	GLuint indexCount = 0; //Amount of indices
 	GLuint maxTextureIndex = 0;
 
+	std::string fontName;
+
 	//Utility functions --------------------------------------------------------
 
 	inline void bindVao() {
 		glBindVertexArray(vaoID);
 	}
-	inline void bindIndicesVbo() {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID);
-	}
+
 	inline void unbindBuffer() {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	//Subdata methods to set buffer data for character
+	void setCharTexture(uint8_t textureID, GLuint charOffset);
+	void setCharSize(uint8_t size, GLuint charOffset);
+	void setCharColor(uint8_t colorCode, GLuint charOffset);
+	void setCharPosition(vec2 position, GLuint charOffset);
 };

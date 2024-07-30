@@ -19,14 +19,14 @@ namespace Shmingo {
 	enum EntityType {
 
 		DefaultEntity
-
 	};
 
 	enum LayerType {
 
 		SANDBOX_LAYER,
-		PAUSEMENU_LAYER
-
+		PAUSEMENU_LAYER,
+		INFO_LAYER,
+		TOP_LAYER
 	};
 
 	enum UniformBlock {
@@ -35,6 +35,12 @@ namespace Shmingo {
 		UTIL_BLOCK
 	};
 
+	enum ApplicationInfoKey {
+
+		se_FPS,
+		se_PRIMARY_MONITOR_WIDTH,
+		se_PRIMARY_MONITOR_HEIGHT,
+	};
 
 	/*
 	This type of instanced data is VERTEX data, meaning that it contains one value per VERTEX.

@@ -7,6 +7,10 @@ Shmingo::Window::Window(int width, int height) : width(width), height(height) {
 	initDisplay(); //Initializes display (Hopefully this is only done once, and I wont have to move this to main
 
 	this->window = createGLFWwindow(width, height);
+
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	se_log(mode->width);
+	se_log(mode->height);
 }
 
 void Shmingo::Window::cleanUp() {

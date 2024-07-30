@@ -7,6 +7,7 @@
 #include "InstancedVertexArray.h"
 #include "Vertex.h"
 #include "World.h"
+#include "InfoSpace.h"
 
 class LayerStack;
 
@@ -95,5 +96,28 @@ protected:
 	void onAttach() override;
 	void onDetach() override;
 	void onUpdate() override;
+
+	void keybordCallback(KeyPressEvent* e);
+
+
+	InfoSpace infoSpace;
+
+};
+
+
+class TopLayer : public Layer {
+
+public:
+	TopLayer();
+
+protected:
+
+	void onAttach() override;
+	void onDetach() override;
+	void onUpdate() override;
+
+	void mouseClickCallback(MouseClickEvent* e);
+	void mouseReleaseCallback(MouseReleaseEvent* e);
+
 
 };

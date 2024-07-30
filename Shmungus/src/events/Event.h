@@ -24,6 +24,7 @@ public:
 
 };
 
+//Keyboard events --------------------------------------------------------------------------------------------
 
 class KeyboardEvent : public Event {
 
@@ -69,6 +70,7 @@ public:
 	KeyRepeatEvent(int key, int scancode, int action, int mods) : KeyboardEvent(key, scancode, action, mods) {}
 };
 
+//Mouse events --------------------------------------------------------------------------------------------
 
 class MouseEvent : public Event {
 
@@ -97,6 +99,14 @@ public:
 
 };
 
+class MouseReleaseEvent : public MouseEvent {
+
+public:
+
+	MouseReleaseEvent(int button, int action, int mods) : MouseEvent(button, action, mods) {}
+
+};
+
 
 class MouseDragEvent : public Event{
 
@@ -113,3 +123,31 @@ protected:
 	float yOffset;
 
 };
+
+//Window events --------------------------------------------------------------------------------------------
+
+class WindowEvent : public Event {
+	//Nothing for now
+};
+
+
+class WindowResizeEvent : public WindowEvent {
+
+public:
+
+	WindowResizeEvent(float oldWidth, float oldHeight, float newWidth, float newHeight) : oldWidth(oldWidth), oldHeight(oldHeight), newWidth(newWidth), newHeight(newHeight) {};
+
+	float getOldWidth() { return oldWidth; };
+	float getOldHeight() { return oldHeight; };
+	float getNewWidth() { return newWidth; };
+	float getNewHeight() { return newHeight; };
+
+protected:
+
+	float oldWidth;
+	float oldHeight;
+	float newWidth;
+	float newHeight;
+
+};
+

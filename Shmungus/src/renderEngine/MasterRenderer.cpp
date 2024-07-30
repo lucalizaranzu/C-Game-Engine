@@ -18,10 +18,13 @@ void MasterRenderer::init() {
 	se_uniformBuffer.init();
 
 	std::shared_ptr<DefaultShader> entityShader = std::make_shared<DefaultShader>("entityVertex.glsl", "entityFragment.glsl");
+	std::shared_ptr<DefaultShader> textShader = std::make_shared<DefaultShader>("text/textVertex.glsl", "text/textFragment.glsl");
 
 	entityShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK, Shmingo::UTIL_BLOCK);
+	textShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
 
 	mapShader(se_ENTITY_SHADER, entityShader);
+	mapShader(se_TEXT_SHADER, textShader);
 
 	mapEntityShader(Shmingo::DefaultEntity, entityShader);
 
@@ -41,6 +44,11 @@ void MasterRenderer::submitVertexArray(std::shared_ptr<VertexArray> vertexArray,
 	renderQueue.emplace_back(pair);
 }
 
+void MasterRenderer::submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, ShaderType type) {
+	TextRenderPair pair = TextRenderPair(vertexArray, shaderMap.at(type));
+	textRenderQueue.emplace_back(pair);
+}
+
 void MasterRenderer::submitVertexArray(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
 
 	RenderPair pair = RenderPair(vertexArray, shader);
@@ -49,7 +57,13 @@ void MasterRenderer::submitVertexArray(std::shared_ptr<VertexArray> vertexArray,
 
 void MasterRenderer::submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray){
 
-	//TODO implement deferred rendering? For now just render directly using the render instanced method
+	InstancedRenderPair pair = InstancedRenderPair(vertexArray, getEntityShader(vertexArray->getEntityType()));
+	instancedRenderQueue.emplace_back(pair);
+}
+
+void MasterRenderer::submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
+	TextRenderPair pair = TextRenderPair(vertexArray, shader);
+	textRenderQueue.emplace_back(pair);
 }
 
 //Render all objects submitted
@@ -60,15 +74,34 @@ void MasterRenderer::renderBatch() {
 	}
 }
 
-void MasterRenderer::clearBatch() {
+void MasterRenderer::renderInstancedBatch(){
+	for (InstancedRenderPair pair : instancedRenderQueue) {
+		//Uses render method from renderer.h
+		Shmingo::renderInstanced(pair.vertexArray, pair.shader);
+	}
+}
+
+void MasterRenderer::renderTextBatch() {
+	for (TextRenderPair pair : textRenderQueue) {
+		//Uses render method from renderer.h
+		Shmingo::renderText(pair.vertexArray, pair.shader);
+	}
+}
+
+void MasterRenderer::clearBatches() {
 	renderQueue.clear();
+	instancedRenderQueue.clear();
+	textRenderQueue.clear();
 }
 
 //Renders the queue then clears it for next frame
 void MasterRenderer::update() {
 
 	renderBatch();
-	clearBatch();
+	renderInstancedBatch();
+	renderTextBatch();
+
+	clearBatches();
 }
 
 
