@@ -4,6 +4,15 @@
 #include "ShmingoApp.h"
 
 
+std::string removeFirstChar(const std::string& input);
+
+TextBox::TextBox(std::string text, vec2 position, ivec2 size, unsigned int fontSize, unsigned int lineSpacing) : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text) {
+
+}
+
+DynamicTextBox::DynamicTextBox(std::string text, ivec2 position, ivec2 size, unsigned int fontSize, unsigned int lineSpacing) : TextBox(text, position, size, fontSize, lineSpacing){
+    parseText(text);
+}
 
 
 void DynamicTextBox::updateDynamicText(){
@@ -15,34 +24,66 @@ void DynamicTextBox::updateDynamicText(){
 	}
 }
 
+std::string DynamicTextBox::compileText(){
+    std::string out;
+    for (const auto& section : sections) {
+        if (isSectionDynamic(section)) {
+            out += se_application.getApplicationInfo(removeFirstChar(section));
+        }
+        else {
+            out += section;
+        }
+    }
+    return out;
+}
+
+std::string DynamicTextBox::getText(){
+    return compileText();
+}
+
 void DynamicTextBox::parseText(std::string text){
     size_t pos = 0;
     size_t lastPos = 0;
 
+    int spacesAmt = 0;
+    size_t currentRealOffset = 0;
+    size_t currentOffsetNoSpaces = 0;
+
     while (pos < text.size()) {
-        // Find the next '~' symbol
-        pos = text.find('~', pos);
-        if (pos == std::string::npos) {
-            break; // No more '~' found, exit the loop
+        while (text[pos] != '~' && pos < text.size()) {
+            if (text[pos] == ' ') {
+                spacesAmt++;
+            }
+            pos++;
         }
 
         // Collect characters until the next space or end of string
         size_t start = pos;
 
-        while (pos < text.size() && text[pos] != ' ' && text[pos] != '.') {
-            ++pos;
+        while (pos < text.size() && text[pos] != ' ') {
+            pos++;
+
         }
+
         // Add the collected substring to the result vector
         if (start - lastPos != 1 || text[lastPos] == '.') {
             sections.push_back(text.substr(lastPos, start - lastPos));
+            sectionOffsets.push_back(currentRealOffset);
+            sectionOffsetsNoSpaces.push_back(currentOffsetNoSpaces);
         }
         std::string key = text.substr(start, pos - start);
-        if (se_isValidInfoKey(key)) {
-            sections.push_back(text.substr(start, pos - start));
+
+        if (pos == start) {
+            break;
         }
-        else {
-            sections.push_back("KEYNOTFOUND");
-        }
+
+        sections.push_back(text.substr(start, pos - start));
+        sectionOffsets.push_back(start);
+        sectionOffsetsNoSpaces.push_back(start - spacesAmt);
+
+        currentRealOffset = pos;
+        currentOffsetNoSpaces = pos - spacesAmt;
+
         lastPos = pos;
     }
 }
@@ -54,47 +95,15 @@ bool DynamicTextBox::isSectionDynamic(std::string section){
     return false;
 }
 
-TextBox::TextBox(std::string text, vec2 position, ivec2 size, unsigned int fontSize, unsigned int lineSpacing) : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text){
 
-    //convertTextToLines(text);
-}
+std::string removeFirstChar(const std::string& input) {
+    // Check if the string is not empty
 
-void TextBox::convertTextToLines(std::string text){
-
-    char currentLine[100];
-    int currentIndex = 0;
-    float currentLineWidth = 0; //Current width of line
-
-    std::string::const_iterator c;
-
-    for (c = text.begin(); c != text.end(); c++) {
-        Shmingo::Character currentChar = se_application.getCharacterFontInfo(*c);
-
-        int totalCharSpace =  (currentChar.Advance >> 6) * fontSize; //Total space taken up by a character
-        if (currentLineWidth + totalCharSpace > size.x || c == text.end() - 1) { //Checks if line width is greater than text box width
-
-            if (c == text.end() - 1) { //Adds before on last line
-                currentLine[currentIndex] = *c; //Add character to line
-                currentLineWidth += totalCharSpace; //Add space taken up by character to line width
-                currentIndex++; //Increment index
-            }
-
-            currentLine[currentIndex + 1] = '\0'; // Add terminating char
-
-            std::string out = currentLine; //Create c++ string
-
-            out.resize(currentIndex + 0); //Resize line to only contain up to terminal
-
-            lines.emplace_back(out); //Add full line to lines
-
-            currentIndex = 0; //Reset current Index
-            currentLineWidth = 0;
-        }
-
-        currentLine[currentIndex] = *c; //Add character to line
-        currentLineWidth += totalCharSpace; //Add space taken up by character to line width
-        currentIndex++; //Increment index
-
+    std::string out;
+    if (input.empty()) {
+        return "";
     }
+    // Return the substring starting from the second character
+    out = input.substr(1);
+    return out;
 }
- 

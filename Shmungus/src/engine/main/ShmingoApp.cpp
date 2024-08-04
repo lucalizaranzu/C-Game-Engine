@@ -1,9 +1,13 @@
 #include <sepch.h>
 #include <ShmingoApp.h>
+#include <MiscTools.h>
 
 
 double lastFrameTime = 0.0f;
 World* dummyWorld;
+
+int totalFrames = 0;
+
 Shmingo::ShmingoApp::ShmingoApp() :
 	window(nullptr), //Can change default aspect ratio when options is implemented,
 	currentWorld(dummyWorld)
@@ -62,15 +66,21 @@ void Shmingo::ShmingoApp::init() {
 
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
+	setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(2));
+
+
 	se_layerStack.init();
 
 	Shmingo::initModels();
 	Shmingo::declareTypeCorrespondence();
 	Shmingo::loadFont("arial");
+	Shmingo::loadFont("Minecraft");
 
 	se_masterRenderer.init();
 
 	se_layerStack.emplaceLayer(new SandboxLayer);
+
+	glfwSwapInterval(0); //Disable v sync
 
 	setGLFWkeyCallback();
 	setGLFWMouseButtonCallback();
@@ -89,9 +99,10 @@ void Shmingo::ShmingoApp::update() {
 	lastFrameTime = time;
 	timeElapsed += deltaTime;
 
-	setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(1.0f / deltaTime));
-
-
+	if (Shmingo::isTimeMultipleOf(0.2)) {
+		setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(totalFrames * 5).substr(0, 4)); //First four digits of FPS
+		totalFrames = 0;
+	}
 
 	se_layerStack.updateLayers();
 
@@ -100,6 +111,8 @@ void Shmingo::ShmingoApp::update() {
 
 	window->swapBuffers();
 	glfwPollEvents();
+
+	totalFrames++;
 
 }
 

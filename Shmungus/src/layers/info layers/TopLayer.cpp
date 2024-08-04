@@ -24,11 +24,12 @@ void TopLayer::onUpdate() {
 
 void TopLayer::mouseClickCallback(MouseClickEvent* e) {
 	if (e->getButton() == se_MOUSE_BUTTON_1) {
+
 	}
 }
 
 void TopLayer::mouseReleaseCallback(MouseReleaseEvent* e) {
-
 	if (e->getButton() == se_MOUSE_BUTTON_1) {
+
 	}
 }

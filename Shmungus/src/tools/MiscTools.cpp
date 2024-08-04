@@ -28,3 +28,14 @@ void Shmingo::centerCursor() {
 	glfwSetCursorPos(se_application.getWindow()->getGLFWwindow(), se_application.getWindow()->getWidth() / 2, se_application.getWindow()->getHeight() / 2);
 
 }
+
+bool Shmingo::isTimeMultipleOf(double seconds) {
+    double currentTime = se_application.getElapsedTime();
+    double lastTime = se_application.getLastElapsedTime();
+
+    // Check if the current time has moved to the next integer multiple of 'seconds'
+    if (std::floor(currentTime / seconds) != std::floor(lastTime / seconds)) {
+        return true;
+    }
+    return false;
+}

@@ -21,8 +21,8 @@ public:
 
 	//Vertex data functions ---------------------------------------------------
 
-	void submitStaticText(TextBox textBox);
-	void submitDynamicText(DynamicTextBox textBox);
+	void submitStaticText(TextBox& textBox);
+	void submitDynamicText(DynamicTextBox& textBox);
 
 
 	void updateDynamicTextBox(DynamicTextBox textBox);
@@ -67,6 +67,7 @@ protected:
 
 	GLuint vertexCount = 0; //Amount of vertices
 	GLuint instanceAmount = 0;
+	GLuint staticTextBoxEmplaceOffset = 0; //Offset for emplacing static text boxes
 	GLuint indexCount = 0; //Amount of indices
 	GLuint maxTextureIndex = 0;
 
@@ -82,9 +83,27 @@ protected:
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	//Populates gl buffers with data from temp buffers
+	void setGLBufferData(GLuint textBoxOffset, GLuint charAmt);
+	void setGLBufferDataNoScale(GLuint textBoxOffset, GLuint charAmt);
+	void setGLBufferDataPositionsOnly(GLuint textBoxOffset, GLuint charAmt);
+
+	//Temp buffers -------------------------------------------------------------
+
+	uint8_t* textureTempBuffer = new uint8_t[500];
+	uint8_t* colorTempBuffer = new uint8_t[500];
+	float* positionsTempBuffer = new float[1000];
+	uint8_t* scaleTempBuffer = new uint8_t[500];
+
+	//Populate temp buffers with text box data, returns amount of glyphs in the text box
+	GLuint loadTempBuffers(TextBox* textBox);
+
 	//Subdata methods to set buffer data for character
 	void setCharTexture(uint8_t textureID, GLuint charOffset);
 	void setCharSize(uint8_t size, GLuint charOffset);
 	void setCharColor(uint8_t colorCode, GLuint charOffset);
 	void setCharPosition(vec2 position, GLuint charOffset);
+
+	void reuploadDynamicText(DynamicTextBox textBox, size_t firstSectionIndex);
+
 };

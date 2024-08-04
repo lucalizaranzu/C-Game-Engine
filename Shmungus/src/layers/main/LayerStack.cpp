@@ -53,6 +53,7 @@ void LayerStack::removeLayer(Shmingo::LayerType layerType) {
 	layerInsertPosition = stack.begin();
 	eventIterator = stack.rbegin();
 
+	selectedLayer->onDetach();
 	delete selectedLayer; //Remember this function can be called from inside the specified layer, which essentially is calling "delete this" - Be careful
 }
 

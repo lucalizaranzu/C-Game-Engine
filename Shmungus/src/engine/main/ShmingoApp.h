@@ -33,7 +33,8 @@ namespace Shmingo {
 		inline double getDeltaTime() { return deltaTime; }
 
 		//Returns total time elapsed since beginning of application
-		inline double getTimeElapsed() { return timeElapsed; }
+		inline double getElapsedTime() { return timeElapsed; }
+		inline double getLastElapsedTime() { return timeElapsed - deltaTime; }
 
 		//I dont think this is being used
 		inline bool getOnTick() { return onTick; }
@@ -49,7 +50,7 @@ namespace Shmingo {
 		uint8_t getTextColor(char c);
 
 		inline bool isInApplicationInfo(Shmingo::ApplicationInfoKey key) { return applicationInfo.find(key) != applicationInfo.end(); }
-		inline bool isInApplicationInfo(std::string key) { return applicationInfoStringToKeyMap.find(key) != applicationInfoStringToKeyMap.end(); }
+		inline bool isInApplicationInfo(std::string key) { return applicationInfoStringToKeyMap.find(key.substr(1)) != applicationInfoStringToKeyMap.end(); }
 
 		inline size_t getInfoSpaceAmount(){ return infoSpaces.size(); } //Returns amount of info spaces to set ID of info space upon creation
 
@@ -64,7 +65,7 @@ namespace Shmingo {
 		//Interaction with public maps ----------------------------------------------------------------
 
 		void setCurrentWorld(World* world); //Sets the current world object to be used in other parts of the application
-		void addInfoSpace(InfoSpace* infoSpace) { infoSpaces.push_back(infoSpace); } //Adds info space pointer to list
+		void addInfoSpace(InfoSpace* infoSpace) { infoSpaces.push_back(infoSpace);} //Adds info space pointer to list
 		void removeInfoSpace(GLuint offset) { infoSpaces.erase(infoSpaces.begin() + offset); } //Removes info space from list at provided offset
 
 		//Application wide information

@@ -36,8 +36,8 @@ void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
 	
 	if(width == 0 || height == 0) return; //Prevent division by zero
 
-	float oldWidth = se_application.getWindow()->getWidth(); //Get old window dimensions a ratio is sometimes needed
-	float oldHeight = se_application.getWindow()->getHeight();
+	float oldWidth = (float)se_application.getWindow()->getWidth(); //Get old window dimensions a ratio is sometimes needed
+	float oldHeight = (float)se_application.getWindow()->getHeight();
 
 	se_application.getWindow()->setDimensions(width, height);
 	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, (float)width, (float)height, 0.1f, 100.0f));

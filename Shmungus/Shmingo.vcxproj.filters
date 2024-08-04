@@ -19,6 +19,9 @@
     <Filter Include="src\engine\core">
       <UniqueIdentifier>{EA741D25-5600-8BE9-5F11-0EDECB1BE7E9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\engine\main">
+      <UniqueIdentifier>{06B42225-723F-90E9-7B50-13DEE75AECE9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\engine\utilities">
       <UniqueIdentifier>{3DA0BBC8-292F-4592-D24D-598DBEBB5538}</UniqueIdentifier>
     </Filter>
@@ -42,6 +45,9 @@
     </Filter>
     <Filter Include="src\layers\info layers">
       <UniqueIdentifier>{972BAF8E-8325-D8E0-6C92-6EF1582B3E4D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\layers\main">
+      <UniqueIdentifier>{80146C6A-EC9F-D92E-F5B0-5C2361BB352F}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\layers\menu layers">
       <UniqueIdentifier>{C06B31AD-AC65-5AFF-95D2-F00F816BC06B}</UniqueIdentifier>
@@ -99,9 +105,6 @@
     <ClInclude Include="src\display\Window.h">
       <Filter>src\display</Filter>
     </ClInclude>
-    <ClInclude Include="src\engine\ShmingoApp.h">
-      <Filter>src\engine</Filter>
-    </ClInclude>
     <ClInclude Include="src\engine\core\Engine.h">
       <Filter>src\engine\core</Filter>
     </ClInclude>
@@ -110,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="src\engine\core\sepch.h">
       <Filter>src\engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\engine\main\ShmingoApp.h">
+      <Filter>src\engine\main</Filter>
     </ClInclude>
     <ClInclude Include="src\engine\utilities\font\FontUtil.h">
       <Filter>src\engine\utilities\font</Filter>
@@ -132,11 +138,11 @@
     <ClInclude Include="src\events\EventHandler.h">
       <Filter>src\events</Filter>
     </ClInclude>
-    <ClInclude Include="src\layers\Layer.h">
-      <Filter>src\layers</Filter>
+    <ClInclude Include="src\layers\main\Layer.h">
+      <Filter>src\layers\main</Filter>
     </ClInclude>
-    <ClInclude Include="src\layers\LayerStack.h">
-      <Filter>src\layers</Filter>
+    <ClInclude Include="src\layers\main\LayerStack.h">
+      <Filter>src\layers\main</Filter>
     </ClInclude>
     <ClInclude Include="src\loadingTools\batch loading\Vertex.h">
       <Filter>src\loadingTools\batch loading</Filter>
@@ -218,17 +224,17 @@
     <ClCompile Include="src\display\Window.cpp">
       <Filter>src\display</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\ShmingoApp.cpp">
-      <Filter>src\engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\engine\core\ShmingoCore.cpp">
       <Filter>src\engine\core</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\core\sepch.cpp">
       <Filter>src\engine\core</Filter>
     </ClCompile>
-    <ClCompile Include="src\engine\main.cpp">
-      <Filter>src\engine</Filter>
+    <ClCompile Include="src\engine\main\ShmingoApp.cpp">
+      <Filter>src\engine\main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\engine\main\main.cpp">
+      <Filter>src\engine\main</Filter>
     </ClCompile>
     <ClCompile Include="src\engine\utilities\extern\glad.c">
       <Filter>src\engine\utilities\extern</Filter>
@@ -248,17 +254,17 @@
     <ClCompile Include="src\entities\InstancedEntity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\layers\Layer.cpp">
-      <Filter>src\layers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\layers\LayerStack.cpp">
-      <Filter>src\layers</Filter>
-    </ClCompile>
     <ClCompile Include="src\layers\info layers\InfoLayer.cpp">
       <Filter>src\layers\info layers</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\info layers\TopLayer.cpp">
       <Filter>src\layers\info layers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\main\Layer.cpp">
+      <Filter>src\layers\main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\main\LayerStack.cpp">
+      <Filter>src\layers\main</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\menu layers\PauseMenuLayer.cpp">
       <Filter>src\layers\menu layers</Filter>

@@ -83,7 +83,6 @@ void InstancedVertexArray::submitInstanceData(std::shared_ptr<InstancedEntity> i
 	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType);
 
 	instancedEntity->setOffsetInVao(instanceAmount);
-	se_log("Offset in VAO: " << instancedEntity->getOffsetInVao());
 	bindVao();
 
 	for (GLuint i = 0; i < perInstanceInstanceAttribAmt; i++) {
