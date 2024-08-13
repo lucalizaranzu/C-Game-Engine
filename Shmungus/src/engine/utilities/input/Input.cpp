@@ -13,19 +13,19 @@ void mouseDrag_callback(GLFWwindow* window, double x, double y);
 void framebufferResizeCallback(GLFWwindow* window, int width, int height);
 
 
-void setGLFWkeyCallback() {
+void Shmingo::setGLFWkeyCallback() {
 	glfwSetKeyCallback(se_application.getWindow()->getGLFWwindow(), key_callback);
 }
 
-void setGLFWMouseButtonCallback(){
+void Shmingo::setGLFWMouseButtonCallback(){
 	glfwSetMouseButtonCallback(se_application.getWindow()->getGLFWwindow(), mouseButton_callback);
 }
 
-void setGLFWCursorPosCallback(){
+void Shmingo::setGLFWCursorPosCallback(){
 	glfwSetCursorPosCallback(se_application.getWindow()->getGLFWwindow(), mouseDrag_callback);
 }
 
-void setGLFWWindowCallbacks(){
+void Shmingo::setGLFWWindowCallbacks(){
 	glfwSetFramebufferSizeCallback(se_application.getWindow()->getGLFWwindow(), framebufferResizeCallback);
 }
 

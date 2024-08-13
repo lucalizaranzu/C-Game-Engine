@@ -57,8 +57,8 @@ void Shmingo::ShmingoApp::init() {
 
 	//Set up monitor aspect ratio as a global variable
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	setApplicationInfo(Shmingo::se_PRIMARY_MONITOR_WIDTH, "primary_monitor_width", std::to_string(mode->width));
-	setApplicationInfo(Shmingo::se_PRIMARY_MONITOR_HEIGHT, "primary_monitor_height", std::to_string(mode->height));
+	setApplicationInfo(Shmingo::PRIMARY_MONITOR_WIDTH, "primary_monitor_width", std::to_string(mode->width));
+	setApplicationInfo(Shmingo::PRIMARY_MONITOR_HEIGHT, "primary_monitor_height", std::to_string(mode->height));
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -66,7 +66,7 @@ void Shmingo::ShmingoApp::init() {
 
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
-	setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(2));
+	setApplicationInfo(Shmingo::FPS, "fps", std::to_string(2));
 
 
 	se_layerStack.init();
@@ -82,10 +82,10 @@ void Shmingo::ShmingoApp::init() {
 
 	glfwSwapInterval(0); //Disable v sync
 
-	setGLFWkeyCallback();
-	setGLFWMouseButtonCallback();
-	setGLFWWindowCallbacks();
-	setGLFWCursorPosCallback();
+	Shmingo::setGLFWkeyCallback();
+	Shmingo::setGLFWMouseButtonCallback();
+	Shmingo::setGLFWWindowCallbacks();
+	Shmingo::setGLFWCursorPosCallback();
 
 }
 
@@ -100,7 +100,7 @@ void Shmingo::ShmingoApp::update() {
 	timeElapsed += deltaTime;
 
 	if (Shmingo::isTimeMultipleOf(0.2)) {
-		setApplicationInfo(Shmingo::se_FPS, "fps", std::to_string(totalFrames * 5).substr(0, 4)); //First four digits of FPS
+		setApplicationInfo(Shmingo::FPS, "fps", std::to_string(totalFrames * 5).substr(0, 4)); //First four digits of FPS
 		totalFrames = 0;
 	}
 
@@ -108,6 +108,7 @@ void Shmingo::ShmingoApp::update() {
 
 	se_masterRenderer.update();
 	se_uniformBuffer.setElapsedTime((float)timeElapsed);
+
 
 	window->swapBuffers();
 	glfwPollEvents();
@@ -142,7 +143,7 @@ uint8_t Shmingo::ShmingoApp::getTextColor(char c){
 	}
 	else {
 		// Return an invalid value if the character is not in the expected range
-		return 0xFF; //Default to 0
+		return 0x3F; //Default to 0
 	}
 }
 

@@ -27,7 +27,7 @@ public:
 	inline GLuint getVaoID() { return this->vaoID; };
 	inline GLuint getVertexCount() { return vertexCount; };
 	inline GLuint getIndexCount() { return indexCount; };
-	inline unsigned int getAttribAmount() { return attribAmount; };
+	inline size_t getAttribAmount() { return attribAmount; };
 
 	inline Texture2D getTexture(GLuint slot) { return textureList[slot]; };
 
@@ -43,7 +43,7 @@ protected:
 
 	GLuint indexVboID = 0; //Same idea, one VBO per VAO
 
-	unsigned int attribAmount = 0; //Defaults to 0, declare this in child constructors!
+	size_t attribAmount = 0; //Defaults to 0, declare this in child constructors!
 
 
 	//Useful information for member functions to know --------------------------------------

@@ -19,13 +19,12 @@ InfoSpace::InfoSpace(const InfoSpace& other) {
 
 void InfoSpace::update() {
 
-	if (Shmingo::isTimeMultipleOf(0.5)) {
+	if (Shmingo::isTimeMultipleOf(1)) {
 		updateDynamicTextBoxes();
 	}
+
 	render();
 }
-
-
 
 
 
@@ -34,8 +33,36 @@ void InfoSpace::render(){
 }
 
 void InfoSpace::submitTextBox(TextBox textBox){
-	m_textVertexArray->submitStaticText(textBox); //Submit the text box to the vertex array
-	m_textBoxes.push_back(textBox); //Add the text box to the list
+
+	TextBox& textBoxRef = textBox; //Get reference to the text box
+
+	size_t bufferSize = textBoxRef.getTextBufferSize(); //Get the size of the text buffer
+
+	m_textBoxes.push_back(textBoxRef); //Add the text box to the list
+	m_textVertexArray->submitStaticText(textBoxRef); //Submit the text box to the vertex array
+
+	//Shift all dynamic text boxes to the right
+	for (DynamicTextBox& textBox : m_dynamicTextBoxes) {
+		textBox.setVaoCharOffset(textBox.getCharacterOffsetInVao() + bufferSize); //Update the character offset in the VAO
+	}
+}
+
+void InfoSpace::removeTextBox(GLuint offset){
+
+	GLuint bufferOffset = m_textBoxes[offset].getCharacterOffsetInVao(); //Get the buffer offset of the text box
+	size_t bufferSize = m_textBoxes[offset].getTextBufferSize(); //Get the size of the text buffer
+
+	m_textVertexArray->removeTextBox(bufferOffset, bufferSize); //Remove the text box from the vertex array
+	m_textBoxes.erase(m_textBoxes.begin() + offset); //Remove the text box from the list
+
+	for (GLuint i = offset; i < m_textBoxes.size(); i++) {
+		TextBox& currentTextBox = m_textBoxes[i]; //Gets reference to the current dynamic text box being updated
+		currentTextBox.setVaoCharOffset(currentTextBox.getCharacterOffsetInVao() - bufferSize); //Update the character offset in the VAO
+	}
+
+	for (DynamicTextBox& textBox : m_dynamicTextBoxes) {
+		textBox.setVaoCharOffset(textBox.getCharacterOffsetInVao() - bufferSize); //Update the character offset in the VAO
+	}
 }
 
 void InfoSpace::submitDynamicTextBox(DynamicTextBox textBox){
@@ -43,8 +70,21 @@ void InfoSpace::submitDynamicTextBox(DynamicTextBox textBox){
 	m_dynamicTextBoxes.push_back(textBox); //Add the text box to the list
 }
 
+void InfoSpace::removeDynamicTextBox(GLuint offset){
+	GLuint bufferOffset = m_dynamicTextBoxes[offset].getCharacterOffsetInVao(); //Get the buffer offset of the text box
+	size_t bufferSize = m_dynamicTextBoxes[offset].getTextBufferSize(); //Get the size of the text buffer
+
+	m_textVertexArray->removeTextBox(bufferOffset, bufferSize); //Remove the text box from the vertex array
+	m_dynamicTextBoxes.erase(m_dynamicTextBoxes.begin() + offset); //Remove the text box from the list
+
+	for (GLuint i = offset; i < m_dynamicTextBoxes.size(); i++) {
+		DynamicTextBox& currentDynamictextBox = m_dynamicTextBoxes[i]; //Gets reference to the current dynamic text box being updated
+		currentDynamictextBox.setVaoCharOffset(currentDynamictextBox.getCharacterOffsetInVao() - bufferSize); //Update the character offset in the VAO
+	}
+}
+
 void InfoSpace::updateDynamicTextBoxes(){
-	for (const auto dynamicTextbox : m_dynamicTextBoxes) {
+	for (auto& dynamicTextbox : m_dynamicTextBoxes) {
 		m_textVertexArray->updateDynamicTextBox(dynamicTextbox); //Update all dynamic text boxes
 	}
 }

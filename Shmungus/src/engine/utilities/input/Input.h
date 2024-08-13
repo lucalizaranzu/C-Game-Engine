@@ -5,14 +5,19 @@
 
 #include "Matrices.h"
 
-//Key callback function
-void setGLFWkeyCallback();
+namespace Shmingo {
+	void callDeferredSpacingRecalculation();
 
-//Mouse button callback function
-void setGLFWMouseButtonCallback();
 
-//Mouse callback function
-void setGLFWWindowCallbacks();
+	//Key callback function
+	void setGLFWkeyCallback();
 
-//Window callback function
-void setGLFWCursorPosCallback();
+	//Mouse button callback function
+	void setGLFWMouseButtonCallback();
+
+	//Mouse callback function
+	void setGLFWWindowCallbacks();
+
+	//Window callback function
+	void setGLFWCursorPosCallback();
+}

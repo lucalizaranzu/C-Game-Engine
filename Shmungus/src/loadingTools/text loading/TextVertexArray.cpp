@@ -33,11 +33,9 @@ TextVertexArray::TextVertexArray(std::string fontName) : fontName(fontName){
 
 	glGenBuffers(1, &vertexPositionsVboID); //Generates a vertex buffer for positions
 	glGenBuffers(1, &texCoordsVboID); //Generates a vertex buffer for texCoords
-	glGenBuffers(1, &charTextureVboID); //Generates a vertex buffer for charTexture
-	glGenBuffers(1, &colorVboID); //Generates a vertex buffer for color
-	glGenBuffers(1, &positionsVboID); //Generates a vertex buffer for positions
-	glGenBuffers(1, &scaleVboID); //Generates a vertex buffer for scale
 
+	glGenBuffers(1, &positionsVboID); //Generates a vertex buffer for positions
+	glGenBuffers(1, &charDataVboID); //Generates a vertex buffer for charData (Containing texture ID, color, and scale)
 
 	glBindVertexArray(vaoID); //Bind VAO
 
@@ -53,24 +51,22 @@ TextVertexArray::TextVertexArray(std::string fontName) : fontName(fontName){
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 
 	//Per instance vertex attributes
-	glBindBuffer(GL_ARRAY_BUFFER, charTextureVboID);
-	glBufferData(GL_ARRAY_BUFFER, 2000, nullptr, GL_DYNAMIC_DRAW);
-	glVertexAttribIPointer(2, 1, GL_UNSIGNED_BYTE, 0, nullptr);
-	glVertexAttribDivisor(2, 1); //Per instance attribute
-
-	glBindBuffer(GL_ARRAY_BUFFER, colorVboID);
-	glBufferData(GL_ARRAY_BUFFER, 2000, nullptr, GL_DYNAMIC_DRAW);
-	glVertexAttribIPointer(3, 1, GL_UNSIGNED_BYTE, 0, nullptr);
-	glVertexAttribDivisor(3, 1); //Per instance attribute
 
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * 2000, nullptr, GL_DYNAMIC_DRAW);
-	glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * 1000, nullptr, GL_DYNAMIC_DRAW);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+	glVertexAttribDivisor(2, 1); //Per instance attribute
+
+	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
+	glBufferData(GL_ARRAY_BUFFER, 3000, nullptr, GL_DYNAMIC_DRAW);
+
+	glVertexAttribIPointer(3, 1, GL_UNSIGNED_BYTE, 3, (const void*)offsetof(Shmingo::GlyphData, charTextureID));
+	glVertexAttribDivisor(3, 1); //Per instance attribute
+
+	glVertexAttribIPointer(4, 1, GL_UNSIGNED_BYTE, 3, (const void*)offsetof(Shmingo::GlyphData, color));
 	glVertexAttribDivisor(4, 1); //Per instance attribute
 
-	glBindBuffer(GL_ARRAY_BUFFER, scaleVboID);
-	glBufferData(GL_ARRAY_BUFFER, 2000, nullptr, GL_DYNAMIC_DRAW);
-	glVertexAttribIPointer(5, 1, GL_UNSIGNED_BYTE,0, nullptr);
+	glVertexAttribIPointer(5, 1, GL_UNSIGNED_BYTE, 3, (const void*)offsetof(Shmingo::GlyphData, scale));
 	glVertexAttribDivisor(5, 1); //Per instance attribute
 
 }
@@ -81,52 +77,46 @@ TextVertexArray::~TextVertexArray() {
 
 
 void TextVertexArray::submitStaticText(TextBox& textBox){
-
 	textBox.setVaoCharOffset(staticTextBoxEmplaceOffset); //Sets char offset to end of static text box section
 
-	GLuint charAmt = loadTempBuffers(&textBox); //Populate the temp buffers and get offset of text box in buffer
+	//Shift all dynamic text boxes to the right
 
-	GLuint textBoxOffset = textBox.getCharacterOffsetInVao(); //Get offset of text box in buffer
+	if (staticTextBoxEmplaceOffset != instanceAmount) {
+		shiftBuffersRight(staticTextBoxEmplaceOffset, textBox.getTextBufferSize());
+	}
 
-	setGLBufferData(textBoxOffset, charAmt); //Copies the temp buffers to the GL buffers
+	allocateSpaceForTextBox(&textBox);
 
-	instanceAmount += charAmt; //Increment instance (glyph) amount
-	staticTextBoxEmplaceOffset += charAmt; //Increment offset for next static text box
+	uploadTextBox(&textBox); //Populate the temp buffers and get offset of text box in buffer
+	staticTextBoxEmplaceOffset += textBox.getTextBufferSize(); //Increment static text box offset
+
 }
 
 void TextVertexArray::submitDynamicText(DynamicTextBox& textBox){
+	textBox.setVaoCharOffset(instanceAmount); //Sets char offset to end of static text box section
 
-	textBox.setVaoCharOffset(instanceAmount); //Sets char offset to end of buffer
-	GLuint charAmt = loadTempBuffers(&textBox); //Populate the temp buffers and get offset of text box in buffer
-	GLuint textBoxOffset = textBox.getCharacterOffsetInVao(); //Get offset of text box in buffer
+	allocateSpaceForTextBox(&textBox);
 
-	setGLBufferData(textBoxOffset, charAmt); //Copies the temp buffers to the GL buffers
+	uploadDynamicTextBox(&textBox);
 
-	instanceAmount += charAmt; //Increment instance (glyph) amount
+	updateDynamicTextBox(textBox);
 }
 
-void TextVertexArray::updateDynamicTextBox(DynamicTextBox textBox){
+void TextVertexArray::updateDynamicTextBox(DynamicTextBox& textBox){
 
-	std::vector<std::string> sections = textBox.getSections(); //Get sections of text box
+	reuploadDynamicTextBox(textBox);
 
-	bool pastFirstDynamic = false; //Flag for if the first dynamic section has been passed
-	size_t firstDynamicSectionIndex = 0;
+	
 
-	int sectionIndex = 0;
-	while(!pastFirstDynamic) { //Loops until we hit the first dynamic section
-		if (textBox.isSectionDynamic(sections[sectionIndex])) {
-			pastFirstDynamic = true;
-			firstDynamicSectionIndex = sectionIndex; //Gets offset of first dynamic section, we wont have to shift anything before this
-			break;
-		}
-		sectionIndex++;
-	}
+}
 
-	reuploadDynamicText(textBox, firstDynamicSectionIndex); //Reuploads dynamic text to buffer
+void TextVertexArray::removeTextBox(GLuint offset, size_t textboxSize){
+	instanceAmount -= textboxSize; //Decrements instance amount by size of text box
+	shiftBuffersLeft(offset, textboxSize); //Shifts buffer data to the left by the size of the text box
+
 }
 
 void TextVertexArray::recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight){
-
 	bindVao();
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
 
@@ -150,329 +140,301 @@ void TextVertexArray::recalculateSpacing(float oldWidth, float oldHeight, float 
 
 }
 
-void TextVertexArray::cleanUp(){
-	delete textureTempBuffer;
-	delete colorTempBuffer;
-	delete positionsTempBuffer;
-	delete scaleTempBuffer;
-}
 
-void TextVertexArray::setCharTexture(uint8_t textureID, GLuint charOffset){
-	textureTempBuffer[charOffset] = textureID;
-}
+void TextVertexArray::reuploadDynamicTextBox(DynamicTextBox& textBox){
 
-void TextVertexArray::setCharSize(uint8_t size, GLuint charOffset){
-	scaleTempBuffer[charOffset] = size;
-}
+	std::vector<std::string> sections = textBox.getSections(); //Get sections of text box
 
-void TextVertexArray::setCharColor(uint8_t colorCode, GLuint charOffset){
-	colorTempBuffer[charOffset] = colorCode;
-}
+	size_t textBoxOffset = textBox.getCharacterOffsetInVao(); //Index of current character in buffer
+	size_t firstDynamicSectionIndex = textBox.getFirstDynamicSectionIndex(); //Index of first section in buffer
 
-void TextVertexArray::setCharPosition(vec2 position, GLuint charOffset){
-	positionsTempBuffer[2 * charOffset] = position.x;
-	positionsTempBuffer[2 * charOffset + 1] = position.y;
-}
-
-void TextVertexArray::reuploadDynamicText(DynamicTextBox textBox, size_t firstSectionIndex){
-
-	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
-
-	GLuint textBoxOffset = textBox.getCharacterOffsetInVao(); //Index of current character in buffer
-	size_t bufferStartIndex = textBox.getSectionOffsetsNoSpaces()[firstSectionIndex];
+	size_t offsetInBuffer = textBoxOffset + textBox.getSectionBufferOffset(firstDynamicSectionIndex); //Index of current character in buffer
 
 	float fontSize = (float)textBox.getFontSize();
 	float lineSpacing = (float)textBox.getLineSpacing();
+	vec2 boundingBox = textBox.getSize();
 	vec2 position = textBox.getPosition();
 
-	size_t bufferSize = textBox.getSectionOffsetsNoSpaces()[firstSectionIndex] * 2 * sizeof(float);
-
-	bindVao();
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	float* positionsBuffer = static_cast<float*>(glMapBufferRange(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), bufferSize, GL_MAP_WRITE_BIT)); //Maps buffer to memory
-
-	float startingX = positionsBuffer[0]; //X position of first character in buffer
-	float startingY = positionsBuffer[1]; //Y position of first character in buffer
-
 	//Complicated way of getting line width from existing data without recalculating from scratch
-	float currentLineWidth = (positionsBuffer[2 * (bufferStartIndex) - 2] - startingX);
-	float yDistanceToDynamicSection = (startingY - positionsBuffer[2 * (bufferStartIndex)-1]) * 39.0625f / fontSize; //Y position of first dynamic section relative to top of box converted to lines
-
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+	float yDistanceToDynamicSection = (position.y - textBox.getPointerPositionBeforeDynamicSection().y) * 39.0625f / fontSize; //Y position of first dynamic section relative to top of box converted to lines
 
 	//int startingLine = ();
 
 	std::string::iterator c;
 
-	float charX = startingX + currentLineWidth; //Can start from x position of first character we change
+	float charX = position.x; //Can start from x position of first character we change
 	float charY = (-1.0f * position.y) - (lineSpacing * (std::floor(yDistanceToDynamicSection) + 1)) * fontSize / 100.0f; //Y position of first dynamic section relative to top of box
 
-	currentLineWidth = currentLineWidth * (5.0f / resolutionScalingFactor); //I dont fucking know why I have to do this after setting charX these things should be in the same units but theyre not
+	vec2 pointerPosition = vec2(charX, charY); //To pass as reference
 
-	GLuint charAmt = 0;
-	GLuint totalCharAmt = 0;
-	for (int i = firstSectionIndex; i < textBox.getSections().size(); i++) {
+	size_t totalCharAmt = 0;
 
-		std::string section = textBox.getSections().at(i); //Current section starting at first dynamic section
-		if (textBox.isSectionDynamic(section)) {
+	for (int i = 0; i < sections.size(); i++) {
 
-			uint8_t currentColor = 0xFF; //Default color is white
-			GLuint currentIndex = 0;
+		std::string text = textBox.compileSection(i); //Get text of section
+		bool isSectionDynamic = textBox.isSectionDynamic(i); //Check if section is dynamic
 
-			std::string text = se_application.getApplicationInfo(section); //Get dynamic text
+		totalCharAmt += uploadTextToTempBuffers(text, totalCharAmt, pointerPosition, textBox.getFontSize(), textBox.getLineSpacing(), boundingBox, position, textBox.getDynamicSectionDefaultColor(i));
+		
+		if (isSectionDynamic) {
 
-			if (firstSectionIndex > 0) {
-				if (textBox.getSections()[firstSectionIndex - 1].back() == ' ') {
-					charX += (float)(se_application.getCharacterFontInfo(' ').Advance) * fontSize / 66000.0f; //Advance by space character width
-				}
-			}
+			size_t sectionSize = textBox.getSectionSize(i); //Get size of section
+			size_t neededBlanks = textBox.getMaxDynamicTextSize() - sectionSize; //Get amount of padding needed
 
-
-			for (c = text.begin(); c != text.end(); c++) { //Add 1 to skip the § symbol
-
-				Shmingo::Character currentChar = se_application.getCharacterFontInfo(*c); //Get glyph info about current character
-				float totalCharSpace = (float)(currentChar.Advance) * fontSize / 10000.0f; //Total space taken up by a character
-
-				setCharColor(currentColor, charAmt);
-
-				//Check for special characters
-				if (*c == '\n') { //New line
-					charY -= lineSpacing * 256.0f * fontSize / 10000.0f; //Multiply by 256 to get pixel value
-					charX = position.x; //Reset x position for new line
-					currentIndex++; //Increment index
-					continue; //Skip remaining part of loop
-				}
-				else if (*c == ' ') {//Space character, avoid logic
-					charX += (float)(currentChar.Advance) * fontSize / 66000.0f; //Advance by space character width
-					currentIndex++; //Increment index
-					continue; //Skip remaining part of loop
-				}
-				else if (*c == '§') {
-
-					char nextChar = text.at(currentIndex + 1); //Gets char after the § symbol
-					try {
-						uint8_t colorCode = se_application.getTextColor(nextChar); //Get color code 
-						currentColor = colorCode;
-					}
-					catch (const std::out_of_range& e) {
-						se_error("Color code does not exist!");
-					}
-
-					c += 1; //Increment iterator by one to avoid §x, since loop will automatically increment by one as well
-					currentIndex += 2; //Increment index by two to avoid §x, since we will skip the section of the loop where index is incremented once
-
-					continue; //Skip remaining  part of loop
-				}
-				else {
-					currentColor = 0xFF; //Default color is white
-				}
-
-
-				//Fill to next line logic ---------------------------
-				if (currentLineWidth + totalCharSpace > textBox.getSize().x) { //Checks if line width is greater than text box width
-
-					charY -= lineSpacing * fontSize / 156.25f; //Multiply by 256 to get pixel value
-					charX = position.x;
-
-					//currentIndex = 0; //Reset current Index
-					currentLineWidth = 0;
-				}
-				//---------------------------------------------------
-
-				setCharPosition(vec2(charX + (fontSize * (float)currentChar.Bearing.x / 50000.0f),
-					charY + (fontSize * (float)currentChar.Bearing.y / 50000.0f)),
-					charAmt);
-				setCharTexture(currentChar.TextureID, charAmt);
-
-				charAmt++; //Increment instance count
-				currentLineWidth += totalCharSpace; //Add space taken up by character to line width
-				currentIndex++;
-
-				charX += resolutionScalingFactor * (float)(currentChar.Advance) * fontSize / 50000.0f;
-
-			}
-			setGLBufferDataNoScale(textBoxOffset + bufferStartIndex + totalCharAmt, charAmt); //Copies the temp buffers to the GL buffers
-			totalCharAmt += charAmt;
-			charAmt = 0;
-		}
-		else {
-			for (c = section.begin(); c != section.end(); c++) {
-
-				Shmingo::Character currentChar = se_application.getCharacterFontInfo(*c); //Get glyph info about current character
-				std::size_t index = std::distance(section.begin(), c);
-				float totalCharSpace = (float)(currentChar.Advance) * fontSize / 10000.0f; //Total space taken up by a character
-
-				//Check for special characters
-				if (*c == '\n') { //New line
-					charY -= lineSpacing * 256.0f * fontSize / 10000.0f; //Multiply by 256 to get pixel value
-					charX = position.x; //Reset x position for new line
-					continue; //Skip remaining part of loop
-				}
-				else if (*c == ' ') {//Space character, avoid logic
-					charX += (float)(currentChar.Advance) * fontSize / 66000.0f; //Advance by space character width
-					continue; //Skip remaining part of loop
-				}
-
-				//Fill to next line logic ---------------------------
-				if (currentLineWidth + totalCharSpace > textBox.getSize().x) { //Checks if line width is greater than text box width
-
-					charY -= lineSpacing * fontSize / 156.25f; //Multiply by 256 to get pixel value
-					charX = position.x;
-
-					//currentIndex = 0; //Reset current Index
-					currentLineWidth = 0;
-				}
-				//---------------------------------------------------
-
-				setCharPosition(vec2(charX + (fontSize * (float)currentChar.Bearing.x / 50000.0f),
-					charY + (fontSize * (float)currentChar.Bearing.y / 50000.0f)),
-					charAmt);
-
-
-				charAmt++; //Increment instance count
-				currentLineWidth += totalCharSpace; //Add space taken up by character to line width
-
-				charX += resolutionScalingFactor * (float)(currentChar.Advance) * fontSize / 50000.0f;
-
-			}
-			setGLBufferDataPositionsOnly(textBoxOffset + bufferStartIndex + totalCharAmt, charAmt); //Copies the temp buffers to the GL buffers
-			totalCharAmt += charAmt;
-			charAmt = 0;
+			markRangeForSkip(totalCharAmt, neededBlanks); //Marks the remaining space in the buffer as unused
+			totalCharAmt += neededBlanks; //Increment total character amount by amount of blanks
 		}
 	}
+	setGLBufferData(offsetInBuffer, totalCharAmt);
+}
+
+void TextVertexArray::allocateSpaceForTextBox(TextBox* textBox){
+
+	size_t textboxSize = textBox->getTextBufferSize(); //Get size of text box
+	instanceAmount += textboxSize; //Increment instance amount
 }
 
 
+void TextVertexArray::uploadTextBox(TextBox* textBox) {
 
+	vec2 position = vec2(textBox->getPosition().x, (-1.0f * textBox->getPosition().y) - textBox->getFontSize() / 100.0f);
 
-void TextVertexArray::setGLBufferData(GLuint textBoxOffset, GLuint charAmt) {
+	//Get information about textbox to avoid pointer chasing
+	std::string text = textBox->getText();
+	GLuint offsetInBuffer = textBox->getCharacterOffsetInVao();
+	vec2 pointerPosition = position; //To pass as reference
+	vec2 textBoxPosition = position; //To pass original position as value
+	vec2 boundingBox = textBox->getSize();
+	GLuint fontSize = textBox->getFontSize();
+	GLuint lineSpacing = textBox->getLineSpacing();
 
-	bindVao();
-
-	glBindBuffer(GL_ARRAY_BUFFER, charTextureVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset, charAmt, textureTempBuffer);
-
-	glBindBuffer(GL_ARRAY_BUFFER, colorVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset, charAmt, colorTempBuffer);
-
-	glBindBuffer(GL_ARRAY_BUFFER, scaleVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset, charAmt, scaleTempBuffer);
-
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), 2 * charAmt * sizeof(float), positionsTempBuffer);
+	size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, boundingBox, textBoxPosition, textBox->getDefaultColor());
+	setGLBufferData(offsetInBuffer, charAmt);
+	
 }
 
-void TextVertexArray::setGLBufferDataNoScale(GLuint textBoxOffset, GLuint charAmt) {
+void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
+	if (textBox->isSectionDynamic(0)) {
+		return; //Do nothing because the reupload function covers the entire text box
+	}
 
-	bindVao();
+	else {
+		vec2 position = vec2(textBox->getPosition().x, (-1.0f * textBox->getPosition().y) - textBox->getFontSize() / 100.0f);
 
-	glBindBuffer(GL_ARRAY_BUFFER, charTextureVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset, charAmt, textureTempBuffer);
+		//Get information about textbox to avoid pointer chasing
+		std::string text = textBox->getSections()[0]; //Upload only first section
+		GLuint offsetInBuffer = textBox->getCharacterOffsetInVao();
+		vec2 pointerPosition = position; //To pass as reference
+		vec2 textBoxPosition = position; //To pass original position as value
+		vec2 boundingBox = textBox->getSize();
+		GLuint fontSize = textBox->getFontSize();
+		GLuint lineSpacing = textBox->getLineSpacing();
 
-	glBindBuffer(GL_ARRAY_BUFFER, colorVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset, charAmt, colorTempBuffer);
+		size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, boundingBox, textBoxPosition, textBox->getDefaultColor());
 
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), 2 * charAmt * sizeof(float), positionsTempBuffer);
+		textBox->setpointerPositionBeforeDynamicText(pointerPosition); //Set starting pointer position for dynamic text
+		setGLBufferData(offsetInBuffer, charAmt);
+	}
+	reuploadDynamicTextBox(*textBox);
 }
 
-void TextVertexArray::setGLBufferDataPositionsOnly(GLuint textBoxOffset, GLuint charAmt) {
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), 2 * charAmt * sizeof(float), positionsTempBuffer);
-}
-
-GLuint TextVertexArray::loadTempBuffers(TextBox* textBox) {
+size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor){
+	size_t charAmt = 0;
 
 	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
 
-	int currentIndex = 0; //Index of current character in text, including spaces and symbols
-	float currentLineWidth = 0; //Current width of line
-
-	float fontSize = (float)textBox->getFontSize();
-	float lineSpacing = (float)textBox->getLineSpacing();
-	vec2 position = textBox->getPosition();
-
-	GLuint charAmt = 0;
-	GLuint totalCharOffset = textBox->getCharacterOffsetInVao(); //Index of current character in buffer
-
 	std::string::iterator c;
+	uint8_t colorCode = defaultColor; //Default color is white
 
-	std::string text = textBox->getText();
-
-	//Set position of text box to just be x
-	float charX = position.x;
-	//Correct y position to be in correct position after character bearing, also change sign in order to clamp y between 0 and 1 instead of 0 and -1
-	float charY = (-1.0f * position.y) - lineSpacing * fontSize / 100.0f;
-
-	uint8_t currentColor = 0xFF; //Default color is white
+	bool resetColor = true;
 
 	for (c = text.begin(); c != text.end(); c++) {
 
-		Shmingo::Character currentChar = se_application.getCharacterFontInfo(*c); //Get glyph info about current character
-		float totalCharSpace = (float)(currentChar.Advance) * fontSize / 10000.0f; //Total space taken up by a character
-
-		setCharColor(currentColor, charAmt); //Defaults to white
-		std::size_t index = std::distance(text.begin(), c);
-
 		//Check for special characters
 		if (*c == '\n') { //New line
-			charY -= lineSpacing * 256.0f * fontSize / 10000.0f; //Multiply by 256 to get pixel value
-			charX = position.x; //Reset x position for new line
-			currentIndex++; //Increment index
-			continue; //Skip remaining part of loop
+			pointerPosition.y -= lineSpacing * fontSize / 256.25f; //Multiply by 256 to get pixel value
+			pointerPosition.x = boundingBox.x; //Reset x position for new line
+
+			colorCode = 0x3F;
+			resetColor = true;
+			continue;
 		}
 		else if (*c == ' ') {//Space character, avoid logic
-			charX += (float)(currentChar.Advance) * fontSize / 66000.0f; //Advance by space character width
-			currentIndex++; //Increment index
-			continue; //Skip remaining part of loop
+			pointerPosition.x += resolutionScalingFactor * fontSize / 857.1428f; //Advance by space character width
+
+			if (pointerPosition.x > boundingBox.x) {
+				pointerPosition.y -= lineSpacing * fontSize / 256.25f; //Multiply by 256 to get pixel value
+				pointerPosition.x = boundingBox.x; //Reset x position for new line
+			}
+
+			colorCode = defaultColor;
+			resetColor = true;
+			continue;
 		}
 		else if (*c == '§') {
+			char nextChar = *(c + 1); //Gets char after the § symbol and increments c
+			if (nextChar == '§') {
+				nextChar = *(c + 2);
+				resetColor = false;
+				c++;
+			}
 
-			char nextChar = text.at(currentIndex + 1); //Gets char after the § symbol
 			try {
-				uint8_t colorCode = se_application.getTextColor(nextChar); //Get color code 
-				currentColor = colorCode;
+				colorCode = se_application.getTextColor(nextChar); //Get color code 
 			}
-			catch (const std::out_of_range& e) {
-				se_error("Color code does not exist!");
-			}
+			catch (const std::out_of_range& e) { se_error("Color code" << nextChar << "does not exist!"); }
 
-			c += 1; //Increment iterator by one to avoid §x, since loop will automatically increment by one as well
-			currentIndex += 2; //Increment index by two to avoid §x, since we will skip the section of the loop where index is incremented once
+			c++; //Increment iterator by one to avoid §x, since loop will automatically increment by one as well
 
 			continue; //Skip remaining  part of loop
 		}
-		else {
-			currentColor = 0xFF; //Default color is white
+
+		uploadCharacterToTempBuffers(*c, colorCode, offsetInBuffer, pointerPosition, fontSize, lineSpacing, boundingBox, startingPosition);
+		offsetInBuffer++;
+		if (resetColor) {
+			colorCode = defaultColor; //Default color is white
 		}
+		charAmt++;
+	}
+	return charAmt;
+}
 
 
-		//Fill to next line logic ---------------------------
-		if (currentLineWidth + totalCharSpace > textBox->getSize().x) { //Checks if line width is greater than text box width
+void TextVertexArray::uploadCharacterToTempBuffers(char c, uint8_t colorCode, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition) {
 
-			charY -= lineSpacing * fontSize / 156.25f; //Multiply by 256 to get pixel value
-			charX = position.x;
+	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
 
-			//currentIndex = 0; //Reset current Index
-			currentLineWidth = 0;
-		}
-		//---------------------------------------------------
+	Shmingo::Character charInfo = se_application.getCharacterFontInfo(c); //Get glyph info about current character
+	float totalCharSpace = (float)(charInfo.Advance) * fontSize / 10000.0f; //Total space taken up by a character
 
-		setCharPosition(vec2(charX + (fontSize * (float)currentChar.Bearing.x / 50000.0f),
-			charY + (fontSize * (float)currentChar.Bearing.y / 50000.0f)),
-			charAmt);
-		setCharTexture(currentChar.TextureID, charAmt);
-		setCharSize((uint8_t)fontSize, charAmt);
+	//Fill to next line logic ---------------------------
+	if (pointerPosition.x + totalCharSpace > boundingBox.x) { //Checks if line width is greater than text box width
 
-		currentLineWidth += totalCharSpace; //Add space taken up by character to line width
-		currentIndex++; //Increment index
-		totalCharOffset++;
+		pointerPosition.y -= lineSpacing * fontSize / 156.25f; //Multiply by 256 to get pixel value
+		pointerPosition.x = startingPosition.x; //Reset x position for new line
+	}
+	//---------------------------------------------------
 
-		charX += resolutionScalingFactor * (float)(currentChar.Advance) * fontSize / 50000.0f;
-		//Vertex object wide
-		charAmt++; //Increment instance count
-		//End of char loop
+	setCharPosition(vec2(pointerPosition.x + (fontSize * (float)charInfo.Bearing.x / 50000.0f),
+		pointerPosition.y + (fontSize * (float)charInfo.Bearing.y / 50000.0f)),
+		offsetInBuffer);
+	setCharData(Shmingo::GlyphData(charInfo.TextureID, colorCode, (uint8_t)fontSize), offsetInBuffer);
+
+	pointerPosition.x += resolutionScalingFactor * (float)(charInfo.Advance) * fontSize / 50000.0f;
+	offsetInBuffer++; //Increment instance count
+}
+
+
+
+
+void TextVertexArray::cleanUp() {
+
+	glDeleteBuffers(1, &vertexPositionsVboID);
+	glDeleteBuffers(1, &texCoordsVboID);
+	glDeleteBuffers(1, &positionsVboID);
+	glDeleteBuffers(1, &charDataVboID);
+
+	glDeleteVertexArrays(1, &vaoID);
+
+	delete charDataTempBuffer;
+	delete positionsTempBuffer;
+}
+
+
+void TextVertexArray::setCharData(Shmingo::GlyphData data, size_t offset) {
+	charDataTempBuffer[offset] = data;
+}
+
+void TextVertexArray::setCharPosition(vec2 position, size_t charOffset) {
+	positionsTempBuffer[2 * charOffset] = position.x;
+	positionsTempBuffer[2 * charOffset + 1] = position.y;
+}
+
+void TextVertexArray::markCharForSkip(size_t offset) {
+	positionsTempBuffer[2 * offset] = 0.0f;
+	positionsTempBuffer[2 * offset + 1] = 0.0f;
+
+	charDataTempBuffer[offset] = Shmingo::GlyphData(0, 0x80, 0); //Sets unused color flag to 0b10000000, signaling the shaders to skip this character
+}
+
+void TextVertexArray::markRangeForSkip(size_t bufferOffset, size_t skipAmt){
+	for (int i = 0; i < skipAmt; i++) {
+		markCharForSkip(bufferOffset + i);
+	}	
+}
+
+void TextVertexArray::setGLBufferData(size_t textBoxOffset, size_t charAmt) {
+
+	bindVao();
+
+	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
+	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 3, charAmt * 3, charDataTempBuffer);
+
+	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
+	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), 2 * charAmt * sizeof(float), positionsTempBuffer);
+}
+
+
+void TextVertexArray::setGLBufferDataPositionsOnly(size_t textBoxOffset, size_t charAmt) {
+	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
+	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 2 * sizeof(float), 2 * charAmt * sizeof(float), positionsTempBuffer);
+}
+
+void TextVertexArray::shiftBuffersRight(size_t offset, size_t shiftAmt) {
+
+	GLuint charAmt = instanceAmount - offset; //Amount of characters to shift
+
+	bindVao();
+
+	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
+	void* temp = glMapBufferRange(GL_ARRAY_BUFFER, offset * 2 * sizeof(float), charAmt * 2 * sizeof(float), GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+	if (temp) {
+		memmove(static_cast<float*>(temp) + (shiftAmt * 2), temp, charAmt * 2 * sizeof(float));	//Perform the shift using memmove
+		glUnmapBuffer(GL_ARRAY_BUFFER);	//Unmap the buffer after modification
 	}
 
-	return charAmt; //Return amount of characters submitted
+	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
+	temp = glMapBufferRange(GL_ARRAY_BUFFER, offset * 3, charAmt * 3, GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+	if (temp) {
+		memmove(static_cast<Shmingo::GlyphData*>(temp) + shiftAmt, temp, charAmt * 3);	//Perform the shift using memmove
+		glUnmapBuffer(GL_ARRAY_BUFFER);	//Unmap the buffer after modification
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void TextVertexArray::shiftBuffersLeft(size_t offset, size_t shiftAmt) {
+
+	GLuint charAmt = instanceAmount - offset + shiftAmt; //Amount of characters to shift
+
+	bindVao();
+
+	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
+	//Map starts where the leftmost change will happen
+	void* temp = glMapBufferRange(GL_ARRAY_BUFFER, (offset) * 2 * sizeof(float), charAmt * 2 * sizeof(float), GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+	if (temp) {
+		memmove(static_cast<float*>(temp), static_cast<float*>(temp) + (shiftAmt * 2), charAmt * 2 * sizeof(float));	//Perform the shift using memmove
+		glUnmapBuffer(GL_ARRAY_BUFFER);	//Unmap the buffer after modification
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
+	temp = glMapBufferRange(GL_ARRAY_BUFFER, (offset) * 3, charAmt * 3, GL_MAP_READ_BIT | GL_MAP_WRITE_BIT);
+	if (temp) {
+		memmove(static_cast<Shmingo::GlyphData*>(temp), static_cast<Shmingo::GlyphData*>(temp) + (shiftAmt), charAmt * 3);	//Perform the shift using memmove
+
+		glUnmapBuffer(GL_ARRAY_BUFFER);	//Unmap the buffer after modification
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+void TextVertexArray::printCharDataBuffer() {
+	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
+	uint8_t* data = (uint8_t*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE); //maps buffer to memory
+	for (GLuint i = 0; i < instanceAmount; i++) {
+		se_log("Character " << (char)data[i * 3] << " is at offset " << i << ", with color code " << (int)data[i * 3 + 1]);
+	}
+	glUnmapBuffer(GL_ARRAY_BUFFER); //Unmaps buffer after reading
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

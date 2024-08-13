@@ -26,8 +26,6 @@ SandboxLayer::~SandboxLayer() {
 
 int thingyIndex = 0;
 
-std::shared_ptr<DynamicTextBox> dynamicTextBox;
-
 void SandboxLayer::onAttach() {
 	world.init();
 
@@ -47,10 +45,6 @@ void SandboxLayer::onAttach() {
 	se_uniformBuffer.setAsActive();
 	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
 	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(800, 600));
-
-	dynamicTextBox.reset(new DynamicTextBox("Current FPS: ~fps", ivec2(2, 2), ivec2(2, 2), 1, 1));
-
-
 
 }
 

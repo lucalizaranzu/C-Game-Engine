@@ -7,14 +7,14 @@
 #include "Layer.h"
 #include "ShmingoApp.h"
 
-void enableAttribs(GLuint attribAmount) {
+void enableAttribs(size_t attribAmount) {
 	for (GLuint i = 0; i < attribAmount; i++) {
 		glEnableVertexAttribArray(i);
 	}
 }
 
-void disableAttribs(GLuint attribAmount) {
-	for (GLuint i = 0; i < attribAmount; i++) {
+void disableAttribs(size_t attribAmount) {
+	for (size_t i = 0; i < attribAmount; i++) {
 		glDisableVertexAttribArray(i);
 	}
 }
@@ -66,8 +66,7 @@ void Shmingo::renderText(std::shared_ptr<TextVertexArray> vertexArray, std::shar
 	glBindVertexArray(vertexArray->getVaoID()); //Bind VAO
 
 	enableAttribs(6);
-	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, vertexArray->getInstanceAmount());
-
+	glDrawArraysInstanced(GL_TRIANGLE_STRIP, 0, 6, (GLsizei)vertexArray->getInstanceAmount());
 	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
 	glBindVertexArray(0); //Unbind VAO
 

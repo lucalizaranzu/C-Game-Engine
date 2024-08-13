@@ -53,7 +53,7 @@ public:
 	inline GLuint getIndexCount() { return indexCount; };
 	inline GLuint getInstanceAmount() { return instanceAmount; };
 
-	inline GLuint getAttribAmount() { return attribAmount; };
+	inline size_t getAttribAmount() { return attribAmount; };
 
 
 
@@ -87,7 +87,7 @@ protected:
 
 	Shmingo::EntityType entityType;
 
-	GLuint attribAmount = 0;
+	size_t attribAmount = 0;
 
 	GLuint vaoID = 0; //VAO ID
 	GLuint eboID = 0; //Index Buffer ID

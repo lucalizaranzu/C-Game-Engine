@@ -37,9 +37,22 @@ namespace Shmingo {
 
 	enum ApplicationInfoKey {
 
-		se_FPS,
-		se_PRIMARY_MONITOR_WIDTH,
-		se_PRIMARY_MONITOR_HEIGHT,
+		FPS,
+		PRIMARY_MONITOR_WIDTH,
+		PRIMARY_MONITOR_HEIGHT,
+	};
+
+
+
+
+	/*
+	Represents vertex data sent for a character glyph. Includes its position, unique glyph ID, color including skip flag, and scale.
+	
+	*/
+	struct GlyphData {
+		uint8_t charTextureID;
+		uint8_t color;
+		uint8_t scale;
 	};
 
 	/*

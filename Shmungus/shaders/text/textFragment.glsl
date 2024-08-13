@@ -6,6 +6,7 @@ in VertexData{
     vec2 pass_texCoords;
     flat uint pass_textureID;
     flat uint pass_Color;
+    bool pass_skip;
 }vertexData;
 
 uniform sampler2DArray font;
@@ -21,7 +22,12 @@ vec3 decodeColor(uint encodedColor) {
 }
 
 void main() {
+
+    if(vertexData.pass_skip){
+    	discard;
+	}
     vec4 sampled = vec4(decodeColor(vertexData.pass_Color), texture(font, vec3(vertexData.pass_texCoords.xy, vertexData.pass_textureID)).r);
+    
     
     if(sampled.a < 0.1) {
         discard; // Discard the fragment if the alpha is less than 0.1

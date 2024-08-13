@@ -25,10 +25,10 @@ public:
 	void submitDynamicText(DynamicTextBox& textBox);
 
 
-	void updateDynamicTextBox(DynamicTextBox textBox);
+	void updateDynamicTextBox(DynamicTextBox& textBox);
 
 
-	void removeTextBox(GLuint offset); //TODO change this to take in correct params
+	void removeTextBox(GLuint offset, size_t textboxSize);
 
 
 	void recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight); //Recalculates the spacing between characters when the screen is resized
@@ -37,11 +37,11 @@ public:
 
 	//Getters ------------------------------------------------------------------
 	inline GLuint getVaoID() { return vaoID; };
-	inline GLuint getVertexCount() { return vertexCount; };
-	inline GLuint getIndexCount() { return indexCount; };
-	inline GLuint getInstanceAmount() { return instanceAmount; };
+	inline size_t getVertexCount() { return vertexCount; };
+	inline size_t getIndexCount() { return indexCount; };
+	inline size_t getInstanceAmount() { return instanceAmount; };
 
-	inline GLuint getAttribAmount() { return attribAmount; };
+	inline size_t getAttribAmount() { return attribAmount; };
 
 	inline std::string getFont() { return fontName; };
 
@@ -51,7 +51,7 @@ public:
 
 protected:
 
-	GLuint attribAmount = 0;
+	size_t attribAmount = 0;
 
 	GLuint vaoID = 0; //VAO ID
 
@@ -63,13 +63,15 @@ protected:
 	GLuint positionsVboID = 0;
 	GLuint scaleVboID = 0;
 
+	GLuint charDataVboID = 0;
+
 	std::vector<GLuint> perInstanceVboIDs; //Per instance uniform VBO IDs
 
 	GLuint vertexCount = 0; //Amount of vertices
-	GLuint instanceAmount = 0;
-	GLuint staticTextBoxEmplaceOffset = 0; //Offset for emplacing static text boxes
-	GLuint indexCount = 0; //Amount of indices
-	GLuint maxTextureIndex = 0;
+	size_t instanceAmount = 0;
+	size_t staticTextBoxEmplaceOffset = 0; //Offset for emplacing static text boxes
+	size_t indexCount = 0; //Amount of indices
+	size_t maxTextureIndex = 0;
 
 	std::string fontName;
 
@@ -84,26 +86,44 @@ protected:
 	}
 
 	//Populates gl buffers with data from temp buffers
-	void setGLBufferData(GLuint textBoxOffset, GLuint charAmt);
-	void setGLBufferDataNoScale(GLuint textBoxOffset, GLuint charAmt);
-	void setGLBufferDataPositionsOnly(GLuint textBoxOffset, GLuint charAmt);
+	void setGLBufferData(size_t textBoxOffset, size_t charAmt);
+	void setGLBufferDataPositionsOnly(size_t textBoxOffset, size_t charAmt);
 
 	//Temp buffers -------------------------------------------------------------
 
-	uint8_t* textureTempBuffer = new uint8_t[500];
-	uint8_t* colorTempBuffer = new uint8_t[500];
 	float* positionsTempBuffer = new float[1000];
-	uint8_t* scaleTempBuffer = new uint8_t[500];
+	Shmingo::GlyphData* charDataTempBuffer = new Shmingo::GlyphData[3000];
 
 	//Populate temp buffers with text box data, returns amount of glyphs in the text box
-	GLuint loadTempBuffers(TextBox* textBox);
+	void uploadTextBox(TextBox* textBox);
+	void uploadDynamicTextBox(DynamicTextBox* textBox);
+
+	size_t uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor);
+
+	void allocateSpaceForTextBox(TextBox* textBox);
 
 	//Subdata methods to set buffer data for character
-	void setCharTexture(uint8_t textureID, GLuint charOffset);
-	void setCharSize(uint8_t size, GLuint charOffset);
-	void setCharColor(uint8_t colorCode, GLuint charOffset);
-	void setCharPosition(vec2 position, GLuint charOffset);
+	
+	void setCharData(Shmingo::GlyphData data, size_t offset);
+	void setCharPosition(vec2 position, size_t charOffset);
 
-	void reuploadDynamicText(DynamicTextBox textBox, size_t firstSectionIndex);
+	//Marks a character to be skipped in the shaders, used for padding for dynamic text
+	void markCharForSkip(size_t offset);
+	void markRangeForSkip(size_t bufferOffset, size_t skipAmt);
+
+	//Reuploads dynamic text to the VAO
+	void reuploadDynamicTextBox(DynamicTextBox& textBox);
+
+	//Returns true if the character is to be used as a color code
+	void uploadCharacterToTempBuffers(char c, uint8_t colorCode, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition);
+
+	//Shifts the buffers to the right by shiftAmt
+	void shiftBuffersRight(size_t offset, size_t shiftAmt);
+	void shiftBuffersLeft(size_t offset, size_t shiftAmt);
+
+
+
+	//Debug --------------------------------------------------------------------
+	void printCharDataBuffer();
 
 };
