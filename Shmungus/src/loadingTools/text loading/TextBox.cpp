@@ -6,8 +6,8 @@
 
 std::string removeFirstChar(const std::string& input);
 
-TextBox::TextBox(std::string text, vec2 position, ivec2 size, GLuint fontSize, GLuint lineSpacing) : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text) {
-
+TextBox::TextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment textAlignment) 
+    : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text), textAlignment(textAlignment) {
     setTextBufferSize(); //Sets the size of the text buffer
 }
 
@@ -43,8 +43,8 @@ void TextBox::setTextBufferSize(){
     textBufferSize = size - skipAmt;
 }
 
-DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, uint8_t maxDynamicTextSize)
-    : TextBox(text, position, size, fontSize, lineSpacing), maxDynamicTextSize(maxDynamicTextSize){
+DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, uint8_t maxDynamicTextSize, Shmingo::TextAlignment textAlignment)
+    : TextBox(text, position, size, fontSize, lineSpacing, textAlignment), maxDynamicTextSize(maxDynamicTextSize){
 
     parseText(); //Populates sections
     setAllOffsets(); //Sets offsets for each section

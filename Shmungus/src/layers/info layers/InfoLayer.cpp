@@ -10,8 +10,9 @@ InfoLayer::InfoLayer() : infoSpace(InfoSpace()){
 void InfoLayer::onAttach() {
 	se_layerStack.addListener<InfoLayer, KeyPressEvent>(Shmingo::INFO_LAYER, this, &InfoLayer::keybordCallback);
 
-	infoSpace.submitTextBox(TextBox("§§§KShmingo engine indev : property of scrungly the mutt all rights reserved", vec2(0, 0), ivec2(2, 2), 4, 1));
-	infoSpace.submitDynamicTextBox(DynamicTextBox("Current FPS: ~§§jfps", vec2(0, 0.035), vec2(2, 2), 5, 1, 10));
+	infoSpace.submitTextBox(TextBox("§§§KShmingo engine indev : property of scrungly all rights reserved. This is a longer text thing so I can test overflow alignment with multiple lines"
+		, vec2(0, 0), vec2(0.5f, 2), 4, 1, Shmingo::RIGHT));
+	//infoSpace.submitDynamicTextBox(DynamicTextBox("Current FPS: ~§§jfps", vec2(0, 0.035), vec2(0.5f, 0.1f), 5, 1, 10));
 }
 
 void InfoLayer::onDetach() {

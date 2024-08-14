@@ -17,12 +17,10 @@ namespace Shmingo {
 	//Enums ---------------------------------------------------------------------------------------
 
 	enum EntityType {
-
 		DefaultEntity
 	};
 
 	enum LayerType {
-
 		SANDBOX_LAYER,
 		PAUSEMENU_LAYER,
 		INFO_LAYER,
@@ -30,16 +28,20 @@ namespace Shmingo {
 	};
 
 	enum UniformBlock {
-
 		MATRIX_BLOCK,
 		UTIL_BLOCK
 	};
 
 	enum ApplicationInfoKey {
-
 		FPS,
 		PRIMARY_MONITOR_WIDTH,
 		PRIMARY_MONITOR_HEIGHT,
+	};
+
+	enum TextAlignment {
+		LEFT,
+		CENTER,
+		RIGHT
 	};
 
 

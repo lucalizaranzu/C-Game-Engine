@@ -6,7 +6,7 @@ class TextBox {
 
 public:
 
-	TextBox(std::string text, vec2 position, ivec2 size, GLuint fontSize, GLuint lineSpacing);
+	TextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment alignment);
 
 	void setVaoCharOffset(size_t offset) { characterOffsetInVao = offset; };
 
@@ -18,8 +18,10 @@ public:
 
 	uint8_t getDefaultColor() { return defaultColor; }; //Returns default color of the text
 
-	ivec2 getSize() { return size; }; //Returns dimensions of text box
+	vec2 getSize() { return size; }; //Returns dimensions of text box TODO change to vec2
 	vec2 getPosition() { return position; }; //Returns position of text box
+
+	Shmingo::TextAlignment getTextAlignment() { return textAlignment; }; //Returns alignment of the text
 
 	size_t getTextBufferSize() {return textBufferSize;} //Returns the size of the text in buffer
 	size_t getCharacterOffsetInVao() { return characterOffsetInVao; }; //Returns the character offset in the VAO
@@ -31,10 +33,12 @@ protected:
 	std::string text;
 
 	vec2 position; //Position of the top left corner of the text box
-	ivec2 size; //Text box dimensions
+	vec2 size; //Text box dimensions
 
-	unsigned int fontSize; //Font size of the text
-	unsigned int lineSpacing; //Spacing between lines of text
+	GLuint fontSize; //Font size of the text
+	GLuint lineSpacing; //Spacing between lines of text
+
+	Shmingo::TextAlignment textAlignment; //Alignment of the text
 
 	size_t characterOffsetInVao = 0;
 	size_t textBufferSize = 0; //Size of the text buffer
@@ -61,7 +65,7 @@ public:
 	/// <param name="fontSize">Font size</param>
 	/// <param name="lineSpacing">Spacing between lines</param>
 	/// <param name="maxDynamicTextSize">Maximum length dynamic text can have (applies to ALL dynamic sections)</param>
-	DynamicTextBox(std::string text, vec2 position, vec2 size, unsigned int fontSize, unsigned int lineSpacing, uint8_t maxDynamicTextSize);
+	DynamicTextBox(std::string text, vec2 position, vec2 size, unsigned int fontSize, unsigned int lineSpacing, uint8_t maxDynamicTextSize, Shmingo::TextAlignment alignment);
 
 	void updateDynamicText();
 	std::string compileText();

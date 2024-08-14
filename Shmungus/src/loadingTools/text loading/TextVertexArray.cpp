@@ -158,8 +158,6 @@ void TextVertexArray::reuploadDynamicTextBox(DynamicTextBox& textBox){
 	//Complicated way of getting line width from existing data without recalculating from scratch
 	float yDistanceToDynamicSection = (position.y - textBox.getPointerPositionBeforeDynamicSection().y) * 39.0625f / fontSize; //Y position of first dynamic section relative to top of box converted to lines
 
-	//int startingLine = ();
-
 	std::string::iterator c;
 
 	float charX = position.x; //Can start from x position of first character we change
@@ -174,7 +172,7 @@ void TextVertexArray::reuploadDynamicTextBox(DynamicTextBox& textBox){
 		std::string text = textBox.compileSection(i); //Get text of section
 		bool isSectionDynamic = textBox.isSectionDynamic(i); //Check if section is dynamic
 
-		totalCharAmt += uploadTextToTempBuffers(text, totalCharAmt, pointerPosition, textBox.getFontSize(), textBox.getLineSpacing(), boundingBox, position, textBox.getDynamicSectionDefaultColor(i));
+		totalCharAmt += uploadTextToTempBuffers(text, totalCharAmt, pointerPosition, textBox.getFontSize(), textBox.getLineSpacing(), textBox.getTextAlignment(), boundingBox, position, textBox.getDynamicSectionDefaultColor(i));
 		
 		if (isSectionDynamic) {
 
@@ -208,7 +206,7 @@ void TextVertexArray::uploadTextBox(TextBox* textBox) {
 	GLuint fontSize = textBox->getFontSize();
 	GLuint lineSpacing = textBox->getLineSpacing();
 
-	size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, boundingBox, textBoxPosition, textBox->getDefaultColor());
+	size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, textBox->getTextAlignment(), boundingBox, textBoxPosition, textBox->getDefaultColor());
 	setGLBufferData(offsetInBuffer, charAmt);
 	
 }
@@ -230,7 +228,7 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 		GLuint fontSize = textBox->getFontSize();
 		GLuint lineSpacing = textBox->getLineSpacing();
 
-		size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, boundingBox, textBoxPosition, textBox->getDefaultColor());
+		size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, fontSize, lineSpacing, textBox->getTextAlignment(), boundingBox, textBoxPosition, textBox->getDefaultColor());
 
 		textBox->setpointerPositionBeforeDynamicText(pointerPosition); //Set starting pointer position for dynamic text
 		setGLBufferData(offsetInBuffer, charAmt);
@@ -238,7 +236,7 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 	reuploadDynamicTextBox(*textBox);
 }
 
-size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor){
+size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment textAlignment, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor){
 	size_t charAmt = 0;
 
 	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
@@ -247,6 +245,10 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetI
 	uint8_t colorCode = defaultColor; //Default color is white
 
 	bool resetColor = true;
+
+	vec2 lastPointerPosition = pointerPosition; 
+	size_t bufferPositionOfFirstCharOfLine = offsetInBuffer;
+
 
 	for (c = text.begin(); c != text.end(); c++) {
 
@@ -262,7 +264,7 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetI
 		else if (*c == ' ') {//Space character, avoid logic
 			pointerPosition.x += resolutionScalingFactor * fontSize / 857.1428f; //Advance by space character width
 
-			if (pointerPosition.x > boundingBox.x) {
+			if (pointerPosition.x > (boundingBox.x)) {
 				pointerPosition.y -= lineSpacing * fontSize / 256.25f; //Multiply by 256 to get pixel value
 				pointerPosition.x = boundingBox.x; //Reset x position for new line
 			}
@@ -295,6 +297,34 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t offsetI
 			colorCode = defaultColor; //Default color is white
 		}
 		charAmt++;
+
+		//Detect line overflow
+		if (pointerPosition.y != lastPointerPosition.y || c == text.end() - 1) {
+
+			size_t backShift = 1;
+			bool lastCharCondition = false;
+			if (c == text.end() - 1) {
+				backShift = 0;
+				lastCharCondition = true;
+			}
+
+			if (textAlignment == Shmingo::TextAlignment::CENTER) {
+				float lineWidth = lastPointerPosition.x - startingPosition.x;
+				float lineOffset = ((boundingBox.x * 1) - lineWidth) / 2.0f;
+				for (size_t i = bufferPositionOfFirstCharOfLine; i < offsetInBuffer - backShift; i++) {
+					positionsTempBuffer[2 * i] += lineOffset;
+				}
+			}
+			else if (textAlignment == Shmingo::TextAlignment::RIGHT) {
+				float lineWidth = lastPointerPosition.x - startingPosition.x;
+				float lineOffset = boundingBox.x * 1 - lineWidth;
+				for (size_t i = bufferPositionOfFirstCharOfLine; i < offsetInBuffer - backShift; i++) {
+					positionsTempBuffer[2 * i] += lineOffset;
+				}
+			}
+			bufferPositionOfFirstCharOfLine = offsetInBuffer - 1;
+		}
+		lastPointerPosition = pointerPosition;
 	}
 	return charAmt;
 }
@@ -308,7 +338,7 @@ void TextVertexArray::uploadCharacterToTempBuffers(char c, uint8_t colorCode, si
 	float totalCharSpace = (float)(charInfo.Advance) * fontSize / 10000.0f; //Total space taken up by a character
 
 	//Fill to next line logic ---------------------------
-	if (pointerPosition.x + totalCharSpace > boundingBox.x) { //Checks if line width is greater than text box width
+	if (pointerPosition.x + totalCharSpace > (boundingBox.x)) { //Checks if line width is greater than text box width
 
 		pointerPosition.y -= lineSpacing * fontSize / 156.25f; //Multiply by 256 to get pixel value
 		pointerPosition.x = startingPosition.x; //Reset x position for new line

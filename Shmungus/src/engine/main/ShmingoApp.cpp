@@ -44,7 +44,7 @@ void Shmingo::ShmingoApp::run() {
 
 
 void Shmingo::ShmingoApp::init() {
-	ShmingoApp::window = Shmingo::createWindow(800, 600); //Can change default aspect ratio when options is implemented
+	ShmingoApp::window = Shmingo::createWindow(1920, 1080); //Can change default aspect ratio when options is implemented
 
 	glfwMakeContextCurrent(window->getGLFWwindow()); //Makes context current
 
@@ -68,7 +68,6 @@ void Shmingo::ShmingoApp::init() {
 
 	setApplicationInfo(Shmingo::FPS, "fps", std::to_string(2));
 
-
 	se_layerStack.init();
 
 	Shmingo::initModels();
@@ -86,6 +85,8 @@ void Shmingo::ShmingoApp::init() {
 	Shmingo::setGLFWMouseButtonCallback();
 	Shmingo::setGLFWWindowCallbacks();
 	Shmingo::setGLFWCursorPosCallback();
+
+	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix((float)window->getWidth(), (float)window->getHeight())); //Initializes orthographic projection matrix
 
 }
 

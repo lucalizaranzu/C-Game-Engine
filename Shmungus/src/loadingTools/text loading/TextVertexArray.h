@@ -98,7 +98,7 @@ protected:
 	void uploadTextBox(TextBox* textBox);
 	void uploadDynamicTextBox(DynamicTextBox* textBox);
 
-	size_t uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor);
+	size_t uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment textAlignment, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor);
 
 	void allocateSpaceForTextBox(TextBox* textBox);
 
