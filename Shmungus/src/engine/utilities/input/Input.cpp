@@ -40,8 +40,8 @@ void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
 	float oldHeight = (float)se_application.getWindow()->getHeight();
 
 	se_application.getWindow()->setDimensions(width, height);
-	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, (float)width, (float)height, 0.1f, 100.0f));
-	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix((float)width, (float)height));
+	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, width, height, 0.1f, 100.0f));
+	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(width, height));
 
 	se_application.recalculateTextSpacing(oldWidth, oldHeight, (float)width, (float)height);
 }

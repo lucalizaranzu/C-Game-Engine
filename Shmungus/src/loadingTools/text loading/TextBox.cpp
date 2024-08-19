@@ -69,6 +69,10 @@ DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, unsig
     if (isSectionDynamic(1)) {
 		firstDynamicSectionIndex = 1;
 	}
+
+    for (std::string section : sections) {
+        se_log("Section: " + section);
+    }
 }
 
 void DynamicTextBox::updateDynamicText(){
@@ -93,7 +97,7 @@ std::string DynamicTextBox::compileText(){
     return out;
 }
 
-std::string DynamicTextBox::compileSection(GLuint sectionIndex){
+std::string DynamicTextBox::compileSection(size_t sectionIndex){
 
     std::string text = sections[sectionIndex];
     if (isSectionDynamic(sectionIndex)) {
@@ -205,9 +209,13 @@ void DynamicTextBox::parseText(){
         // Collect characters until the next space or end of string
         size_t start = pos;
 
-        while (pos < text.size() && text[pos] != ' ') {
-            pos++;
-
+        while (pos < text.size()) {
+            if (text[pos] != ' ' && text[pos] != '\n' && text[pos] != ',') {
+                pos++;
+            }
+            else {
+                break;
+            }
         }
 
         // Add the collected substring to the result vector

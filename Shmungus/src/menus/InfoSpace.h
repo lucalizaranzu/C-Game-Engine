@@ -9,7 +9,7 @@ class InfoSpace {
 
 public:
 
-	InfoSpace(); //Default constructor
+	InfoSpace(std::string fontName); //Default constructor
 	InfoSpace(const InfoSpace& other); //Copy constructor
 	
 

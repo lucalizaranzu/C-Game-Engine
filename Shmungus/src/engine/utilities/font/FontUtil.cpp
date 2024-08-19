@@ -81,9 +81,9 @@ void Shmingo::loadFont(std::string name) {
             glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
             static_cast<GLuint>(face->glyph->advance.x >> 6) // Convert 1/64th pixels to pixels
         };
-        se_application.declareCharacterFontInfo(c, character);
+        se_application.declareCharacterFontInfo(name, c, character);
     }
-    //glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+    glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
 
     // Destroy FreeType once we're finished
     FT_Done_Face(face);

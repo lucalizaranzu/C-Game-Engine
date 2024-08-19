@@ -2,12 +2,12 @@
 #include "Matrices.h"
 #include "ShmingoApp.h"
 
-mat4 Shmingo::createProjectionMatrix(GLfloat FOV, float displayWidth, float displayHeight, float nearPlane, float farPlane) {
+mat4 Shmingo::createProjectionMatrix(GLfloat FOV, int displayWidth, int displayHeight, float nearPlane, float farPlane) {
 
 	mat4 projectionMatrix = mat4(1.0f);
 
 	//All of this will be added to the options class later
-	projectionMatrix = glm::perspective(glm::radians(FOV), (float)(displayWidth / displayHeight), nearPlane, farPlane);
+	projectionMatrix = glm::perspective(glm::radians(FOV), ((float)displayWidth / (float)displayHeight), nearPlane, farPlane);
 	return projectionMatrix;
 }
 
@@ -23,10 +23,10 @@ mat4 Shmingo::createViewMatrix(Camera camera){
 	return viewMatrix;
 }
 
-mat4 Shmingo::createOrthoMatrix(float displayWidth, float displayHeight){
+mat4 Shmingo::createOrthoMatrix(int displayWidth, int displayHeight){
 	mat4 projectionMatrix = mat4(1.0f);
 
-	float aspect = displayWidth / displayHeight;
+	float aspect = (float)displayWidth / (float)displayHeight;
 
 	//All of this will be added to the options class later
 	projectionMatrix = glm::ortho(-aspect, aspect, -1.0f, 1.0f, 1.0f, -1.0f);

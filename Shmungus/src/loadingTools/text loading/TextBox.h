@@ -84,7 +84,7 @@ public:
 	void updateDynamicText();
 	std::string compileText();
 
-	std::string compileSection(GLuint sectionIndex);
+	std::string compileSection(size_t sectionIndex);
 
 	vec2 getFirstDynamicSectionPointerPosition() { return firstDynamicSectionPosition; };
 

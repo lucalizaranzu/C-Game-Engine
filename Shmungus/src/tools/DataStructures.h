@@ -37,6 +37,9 @@ namespace Shmingo {
 		ENTITY_COUNT,
 		PRIMARY_MONITOR_WIDTH,
 		PRIMARY_MONITOR_HEIGHT,
+		PLAYER_X,
+		PLAYER_Y,
+		PLAYER_Z
 	};
 
 	enum TextAlignment {

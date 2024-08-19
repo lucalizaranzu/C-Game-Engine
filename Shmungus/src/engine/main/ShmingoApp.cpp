@@ -57,8 +57,18 @@ void Shmingo::ShmingoApp::init() {
 
 	//Set up monitor aspect ratio as a global variable
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-	setApplicationInfo(Shmingo::PRIMARY_MONITOR_WIDTH, "primary_monitor_width", std::to_string(mode->width));
-	setApplicationInfo(Shmingo::PRIMARY_MONITOR_HEIGHT, "primary_monitor_height", std::to_string(mode->height));
+
+	declareApplicationInfoKey(Shmingo::PRIMARY_MONITOR_WIDTH, "monitorWidth");
+	declareApplicationInfoKey(Shmingo::PRIMARY_MONITOR_HEIGHT, "monitorHeight");
+	declareApplicationInfoKey(Shmingo::FPS, "fps");
+	declareApplicationInfoKey(Shmingo::ENTITY_COUNT, "entityCount");
+	declareApplicationInfoKey(Shmingo::PLAYER_X, "playerX");
+	declareApplicationInfoKey(Shmingo::PLAYER_Y, "playerY");
+	declareApplicationInfoKey(Shmingo::PLAYER_Z, "playerZ");
+
+	setApplicationInfo(Shmingo::PRIMARY_MONITOR_WIDTH, std::to_string(mode->width));
+	setApplicationInfo(Shmingo::PRIMARY_MONITOR_HEIGHT, std::to_string(mode->height));
+	setApplicationInfo(Shmingo::ENTITY_COUNT, "0");
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
@@ -66,15 +76,17 @@ void Shmingo::ShmingoApp::init() {
 
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
-	setApplicationInfo(Shmingo::FPS, "fps", std::to_string(2));
-	setApplicationInfo(Shmingo::ENTITY_COUNT, "entityCount", "0");
-
 	se_layerStack.init();
 
 	Shmingo::initModels();
 	Shmingo::declareTypeCorrespondence();
+
+	//TODO only last font loaded works properly? All others seem to use the values from the last one. Valve please fix
+
 	Shmingo::loadFont("arial");
+	Shmingo::loadFont("Kratos");
 	Shmingo::loadFont("Minecraft");
+	Shmingo::loadFont("Minecraft_Faithful");
 
 	se_masterRenderer.init();
 
@@ -100,7 +112,7 @@ void Shmingo::ShmingoApp::update() {
 	timeElapsed += deltaTime;
 
 	if (Shmingo::isTimeMultipleOf(0.2)) {
-		setApplicationInfo(Shmingo::FPS, "fps", std::to_string(totalFrames * 5).substr(0, 4)); //First four digits of FPS
+		setApplicationInfo(Shmingo::FPS, std::to_string(totalFrames * 5).substr(0, 4)); //First four digits of FPS
 		totalFrames = 0;
 	}
 
@@ -124,10 +136,33 @@ void Shmingo::ShmingoApp::initGlobalVariables(){
 	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &minimumUniformBlockOffset);
 }
 
-void Shmingo::ShmingoApp::setApplicationInfo(Shmingo::ApplicationInfoKey key, std::string stringKey, std::string value){
+void Shmingo::ShmingoApp::declareApplicationInfoKey(Shmingo::ApplicationInfoKey applicationKey, std::string keyString){
+		applicationInfoStringToKeyMap[keyString] = applicationKey;
+		setApplicationInfo(applicationKey, "");
+}
 
-	applicationInfoStringToKeyMap[stringKey] = key;
+void Shmingo::ShmingoApp::setApplicationInfo(Shmingo::ApplicationInfoKey key, std::string value){
+
 	applicationInfo[key] = value;
+}
+
+void Shmingo::ShmingoApp::setApplicationInfo(std::string stringKey, std::string value) {
+
+	applicationInfo[applicationInfoStringToKeyMap[stringKey]] = value;
+}
+
+std::string Shmingo::ShmingoApp::getApplicationInfo(Shmingo::ApplicationInfoKey key){
+	if (applicationInfo.find(key) != applicationInfo.end()) {
+		return applicationInfo[key];
+	}
+	return "KEYNOTFOUND";
+}
+
+std::string Shmingo::ShmingoApp::getApplicationInfo(std::string key){
+	if (applicationInfoStringToKeyMap.find(key) != applicationInfoStringToKeyMap.end()) {
+		return getApplicationInfo(applicationInfoStringToKeyMap[key]);
+	}
+	return "KEYNOTFOUND";
 }
 
 uint8_t Shmingo::ShmingoApp::getTextColor(char c){
@@ -153,6 +188,10 @@ void Shmingo::ShmingoApp::setCurrentWorld(World* world) {
 
 void Shmingo::ShmingoApp::declareEntityType(std::type_index typeIndex, EntityType type) {
 	entityTypes.push_back(type);
+}
+
+void Shmingo::ShmingoApp::declareCharacterFontInfo(std::string fontName, GLchar c, Shmingo::Character character){
+	fontMap[fontName][c] = character;
 }
 
 void Shmingo::ShmingoApp::setFontTextureArrayID(std::string font, GLuint newID){

@@ -126,30 +126,6 @@ void TextVertexArray::resetDynamicTextBox(DynamicTextBox& textBox){
 	uploadDynamicTextBox(&textBox);
 }
 
-void TextVertexArray::recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight){
-	bindVao();
-	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-
-	float* data = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_READ_WRITE); //maps buffer to memory
-
-	GLint bufferSize;
-	glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE, &bufferSize);
-
-	float oldAspectRatio = oldWidth / oldHeight;
-	float newAspectRatio = newWidth / newHeight;
-
-	for (GLuint i = 0; i < instanceAmount; ++i) {
-		float copy = data[i*2];
-		data[i * 2] *= (oldAspectRatio / newAspectRatio); //Divides all x components by aspect ratio
-		//data[(i * 2) + 1] *= (newHeight / oldHeight); //Divides all y components by aspect ratio
-	}
-
-	if (!glUnmapBuffer(GL_ARRAY_BUFFER)) {
-		se_error("Couldn't unmap buffer after recalculating spacing");
-	}
-
-}
-
 
 void TextVertexArray::reuploadDynamicTextBox(DynamicTextBox& textBox, bool reuploadAll){
 
@@ -225,7 +201,7 @@ void TextVertexArray::uploadTextBox(TextBox* textBox) {
 
 	//Get information about textbox to avoid pointer chasing
 	std::string text = textBox->getText();
-	GLuint offsetInBuffer = textBox->getCharacterOffsetInVao();
+	size_t offsetInBuffer = textBox->getCharacterOffsetInVao();
 	vec2 pointerPosition = position; //To pass as reference
 
 	size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, textBox);
@@ -248,7 +224,7 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 		std::string text = textBox->compileText(); //Upload only first section
 		std::string firstSection = textBox->getSections()[0];
 
-		GLuint offsetInBuffer = textBox->getCharacterOffsetInVao();
+		size_t offsetInBuffer = textBox->getCharacterOffsetInVao();
 		vec2 pointerPosition = position; //To pass as reference
 
 		//Upload whole text box
@@ -348,7 +324,7 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t firstCh
 		else {
 
 			lastPointerPosition = pointerPosition; //Set last pointer position to current pointer position
-			uploadCharacterToTempBuffers(*c, currentColorCode, offsetInBuffer, pointerPosition, fontSize, lineSpacing, boundingBox, startingPosition);
+			uploadCharacterToTempBuffers(*c, currentColorCode, offsetInBuffer, pointerPosition, textBox->getFontSize(), textBox->getLineSpacing(), boundingBox, startingPosition);
 			offsetInBuffer++;
 			if (resetColor) {
 				currentColorCode = defaultColor; //Default color is white
@@ -373,7 +349,7 @@ void TextVertexArray::uploadCharacterToTempBuffers(char c, uint8_t colorCode, si
 
 	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
 
-	Shmingo::Character charInfo = se_application.getCharacterFontInfo(c); //Get glyph info about current character
+	Shmingo::Character charInfo = se_application.getCharacterFontInfo(fontName, c); //Get glyph info about current character
 	float totalCharSpace = (float)(charInfo.Advance) * fontSize / 10000.0f; //Total space taken up by a character
 
 	//Fill to next line logic ---------------------------
@@ -399,13 +375,12 @@ void TextVertexArray::alignTextInTempBuffers(Shmingo::TextAlignment alignment, T
 
 	float resolutionScalingFactor = ((float)se_application.getWindow()->getHeight()) / ((float)se_application.getWindow()->getWidth());
 
+	size_t lineBeginningOffset = textBox->getLineCharOffset(0); //Where to begin the shift
 
-	size_t lineBeginningOffset = textBox->getLineCharOffset(0);
-
-	size_t shiftStartingPosition = 0;
+	float standardFontBearing = (float) se_application.getCharacterFontInfo(fontName, 'A').Bearing.x;
 
 	float shiftAmount = 0;
-	float endingCorrection = resolutionScalingFactor * textBox->getFontSize() * 29.0f / 10000.0f; //Amount to subtract to the shift since the final x value will be the beginning of the last character instead of the end
+	float endingCorrection = resolutionScalingFactor * textBox->getFontSize() * 35.0f / 10000.0f; //Amount to subtract to the shift since the final x value will be the beginning of the last character instead of the end
 
 	float textboxEndPosition = textBox->getPosition().x + textBox->getSize().x;
 
@@ -443,8 +418,7 @@ void TextVertexArray::alignTextInTempBuffers(Shmingo::TextAlignment alignment, T
 
 	size_t charsToShift = textBox->getLineCharOffset(1) - lineBeginningOffset;
 
-	shiftPositionBufferValues(shiftStartingPosition, charsToShift, shiftAmount);
-	shiftStartingPosition += shiftAmount;
+	shiftPositionBufferValues(0, charsToShift, shiftAmount);
 
 	for (size_t i = 1; i < textBox->getLineAmt(); i++) {
 
@@ -545,7 +519,7 @@ void TextVertexArray::shiftBuffersRight(size_t offset, size_t shiftAmt) {
 
 void TextVertexArray::shiftBuffersLeft(size_t offset, size_t shiftAmt) {
 
-	GLuint charAmt = instanceAmount - offset + shiftAmt; //Amount of characters to shift
+	size_t charAmt = instanceAmount - offset + shiftAmt; //Amount of characters to shift
 
 	bindVao();
 

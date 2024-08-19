@@ -32,7 +32,6 @@ public:
 	void resetTextBox(TextBox& textBox);
 	void resetDynamicTextBox(DynamicTextBox& textBox);
 
-	void recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight); //Recalculates the spacing between characters when the screen is resized
 
 
 

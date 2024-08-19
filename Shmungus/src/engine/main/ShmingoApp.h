@@ -40,11 +40,11 @@ namespace Shmingo {
 		inline bool getOnTick() { return onTick; }
 
 		//Returns info about the application
-		inline std::string getApplicationInfo(Shmingo::ApplicationInfoKey key) { return applicationInfo[key]; }
-		inline std::string getApplicationInfo(std::string key) { return applicationInfo[applicationInfoStringToKeyMap[key]]; } //Overload for directly using from strings
+		std::string getApplicationInfo(Shmingo::ApplicationInfoKey key);
+		std::string getApplicationInfo(std::string key);
 
 		//Returns glyph information of a given character
-		inline Shmingo::Character getCharacterFontInfo(GLchar c) { return charMap[c]; }
+		inline Shmingo::Character getCharacterFontInfo(std::string fontName, GLchar c) { return fontMap[fontName][c]; }
 
 		//Returns a 8 bit integer corresponding to a color, where the first two bits are for red, the second two bits are for green, and the third two bits are for blue. Provide a color code
 		uint8_t getTextColor(char c);
@@ -59,7 +59,8 @@ namespace Shmingo {
 
 
 		//Setters -------------------------------------------------------------------------------------
-		void setApplicationInfo(Shmingo::ApplicationInfoKey, std::string keyString, std::string value);
+		void setApplicationInfo(Shmingo::ApplicationInfoKey, std::string value);
+		void setApplicationInfo(std::string keyString, std::string value);
 
 
 
@@ -75,7 +76,7 @@ namespace Shmingo {
 
 		//Application wide information
 		void declareEntityType(std::type_index typeIndex, EntityType type); //Type index not needed anymore but going to keep to make sure all entity type enums are real types
-		void declareCharacterFontInfo(GLchar c, Shmingo::Character character) { charMap[c] = character; };
+		void declareCharacterFontInfo(std::string fontName, GLchar c, Shmingo::Character character);
 
 		//Set the font texture array ID
 		void setFontTextureArrayID(std::string font, GLuint newID);
@@ -113,6 +114,8 @@ namespace Shmingo {
 		//Global OpenGL objects
 
 		//Application wide information
+
+		void declareApplicationInfoKey(Shmingo::ApplicationInfoKey applicationKey, std::string keyString);
 
 		std::unordered_map<Shmingo::ApplicationInfoKey, std::string> applicationInfo;
 		std::unordered_map<std::string, Shmingo::ApplicationInfoKey> applicationInfoStringToKeyMap;

@@ -111,7 +111,7 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 		}
 	}
 
-	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, "entity_count", std::to_string(entityList.size()));
+	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, std::to_string(entityList.size()));
 
 }
 
@@ -148,7 +148,7 @@ void World::addEntity(Shmingo::EntityType type, InstancedEntity* entity){
 		}
 	}
 	entityTypeInfoMap.map[type].amount++; //Increment amount of entities of the given type
-	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, "entity_count", std::to_string(entityList.size()));
+	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, std::to_string(entityList.size()));
 
 }
 
