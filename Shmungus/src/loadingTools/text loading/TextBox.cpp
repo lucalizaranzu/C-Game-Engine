@@ -69,10 +69,6 @@ DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, unsig
     if (isSectionDynamic(1)) {
 		firstDynamicSectionIndex = 1;
 	}
-
-    for (std::string section : sections) {
-        se_log("Section: " + section);
-    }
 }
 
 void DynamicTextBox::updateDynamicText(){
@@ -187,7 +183,7 @@ void DynamicTextBox::setTextBufferSize(){
 
     for (int i = 0; i < sections.size(); i++) {
         if (isSectionDynamic(i)) {
-            totalSize += maxDynamicTextSize + 1; //Setting to allocated size to properly reflect dynamic text box size in buffer (Dont know why we need the +1 but it is wrong without it)
+            totalSize += maxDynamicTextSize; //Setting to allocated size to properly reflect dynamic text box size in buffer (Dont know why we need the +1 but it is wrong without it)
         }
         else {
             totalSize += getSectionSize(i);

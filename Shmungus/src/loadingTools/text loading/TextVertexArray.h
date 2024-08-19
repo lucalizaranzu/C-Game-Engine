@@ -12,6 +12,8 @@
 
 class TextVertexArray {
 
+	friend class InfoSpace;
+
 public:
 
 	//Constructor, sets up all necessary data

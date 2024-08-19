@@ -98,6 +98,10 @@ void InfoSpace::recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHe
 	}
 }
 
+void InfoSpace::printTextBuffer(){
+	m_textVertexArray->printCharDataBuffer(); //Print the text buffer to the console
+}
+
 void InfoSpace::cleanUp() {
 	m_textVertexArray->cleanUp(); //Clean up the text vertex array
 	se_application.removeInfoSpace(m_applicationID); //Remove the info space from the application list

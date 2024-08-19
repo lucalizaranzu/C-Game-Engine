@@ -26,9 +26,9 @@ void Player::update() {
 	direction = calcDirection(rotation);
 	move();
 
-	se_application.setApplicationInfo(Shmingo::PLAYER_X, std::to_string(position.x));
-	se_application.setApplicationInfo(Shmingo::PLAYER_Y, std::to_string(position.y));
-	se_application.setApplicationInfo(Shmingo::PLAYER_Z, std::to_string(position.z));
+	se_application.setApplicationInfo(Shmingo::PLAYER_X, std::to_string(position.x).substr(0,10));
+	se_application.setApplicationInfo(Shmingo::PLAYER_Y, std::to_string(position.y).substr(0, 10));
+	se_application.setApplicationInfo(Shmingo::PLAYER_Z, std::to_string(position.z).substr(0, 10));
 
 	se_uniformBuffer.setViewMatrix(Shmingo::createViewMatrix(camera));
 }

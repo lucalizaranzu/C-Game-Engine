@@ -173,24 +173,27 @@ void TextVertexArray::reuploadDynamicTextBox(DynamicTextBox& textBox, bool reupl
 
 	if (currentTextboxSkipAmount != textBox.getTotalSkipAmount() || reuploadAll) {
 		if (firstDynamicSectionIndex != 0) {
-		
 			uploadDynamicTextBox(&textBox); //Just reupload the whole thing to avoid conflict
+
 			return;
 
 		}
 	}
 
-
 	totalCharAmt = uploadTextToTempBuffers(finalString, textBox.getSectionBufferOffset(textBox.getFirstDynamicSectionIndex()), testPointerPosition, &textBox);
+
 	alignTextInTempBuffers(textBox.getTextAlignment(), &textBox, reuploadFromCustomPosition);
 
-
+	//se_log("Updating dynamic text box at gl buffer offset " << reuploadOffset << " with " << totalCharAmt << " characters");
 	setGLBufferData(reuploadOffset, totalCharAmt);
 }
 
 void TextVertexArray::allocateSpaceForTextBox(TextBox* textBox){
 
 	size_t textboxSize = textBox->getTextBufferSize(); //Get size of text box
+
+	//se_log("Allocating space for text box at offset " << instanceAmount << " with size " << textboxSize);
+
 	instanceAmount += textboxSize; //Increment instance amount
 }
 
@@ -206,6 +209,8 @@ void TextVertexArray::uploadTextBox(TextBox* textBox) {
 
 	size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, textBox);
 	alignTextInTempBuffers(textBox->getTextAlignment(), textBox, false);
+
+	//se_log("Uploading text box at gl buffer offset: " << offsetInBuffer);
 	setGLBufferData(offsetInBuffer, charAmt);
 	
 }
@@ -242,9 +247,10 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 		size_t charAmt = uploadTextToTempBuffers(text, 0, pointerPosition, textBox); //Upload first section
 
 		alignTextInTempBuffers(textBox->getTextAlignment(), textBox, false);
+
+		//se_log("Uploading dynamic text box at gl buffer offset: " << offsetInBuffer);
 		setGLBufferData(offsetInBuffer, charAmt);
 	}
-	reuploadDynamicTextBox(*textBox, false);
 }
 
 size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t firstCharacterBufferOffset, vec2& pointerPosition, TextBox* textBox){
@@ -268,6 +274,8 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t firstCh
 	size_t currentLine = 1;
 
 	std::string::iterator c;
+
+	//se_log("Text: " << text);
 
 	for (c = text.begin(); c != text.end(); c++) {
 
@@ -364,6 +372,8 @@ void TextVertexArray::uploadCharacterToTempBuffers(char c, uint8_t colorCode, si
 		pointerPosition.y + (fontSize * (float)charInfo.Bearing.y / 50000.0f)),
 		offsetInBuffer);
 	setCharData(Shmingo::GlyphData(charInfo.TextureID, colorCode, (uint8_t)fontSize), offsetInBuffer);
+
+	//se_log("Uploading character " << c << " at buffer offset " << offsetInBuffer);
 
 	pointerPosition.x += resolutionScalingFactor * (float)(charInfo.Advance) * fontSize / 50000.0f;
 	offsetInBuffer++; //Increment instance count
@@ -480,6 +490,7 @@ void TextVertexArray::markRangeForSkip(size_t bufferOffset, size_t skipAmt, vec2
 void TextVertexArray::setGLBufferData(size_t textBoxOffset, size_t charAmt) {
 
 	bindVao();
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
 	glBufferSubData(GL_ARRAY_BUFFER, textBoxOffset * 3, charAmt * 3, charDataTempBuffer);

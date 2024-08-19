@@ -27,6 +27,7 @@ public:
 
 	void recalculateTextSpacing(float oldDisplayWidth, float oldDisplayheight, float newDisplayWidth, float newDisplayHeight); //Resize all text boxes in the info space
 
+	void printTextBuffer(); //Print the text buffer to the console
 
 	void cleanUp();
 
