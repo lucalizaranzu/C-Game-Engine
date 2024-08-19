@@ -19,7 +19,7 @@ InfoSpace::InfoSpace(const InfoSpace& other) {
 
 void InfoSpace::update() {
 
-	if (Shmingo::isTimeMultipleOf(1)) {
+	if (Shmingo::isTimeMultipleOf(0.2)) {
 		updateDynamicTextBoxes();
 	}
 
@@ -90,7 +90,12 @@ void InfoSpace::updateDynamicTextBoxes(){
 }
 
 void InfoSpace::recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHeight, float newDisplayWidth, float newDisplayHeight){
-	m_textVertexArray->recalculateSpacing(oldDisplayWidth, oldDisplayHeight, newDisplayWidth, newDisplayHeight); //Recalculate the spacing of the text boxes
+	for (auto& textBox : m_textBoxes) {
+		m_textVertexArray->resetTextBox(textBox); //Recalculate the spacing of all text boxes
+	}
+	for (auto& dynamicTextBox : m_dynamicTextBoxes) {
+		m_textVertexArray->resetDynamicTextBox(dynamicTextBox); //Recalculate the spacing of all dynamic text boxes
+	}
 }
 
 void InfoSpace::cleanUp() {

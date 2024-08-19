@@ -26,9 +26,18 @@ public:
 	size_t getTextBufferSize() {return textBufferSize;} //Returns the size of the text in buffer
 	size_t getCharacterOffsetInVao() { return characterOffsetInVao; }; //Returns the character offset in the VAO
 
-protected:
+	void setLineCharOffset(size_t lineIndex, size_t offset);
 
-	std::vector<std::string> lines; //Lines of text in the text box
+	size_t getLineCharOffset(size_t lineIndex) { return charOffsetsOfLines[lineIndex]; };
+	size_t getLineAmt() { return charOffsetsOfLines.size() - 1; };
+
+	void setResizeStartingCharPointerPosition(vec2 position) { resizeStartingCharPointerPosition = position; };
+	vec2 getResizeStartingCharPointerPosition() { return resizeStartingCharPointerPosition; };
+
+	void setResizeStartingCharBufferOffset(size_t offset) { resizeStartingCharBufferOffset = offset; };
+	size_t getResizeStartingCharBufferOffset() { return resizeStartingCharBufferOffset; };
+
+protected:
 
 	std::string text;
 
@@ -40,7 +49,7 @@ protected:
 
 	Shmingo::TextAlignment textAlignment; //Alignment of the text
 
-	size_t characterOffsetInVao = 0;
+	size_t characterOffsetInVao = 0; //Character offset in the VAO
 	size_t textBufferSize = 0; //Size of the text buffer
 
 	virtual void parseText(){}; //Empty because we need to call this in the base constructor in a derived class
@@ -49,6 +58,11 @@ protected:
 	virtual void setTextBufferSize(); //Returns the size of the text buffer
 
 	uint8_t defaultColor = 0x3F; //Default color of the text
+
+	std::vector<size_t> charOffsetsOfLines; //Buffer offset of each individual line in a textbox
+
+	vec2 resizeStartingCharPointerPosition = vec2(0.0f,0.0f); //Starting position of the character pointer when resizing the text box
+	size_t resizeStartingCharBufferOffset = 0;
 
 };
 
@@ -69,38 +83,43 @@ public:
 
 	void updateDynamicText();
 	std::string compileText();
-	std::string compileTextAfterFirstDynamicSection();
 
 	std::string compileSection(GLuint sectionIndex);
 
-	vec2 getPointerPositionBeforeDynamicSection() { return pointerPositionBeforeDynamicText; };
-	vec2 getStartingPointerPosition() { return startingPointerPosition; };
+	vec2 getFirstDynamicSectionPointerPosition() { return firstDynamicSectionPosition; };
 
 	void setAllOffsets() override;
-	void setpointerPositionBeforeDynamicText(vec2 position) { pointerPositionBeforeDynamicText = position; };
-	void setStartingPointerPosition(vec2 position) { startingPointerPosition = position; };
+	void setFirstDynamicSectionPointerPosition(vec2 position) { firstDynamicSectionPosition = position; };
 
 	bool isSectionDynamic(GLuint index); //Check for dynamic text in the sections
 	uint8_t getMaxDynamicTextSize() { return maxDynamicTextSize; };
 
 	std::string getText() override;
 	size_t getSectionSize(GLuint index);
-	uint8_t getDynamicSectionDefaultColor(GLuint index);
 
 	std::vector<std::string> getSections() { return sections; };
 	size_t getSectionBufferOffset(size_t index) { return sectionBufferOffsets[index]; };
 	size_t getFirstDynamicSectionIndex() { return firstDynamicSectionIndex; };
 
+	size_t getTotalSkipAmount() { return totalSkipAmount; };
+	void resetTotalSkipAmount() { totalSkipAmount = 0; };
+
+	bool getShouldCompletelyReupload() { return shouldCompletelyReupload; };
+	void setShouldCompletelyReupload(bool value) { shouldCompletelyReupload = value; };
+
+
 private:
 
 	uint8_t maxDynamicTextSize; //Maximum length dynamic text can have (applies to ALL dynamic sections)
+
 	size_t firstDynamicSectionIndex = 0; //Index of the first dynamic section
 
-	vec2 pointerPositionBeforeDynamicText = vec2(0,0); //Position of the pointer before dynamic text was added
-	vec2 startingPointerPosition = vec2(0,0); //Position of the pointer when the text box was created
+	vec2 firstDynamicSectionPosition = vec2(0, 0); //Position of the first dynamic section
+
+	size_t totalSkipAmount = 0; //Total amount of characters to skip in the text (Used to detect changes for complete reupload);
+	bool shouldCompletelyReupload = false; //Flag to completely reupload the text
 
 	std::vector<std::string> sections; //Sections of the text that are updated independently
-	std::unordered_map<size_t,uint8_t> dynamicSectionColors; //Default colors of the dynamic sections
 
 	std::vector<size_t> sectionBufferOffsets; //Offsets of the sections in the text without spaces, final element is index of the end of the text
 

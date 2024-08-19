@@ -10,6 +10,7 @@
 #include "Renderer.h"
 #include "TextBox.h"
 #include "TextVertexArray.h"
+#include "ShmingoApp.h"
 
 
 SandboxLayer::SandboxLayer() : world(World()) {
@@ -43,8 +44,8 @@ void SandboxLayer::onAttach() {
 	player.reset(new Player(Shmingo::createCubeModel(vec3(0.0f,0.0f,0.0f),funnyTexture)));
 
 	se_uniformBuffer.setAsActive();
-	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, 800, 600, 0.1f, 10000.0f));
-	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(800, 600));
+	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, se_application.getWindow()->getWidth(), se_application.getWindow()->getHeight(), 0.1f, 10000.0f));
+	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(se_application.getWindow()->getWidth(), se_application.getWindow()->getHeight()));
 
 }
 
@@ -52,6 +53,8 @@ void SandboxLayer::onUpdate() {
 
 	player->update();
 	world.update();
+
+	std::string thing = se_application.getApplicationInfo("entityCount");
 }
 
 

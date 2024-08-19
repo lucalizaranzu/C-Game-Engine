@@ -47,7 +47,6 @@ void World::submitVertexArrays(){
 void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 	Shmingo::EntityTypeInfo typeInfo = entityTypeInfoMap.map[type];
 
-
 	if (typeInfo.amount == 0) {
 		se_log("Attempted to delete entity of type " << type << " but no entities of that type exist");
 		return;
@@ -111,6 +110,9 @@ void World::deleteEntity(Shmingo::EntityType type, GLuint localOffset){
 			(*it)->decrementOffsetInVao();
 		}
 	}
+
+	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, "entity_count", std::to_string(entityList.size()));
+
 }
 
 
@@ -146,6 +148,7 @@ void World::addEntity(Shmingo::EntityType type, InstancedEntity* entity){
 		}
 	}
 	entityTypeInfoMap.map[type].amount++; //Increment amount of entities of the given type
+	se_application.setApplicationInfo(Shmingo::ENTITY_COUNT, "entity_count", std::to_string(entityList.size()));
 
 }
 

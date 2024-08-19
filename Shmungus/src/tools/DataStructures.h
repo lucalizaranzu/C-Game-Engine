@@ -34,6 +34,7 @@ namespace Shmingo {
 
 	enum ApplicationInfoKey {
 		FPS,
+		ENTITY_COUNT,
 		PRIMARY_MONITOR_WIDTH,
 		PRIMARY_MONITOR_HEIGHT,
 	};

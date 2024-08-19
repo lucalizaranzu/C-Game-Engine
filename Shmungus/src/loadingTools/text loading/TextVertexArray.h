@@ -27,9 +27,10 @@ public:
 
 	void updateDynamicTextBox(DynamicTextBox& textBox);
 
-
 	void removeTextBox(GLuint offset, size_t textboxSize);
 
+	void resetTextBox(TextBox& textBox);
+	void resetDynamicTextBox(DynamicTextBox& textBox);
 
 	void recalculateSpacing(float oldWidth, float oldHeight, float newWidth, float newHeight); //Recalculates the spacing between characters when the screen is resized
 
@@ -98,7 +99,8 @@ protected:
 	void uploadTextBox(TextBox* textBox);
 	void uploadDynamicTextBox(DynamicTextBox* textBox);
 
-	size_t uploadTextToTempBuffers(std::string text, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment textAlignment, vec2 boundingBox, vec2 startingPosition, uint8_t defaultColor);
+	//Upload text to the temporary buffers. The text box parameter is used to be able to write data related to the upload back, the text from the text box object is not used.
+	size_t uploadTextToTempBuffers(std::string text, size_t firstCharacterBufferOffset, vec2& pointerPosition, TextBox* textBox);
 
 	void allocateSpaceForTextBox(TextBox* textBox);
 
@@ -108,18 +110,23 @@ protected:
 	void setCharPosition(vec2 position, size_t charOffset);
 
 	//Marks a character to be skipped in the shaders, used for padding for dynamic text
-	void markCharForSkip(size_t offset);
-	void markRangeForSkip(size_t bufferOffset, size_t skipAmt);
+	void markCharForSkip(size_t offset, vec2 pointerPosition);
+	void markRangeForSkip(size_t bufferOffset, size_t skipAmt, vec2 pointerPosition);
 
 	//Reuploads dynamic text to the VAO
-	void reuploadDynamicTextBox(DynamicTextBox& textBox);
+	void reuploadDynamicTextBox(DynamicTextBox& textBox, bool reuploadAll);
 
 	//Returns true if the character is to be used as a color code
 	void uploadCharacterToTempBuffers(char c, uint8_t colorCode, size_t offsetInBuffer, vec2& pointerPosition, GLuint fontSize, GLuint lineSpacing, vec2 boundingBox, vec2 startingPosition);
 
+	//Aligns text in temp buffers according to text box parameters
+	void alignTextInTempBuffers(Shmingo::TextAlignment alignment, TextBox* textBox, bool alignStartingFromResizePoint);
+
 	//Shifts the buffers to the right by shiftAmt
 	void shiftBuffersRight(size_t offset, size_t shiftAmt);
 	void shiftBuffersLeft(size_t offset, size_t shiftAmt);
+
+	void shiftPositionBufferValues(size_t offset, size_t charsToShift, float shiftAmt);
 
 
 

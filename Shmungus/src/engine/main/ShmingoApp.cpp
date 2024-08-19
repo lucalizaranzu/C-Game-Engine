@@ -67,6 +67,7 @@ void Shmingo::ShmingoApp::init() {
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
 	setApplicationInfo(Shmingo::FPS, "fps", std::to_string(2));
+	setApplicationInfo(Shmingo::ENTITY_COUNT, "entityCount", "0");
 
 	se_layerStack.init();
 
@@ -85,8 +86,6 @@ void Shmingo::ShmingoApp::init() {
 	Shmingo::setGLFWMouseButtonCallback();
 	Shmingo::setGLFWWindowCallbacks();
 	Shmingo::setGLFWCursorPosCallback();
-
-	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix((float)window->getWidth(), (float)window->getHeight())); //Initializes orthographic projection matrix
 
 }
 

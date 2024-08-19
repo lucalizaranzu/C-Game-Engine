@@ -58,6 +58,11 @@ namespace Shmingo {
 		GLuint& getFontTextureArrayID(std::string font) { return fontTextureArrayMap[font]; }
 
 
+		//Setters -------------------------------------------------------------------------------------
+		void setApplicationInfo(Shmingo::ApplicationInfoKey, std::string keyString, std::string value);
+
+
+
 
 		inline static ShmingoApp& get() { return instance; };
 
@@ -108,8 +113,6 @@ namespace Shmingo {
 		//Global OpenGL objects
 
 		//Application wide information
-
-		void setApplicationInfo(Shmingo::ApplicationInfoKey, std::string keyString, std::string value);
 
 		std::unordered_map<Shmingo::ApplicationInfoKey, std::string> applicationInfo;
 		std::unordered_map<std::string, Shmingo::ApplicationInfoKey> applicationInfoStringToKeyMap;

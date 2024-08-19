@@ -9,11 +9,27 @@ std::string removeFirstChar(const std::string& input);
 TextBox::TextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, Shmingo::TextAlignment textAlignment) 
     : position(position), size(size), lineSpacing(lineSpacing), fontSize(fontSize), text(text), textAlignment(textAlignment) {
     setTextBufferSize(); //Sets the size of the text buffer
+
+    setLineCharOffset(0,0); //Sets the offset of the first line to 0
+}
+
+void TextBox::setLineCharOffset(size_t lineIndex, size_t offset){
+    if (lineIndex < charOffsetsOfLines.size()) {
+		charOffsetsOfLines[lineIndex] = offset;
+	}
+    else {
+        charOffsetsOfLines.emplace_back(offset);
+	}
 }
 
 void TextBox::setTextBufferSize(){
 
     size_t size = text.size();
+
+    if (text.find('Ø') != std::string::npos) {
+        se_error("Invalid character Ø detected in text box!");
+        text.erase(std::remove(text.begin(), text.end(), 'Ø'), text.end());
+    }
 
     int skipAmt = 0;
 
@@ -43,23 +59,17 @@ void TextBox::setTextBufferSize(){
     textBufferSize = size - skipAmt;
 }
 
-DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, GLuint fontSize, GLuint lineSpacing, uint8_t maxDynamicTextSize, Shmingo::TextAlignment textAlignment)
-    : TextBox(text, position, size, fontSize, lineSpacing, textAlignment), maxDynamicTextSize(maxDynamicTextSize){
+DynamicTextBox::DynamicTextBox(std::string text, vec2 position, vec2 size, unsigned int fontSize, unsigned int lineSpacing, uint8_t maxDynamicTextSize, Shmingo::TextAlignment alignment)
+    : TextBox(text, position, size, fontSize, lineSpacing, alignment), maxDynamicTextSize(maxDynamicTextSize){
 
     parseText(); //Populates sections
     setAllOffsets(); //Sets offsets for each section
     setTextBufferSize(); //Sets the size of the text buffer again using the correct constructor
 
-    for (int i = 0; i < sections.size(); i ++) {
-        if (!isSectionDynamic(i)) {
-			firstDynamicSectionIndex += getSectionBufferOffset(i);
-		}
-        else {
-            break;
-        }
-    }
+    if (isSectionDynamic(1)) {
+		firstDynamicSectionIndex = 1;
+	}
 }
-
 
 void DynamicTextBox::updateDynamicText(){
     for(int i = 0; i < sections.size(); i++) {
@@ -71,46 +81,41 @@ void DynamicTextBox::updateDynamicText(){
 }
 
 std::string DynamicTextBox::compileText(){
-    std::string out;
+    std::string out; 
 
     for (int i = 0; i < sections.size(); i++) {
 
         std::string section = sections[i];
 
-        if (isSectionDynamic(i)) {
-            out += se_application.getApplicationInfo(removeFirstChar(section));
-        }
-        else {
-            out += section;
-        }
+        out += compileSection(i);
     }
-    return out;
-}
 
-std::string DynamicTextBox::compileTextAfterFirstDynamicSection(){
-    std::string out;
-    bool pastFirstDynamicSection = false;
-
-    for (int i = 0; i < sections.size(); i++) {
-
-        std::string section = sections[i];
-
-        if (isSectionDynamic(i)) {
-            out += se_application.getApplicationInfo(removeFirstChar(section));
-            pastFirstDynamicSection = true;
-        }
-        else {
-            if (pastFirstDynamicSection) {
-				out += section;
-			}
-        }
-    }
     return out;
 }
 
 std::string DynamicTextBox::compileSection(GLuint sectionIndex){
+
+    std::string text = sections[sectionIndex];
     if (isSectionDynamic(sectionIndex)) {
-		return se_application.getApplicationInfo(removeFirstChar(sections[sectionIndex])); //If dynamic returns the dynamic text
+        if (text.substr(1, 2) == "§§") {
+			std::string info = se_application.getApplicationInfo(text.substr(4, text.size() - 4));
+
+            size_t neededBlanks = maxDynamicTextSize - info.size(); //Get amount of padding needed
+
+            totalSkipAmount += neededBlanks;
+
+            return text.substr(1, 3) + info + std::string(neededBlanks, 'Ø');
+		}
+        else {
+
+            std::string info = se_application.getApplicationInfo(text);
+
+            size_t neededBlanks = maxDynamicTextSize - info.size(); //Get amount of padding needed
+
+            totalSkipAmount += neededBlanks;
+
+            return se_application.getApplicationInfo(text.substr(1, text.size() - 1));
+        }
 	}
     return sections[sectionIndex]; //Default case returns the section
 }
@@ -172,14 +177,6 @@ size_t DynamicTextBox::getSectionSize(GLuint index){
     return size - skipAmt;
 }
 
-uint8_t DynamicTextBox::getDynamicSectionDefaultColor(GLuint index){
-    if (dynamicSectionColors.find(index) == dynamicSectionColors.end()) {
-        return defaultColor;
-    }
-    else {
-        return dynamicSectionColors[index];
-    }
-}
 
 void DynamicTextBox::setTextBufferSize(){
     size_t totalSize = 0;
@@ -187,10 +184,6 @@ void DynamicTextBox::setTextBufferSize(){
     for (int i = 0; i < sections.size(); i++) {
         if (isSectionDynamic(i)) {
             totalSize += maxDynamicTextSize + 1; //Setting to allocated size to properly reflect dynamic text box size in buffer (Dont know why we need the +1 but it is wrong without it)
-            if (sections[i].substr(1, 2) == "§§") {
-                dynamicSectionColors.emplace(std::make_pair(i,se_application.getTextColor(sections[i][3]))); //Emplace color code
-                sections[i] = '~' + sections[i].substr(4, sections[i].size() - 4); //Remove color code from section
-            }
         }
         else {
             totalSize += getSectionSize(i);
