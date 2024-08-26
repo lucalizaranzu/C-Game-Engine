@@ -5,7 +5,8 @@
 
 #include "MiscTools.h"
 
-PauseMenuLayer::PauseMenuLayer() {
+PauseMenuLayer::PauseMenuLayer() : interactiveMenu(InteractiveMenu()){
+
 	type = Shmingo::PAUSEMENU_LAYER;
 }
 
@@ -22,7 +23,7 @@ void PauseMenuLayer::onAttach() {
 
 void PauseMenuLayer::onUpdate() {
 
-
+	interactiveMenu.update();
 
 }
 

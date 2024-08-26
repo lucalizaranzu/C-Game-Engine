@@ -35,7 +35,7 @@ Texture& Texture::operator=(const Texture& other){
 	return *this;
 }
 
-Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height, GLuint channels) : Texture() {
+Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height) : Texture() {
 
 	glTextureStorage2D(textureID, 1, GL_RGB8, width, height);
 	glTextureSubImage2D(textureID, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);

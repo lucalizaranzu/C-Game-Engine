@@ -40,7 +40,7 @@ void World::updateEntities() {
 
 void World::submitVertexArrays(){
  	for (auto it = instancedVAOMap.begin(); it != instancedVAOMap.end(); it++) {
-		se_masterRenderer.submitInstancedVertexArray(it->second);
+		se_masterRenderer.submitEntityVertexArray(it->second);
 	}
 }
 
@@ -123,12 +123,12 @@ void World::addEntity(Shmingo::EntityType type, InstancedEntity* entity){
 		//Creates info for new entity type. Sets the offset to the current size of the entity list, amount is 0 because will increment after conditional
 		entityTypeInfoMap.insert(type, Shmingo::EntityTypeInfo((GLuint)initializedInstancedVaoMap.size(), (GLuint)entityList.size(), 0)); //Creates information about the new VAO
 
-		instancedVAOMap.insert(std::make_pair(type, std::make_shared<InstancedVertexArray>(type, se_masterRenderer.getEntityModel(type)))); //Create new VAO for entity type
+		instancedVAOMap.insert(std::make_pair(type, std::make_shared<EntityVertexArray>(type, se_masterRenderer.getEntityModel(type)))); //Create new VAO for entity type
 		initializedInstancedVaoMap[type] = true; //Set entity type to initialized
 	}
 
 
-	std::shared_ptr<InstancedVertexArray> entityVAO = instancedVAOMap.at(type); //Get VAO for entity type
+	std::shared_ptr<EntityVertexArray> entityVAO = instancedVAOMap.at(type); //Get VAO for entity type
 	uint16_t emplaceOffset = entityTypeInfoMap.map[type].offset + entityTypeInfoMap.map[type].amount; //Offset to the back of the section of the given type in the entity list - works because amount has not yet been incremented
 
 	//Emplace entity into entity list at the offset of the entity type

@@ -53,12 +53,12 @@ TextVertexArray::TextVertexArray(std::string fontName) : fontName(fontName){
 	//Per instance vertex attributes
 
 	glBindBuffer(GL_ARRAY_BUFFER, positionsVboID);
-	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * 1000, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 2 * sizeof(float) * maxInstanceCount, nullptr, GL_DYNAMIC_DRAW);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
 	glVertexAttribDivisor(2, 1); //Per instance attribute
 
 	glBindBuffer(GL_ARRAY_BUFFER, charDataVboID);
-	glBufferData(GL_ARRAY_BUFFER, 3000, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 3 * maxInstanceCount, nullptr, GL_DYNAMIC_DRAW);
 
 	glVertexAttribIPointer(3, 1, GL_UNSIGNED_BYTE, 3, (const void*)offsetof(Shmingo::GlyphData, charTextureID));
 	glVertexAttribDivisor(3, 1); //Per instance attribute
@@ -68,6 +68,9 @@ TextVertexArray::TextVertexArray(std::string fontName) : fontName(fontName){
 
 	glVertexAttribIPointer(5, 1, GL_UNSIGNED_BYTE, 3, (const void*)offsetof(Shmingo::GlyphData, scale));
 	glVertexAttribDivisor(5, 1); //Per instance attribute
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0); //Unbind VAO
 
 }
 

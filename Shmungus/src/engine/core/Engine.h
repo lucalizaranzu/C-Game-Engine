@@ -9,6 +9,5 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "MasterRenderer.h"
-#include "VertexArray.h"
 #include "Event.h"
 #include "MasterRenderer.h"

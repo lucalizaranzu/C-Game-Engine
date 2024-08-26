@@ -6,4 +6,5 @@
 
 namespace Shmingo {
 	Texture2D createTexture2D(std::string filePath);
+
 }

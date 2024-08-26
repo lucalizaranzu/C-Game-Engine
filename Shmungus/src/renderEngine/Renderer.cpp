@@ -19,27 +19,8 @@ void disableAttribs(size_t attribAmount) {
 	}
 }
 
-void Shmingo::render(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader) {
 
-
-	shader->start(); //Start shader
-
-	vertexArray->bindTextures(); //Load textures into texture slots
-
-	glBindVertexArray(vertexArray->getVaoID()); //Bind VAO
-	enableAttribs(vertexArray->getAttribAmount()); //Enable attribute arrays
-
-	clearOpenGLError();
-	glDrawElements(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, NULL);
-	checkOpenGLError();
-	disableAttribs(vertexArray->getAttribAmount()); //Disable attribute arrays
-	glBindVertexArray(0); //Unbind VAO
-
-	shader->stop(); //Stop shader
-}
-
-
-void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader) {
+void Shmingo::renderEntity(std::shared_ptr<EntityVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader) {
 
 	shader->start(); //Start shader
 
@@ -73,3 +54,24 @@ void Shmingo::renderText(std::shared_ptr<TextVertexArray> vertexArray, std::shar
 	shader->stop(); //Stop shader
 
 }
+
+void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
+
+	shader->start();
+
+	vertexArray->bindTextures(); //Load textures into texture slots
+
+	vertexArray->bindVao(); //Bind VAO
+
+	enableAttribs(vertexArray->getAttribAmt()); //Enables attributes
+
+	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceCount());
+
+	disableAttribs(vertexArray->getAttribAmt()); //Disables attributes
+
+	glBindVertexArray(0); //Unbind VAO
+
+	shader->stop(); //Stop shader
+}
+
+

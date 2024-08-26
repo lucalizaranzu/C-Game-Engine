@@ -3,11 +3,10 @@
 #include <ShmingoCore.h>
 
 #include "EventBus.h"
-#include "VertexArray.h"
 #include "InstancedVertexArray.h"
-#include "Vertex.h"
 #include "World.h"
 #include "InfoSpace.h"
+#include "InteractiveMenu.h"
 
 class LayerStack;
 
@@ -81,6 +80,8 @@ private:
 
 	void keybordCallback(KeyPressEvent* e);
 	void mouseDragCallback(MouseDragEvent* e);
+
+	InteractiveMenu interactiveMenu;
 
 };
 

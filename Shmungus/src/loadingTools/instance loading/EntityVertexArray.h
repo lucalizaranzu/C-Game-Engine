@@ -9,12 +9,12 @@
 //This class is for when we want to use instancing instead of batching, mostly for entities
 //Templated to entity type for optimizations
 
-class InstancedVertexArray {
+class EntityVertexArray {
 
 public:
 
 	//Constructor, sets up all necessary data
-	InstancedVertexArray(Shmingo::EntityType entityType, std::shared_ptr<Model> model);
+	EntityVertexArray(Shmingo::EntityType entityType, std::shared_ptr<Model> model);
 
 
 
@@ -74,10 +74,6 @@ public:
 	inline Shmingo::EntityType getEntityType() {
 		return entityType;
 	}
-
-
-
-
 
 
 	//Debugging functions ----------------------------------------------

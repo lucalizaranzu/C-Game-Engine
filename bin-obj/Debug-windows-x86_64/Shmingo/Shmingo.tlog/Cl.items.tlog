@@ -16,12 +16,11 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\main\Layer.cpp;C:\Users\
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\main\LayerStack.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\LayerStack.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\menu layers\PauseMenuLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\PauseMenuLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\sandbox layers\SandboxLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\SandboxLayer.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\batch loading\VertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\VertexArray.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\instance loading\InstancedVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedVertexArray.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\batch loading\InstancedVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedVertexArray.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\instance loading\EntityVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\EntityVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextBox.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextBox.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\uniform loading\UniformBuffer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformBuffer.obj
-C:\Users\Luca\source\repos\Shmungus\Shmungus\src\menus\InfoSpace.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InfoSpace.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\Model.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Model.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\ModelManager.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ModelManager.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\models\ModelTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ModelTools.obj
@@ -32,8 +31,11 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\renderEngine\Renderer.cpp;C:\Us
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\DefaultShader.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\DefaultShader.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\shaders\ShaderProgram.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ShaderProgram.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\textures\Texture.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Texture.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\textures\TextureAtlas.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextureAtlas.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\textures\TextureTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextureTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\MiscTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MiscTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\math\MathTools.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\MathTools.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\tools\math\Matrices.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\Matrices.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\ui\infospaces\InfoSpace.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InfoSpace.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\ui\menus\InteractiveMenu.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InteractiveMenu.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\world\World.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\World.obj

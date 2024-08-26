@@ -9,7 +9,8 @@ enum ShaderType {
 	se_SHADER_NONE,
 	se_DEFAULT_SHADER,
 	se_ENTITY_SHADER,
-	se_TEXT_SHADER
+	se_TEXT_SHADER,
+	se_MENU_SHADER
 
 };
 

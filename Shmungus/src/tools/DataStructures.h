@@ -48,7 +48,18 @@ namespace Shmingo {
 		RIGHT
 	};
 
+	struct Quad {
+		vec2 position;
+		vec2 size;
+	};
 
+	//Texture coords of a quad
+	struct QuadTextureCoords {
+		vec2 topLeft;
+		vec2 topRight;
+		vec2 bottomLeft;
+		vec2 bottomRight;
+	};
 
 
 	/*

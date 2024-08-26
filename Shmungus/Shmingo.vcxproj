@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -100,7 +100,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -124,7 +124,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\menus;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\batch loading;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -160,13 +160,11 @@
     <ClInclude Include="src\events\EventHandler.h" />
     <ClInclude Include="src\layers\main\Layer.h" />
     <ClInclude Include="src\layers\main\LayerStack.h" />
-    <ClInclude Include="src\loadingTools\batch loading\Vertex.h" />
-    <ClInclude Include="src\loadingTools\batch loading\VertexArray.h" />
-    <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h" />
+    <ClInclude Include="src\loadingTools\batch loading\InstancedVertexArray.h" />
+    <ClInclude Include="src\loadingTools\instance loading\EntityVertexArray.h" />
     <ClInclude Include="src\loadingTools\text loading\TextBox.h" />
     <ClInclude Include="src\loadingTools\text loading\TextVertexArray.h" />
     <ClInclude Include="src\loadingTools\uniform loading\UniformBuffer.h" />
-    <ClInclude Include="src\menus\InfoSpace.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\models\ModelManager.h" />
     <ClInclude Include="src\models\ModelTools.h" />
@@ -178,11 +176,15 @@
     <ClInclude Include="src\shaders\DefaultShader.h" />
     <ClInclude Include="src\shaders\ShaderProgram.h" />
     <ClInclude Include="src\textures\Texture.h" />
+    <ClInclude Include="src\textures\TextureAtlas.h" />
     <ClInclude Include="src\textures\TextureTools.h" />
     <ClInclude Include="src\tools\DataStructures.h" />
     <ClInclude Include="src\tools\MiscTools.h" />
     <ClInclude Include="src\tools\math\MathTools.h" />
     <ClInclude Include="src\tools\math\Matrices.h" />
+    <ClInclude Include="src\ui\elements\MenuButton.h" />
+    <ClInclude Include="src\ui\infospaces\InfoSpace.h" />
+    <ClInclude Include="src\ui\menus\InteractiveMenu.h" />
     <ClInclude Include="src\world\World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -208,12 +210,11 @@
     <ClCompile Include="src\layers\main\LayerStack.cpp" />
     <ClCompile Include="src\layers\menu layers\PauseMenuLayer.cpp" />
     <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp" />
-    <ClCompile Include="src\loadingTools\batch loading\VertexArray.cpp" />
-    <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\batch loading\InstancedVertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\instance loading\EntityVertexArray.cpp" />
     <ClCompile Include="src\loadingTools\text loading\TextBox.cpp" />
     <ClCompile Include="src\loadingTools\text loading\TextVertexArray.cpp" />
     <ClCompile Include="src\loadingTools\uniform loading\UniformBuffer.cpp" />
-    <ClCompile Include="src\menus\InfoSpace.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
     <ClCompile Include="src\models\ModelManager.cpp" />
     <ClCompile Include="src\models\ModelTools.cpp" />
@@ -224,16 +225,21 @@
     <ClCompile Include="src\shaders\DefaultShader.cpp" />
     <ClCompile Include="src\shaders\ShaderProgram.cpp" />
     <ClCompile Include="src\textures\Texture.cpp" />
+    <ClCompile Include="src\textures\TextureAtlas.cpp" />
     <ClCompile Include="src\textures\TextureTools.cpp" />
     <ClCompile Include="src\tools\MiscTools.cpp" />
     <ClCompile Include="src\tools\math\MathTools.cpp" />
     <ClCompile Include="src\tools\math\Matrices.cpp" />
+    <ClCompile Include="src\ui\infospaces\InfoSpace.cpp" />
+    <ClCompile Include="src\ui\menus\InteractiveMenu.cpp" />
     <ClCompile Include="src\world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\entityFragment.glsl" />
     <None Include="shaders\entityVertex.glsl" />
     <None Include="shaders\fragment.glsl" />
+    <None Include="shaders\menu\menuFragment.glsl" />
+    <None Include="shaders\menu\menuVertex.glsl" />
     <None Include="shaders\text\textFragment.glsl" />
     <None Include="shaders\text\textVertex.glsl" />
     <None Include="shaders\vertex.glsl" />

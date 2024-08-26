@@ -43,6 +43,6 @@ class Texture2D : public Texture {
 
 public:
 
-	Texture2D(unsigned char* textureData, GLuint width, GLuint height, GLuint channels);
+	Texture2D(unsigned char* textureData, GLuint width, GLuint height);
 
 };

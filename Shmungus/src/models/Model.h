@@ -2,7 +2,6 @@
 
 #include <sepch.h>
 #include <ShmingoCore.h>
-#include "Vertex.h"
 #include "Texture.h"
 
 //Serves as just a wrapper around a std::array containing vertices, and eventually indices as well. 
@@ -32,8 +31,6 @@ public:
 	inline float* getPositionData() { return positionData; };
 	inline float* getTextureCoords() { return textureCoords; };
 
-	inline GLuint getVerticesByteSize() { return (vertexCount * sizeof(EntityVertex)); };
-
 	inline GLuint getIndexCount() { return indexCount; };
 	inline int* getIndexData() { return indexData; };
 	inline GLuint getIndicesByteSize() { return (indexCount * sizeof(int)); };
@@ -43,7 +40,6 @@ public:
 	std::unique_ptr<float[]> createTexIDArray();
 
 private:
-
 
 	//Vertex data
 	GLuint vertexCount;

@@ -4,6 +4,9 @@
     <Filter Include="shaders">
       <UniqueIdentifier>{0F45D591-7B24-542D-843C-DF03F09ABA8E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\menu">
+      <UniqueIdentifier>{B3C77519-9F2A-05BE-48B0-3D7434F2D040}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders\text">
       <UniqueIdentifier>{A39F7919-8F02-09BE-3888-417424CAD440}</UniqueIdentifier>
     </Filter>
@@ -70,9 +73,6 @@
     <Filter Include="src\loadingTools\uniform loading">
       <UniqueIdentifier>{D8A9B1DC-C4FA-9C1E-ED5E-8BE0D90E3088}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\menus">
-      <UniqueIdentifier>{24C3A9B5-902D-5E2C-D96B-0FD245153C81}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\models">
       <UniqueIdentifier>{605C916B-4C14-D3B8-B51B-AC14A1F26DA9}</UniqueIdentifier>
     </Filter>
@@ -93,6 +93,18 @@
     </Filter>
     <Filter Include="src\tools\math">
       <UniqueIdentifier>{A65E61BD-922C-55C3-7BC0-C5E9672D3128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui">
+      <UniqueIdentifier>{7A4F661C-66F1-90F2-4FAC-A4463BED1743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\elements">
+      <UniqueIdentifier>{2672E2A4-92FD-4F69-9B0E-D35D0719AC69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\infospaces">
+      <UniqueIdentifier>{94D06207-00E7-609D-495E-ECBEB5B33125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ui\menus">
+      <UniqueIdentifier>{31AD76AE-1D10-0653-C695-3E09B2D7D1D5}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\world">
       <UniqueIdentifier>{C44364B6-30AE-182D-79EC-C9D2E595F681}</UniqueIdentifier>
@@ -144,13 +156,10 @@
     <ClInclude Include="src\layers\main\LayerStack.h">
       <Filter>src\layers\main</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadingTools\batch loading\Vertex.h">
+    <ClInclude Include="src\loadingTools\batch loading\InstancedVertexArray.h">
       <Filter>src\loadingTools\batch loading</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadingTools\batch loading\VertexArray.h">
-      <Filter>src\loadingTools\batch loading</Filter>
-    </ClInclude>
-    <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h">
+    <ClInclude Include="src\loadingTools\instance loading\EntityVertexArray.h">
       <Filter>src\loadingTools\instance loading</Filter>
     </ClInclude>
     <ClInclude Include="src\loadingTools\text loading\TextBox.h">
@@ -161,9 +170,6 @@
     </ClInclude>
     <ClInclude Include="src\loadingTools\uniform loading\UniformBuffer.h">
       <Filter>src\loadingTools\uniform loading</Filter>
-    </ClInclude>
-    <ClInclude Include="src\menus\InfoSpace.h">
-      <Filter>src\menus</Filter>
     </ClInclude>
     <ClInclude Include="src\models\Model.h">
       <Filter>src\models</Filter>
@@ -198,6 +204,9 @@
     <ClInclude Include="src\textures\Texture.h">
       <Filter>src\textures</Filter>
     </ClInclude>
+    <ClInclude Include="src\textures\TextureAtlas.h">
+      <Filter>src\textures</Filter>
+    </ClInclude>
     <ClInclude Include="src\textures\TextureTools.h">
       <Filter>src\textures</Filter>
     </ClInclude>
@@ -212,6 +221,15 @@
     </ClInclude>
     <ClInclude Include="src\tools\math\Matrices.h">
       <Filter>src\tools\math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\elements\MenuButton.h">
+      <Filter>src\ui\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\infospaces\InfoSpace.h">
+      <Filter>src\ui\infospaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ui\menus\InteractiveMenu.h">
+      <Filter>src\ui\menus</Filter>
     </ClInclude>
     <ClInclude Include="src\world\World.h">
       <Filter>src\world</Filter>
@@ -272,10 +290,10 @@
     <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp">
       <Filter>src\layers\sandbox layers</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadingTools\batch loading\VertexArray.cpp">
+    <ClCompile Include="src\loadingTools\batch loading\InstancedVertexArray.cpp">
       <Filter>src\loadingTools\batch loading</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp">
+    <ClCompile Include="src\loadingTools\instance loading\EntityVertexArray.cpp">
       <Filter>src\loadingTools\instance loading</Filter>
     </ClCompile>
     <ClCompile Include="src\loadingTools\text loading\TextBox.cpp">
@@ -286,9 +304,6 @@
     </ClCompile>
     <ClCompile Include="src\loadingTools\uniform loading\UniformBuffer.cpp">
       <Filter>src\loadingTools\uniform loading</Filter>
-    </ClCompile>
-    <ClCompile Include="src\menus\InfoSpace.cpp">
-      <Filter>src\menus</Filter>
     </ClCompile>
     <ClCompile Include="src\models\Model.cpp">
       <Filter>src\models</Filter>
@@ -320,6 +335,9 @@
     <ClCompile Include="src\textures\Texture.cpp">
       <Filter>src\textures</Filter>
     </ClCompile>
+    <ClCompile Include="src\textures\TextureAtlas.cpp">
+      <Filter>src\textures</Filter>
+    </ClCompile>
     <ClCompile Include="src\textures\TextureTools.cpp">
       <Filter>src\textures</Filter>
     </ClCompile>
@@ -331,6 +349,12 @@
     </ClCompile>
     <ClCompile Include="src\tools\math\Matrices.cpp">
       <Filter>src\tools\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\infospaces\InfoSpace.cpp">
+      <Filter>src\ui\infospaces</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\menus\InteractiveMenu.cpp">
+      <Filter>src\ui\menus</Filter>
     </ClCompile>
     <ClCompile Include="src\world\World.cpp">
       <Filter>src\world</Filter>
@@ -345,6 +369,12 @@
     </None>
     <None Include="shaders\fragment.glsl">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\menu\menuFragment.glsl">
+      <Filter>shaders\menu</Filter>
+    </None>
+    <None Include="shaders\menu\menuVertex.glsl">
+      <Filter>shaders\menu</Filter>
     </None>
     <None Include="shaders\text\textFragment.glsl">
       <Filter>shaders\text</Filter>

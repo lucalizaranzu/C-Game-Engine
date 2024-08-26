@@ -26,7 +26,7 @@ Texture2D Shmingo::createTexture2D(std::string filePath){
 	GLuint uWidth = width;
 	GLuint uHeight = height;
 
-	Texture2D texture = Texture2D(textureData, uWidth, uHeight, channels); //Creates texture object
+	Texture2D texture = Texture2D(textureData, uWidth, uHeight); //Creates texture object
 	stbi_image_free(textureData); //Frees char 
 	return texture;
 }

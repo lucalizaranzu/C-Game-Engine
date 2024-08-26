@@ -39,7 +39,6 @@ public:
 
 	//Getters ------------------------------------------------------------------
 	inline GLuint getVaoID() { return vaoID; };
-	inline size_t getVertexCount() { return vertexCount; };
 	inline size_t getIndexCount() { return indexCount; };
 	inline size_t getInstanceAmount() { return instanceAmount; };
 
@@ -60,36 +59,18 @@ protected:
 	GLuint vertexPositionsVboID = 0;
 	GLuint texCoordsVboID = 0;
 
-	GLuint charTextureVboID = 0;
-	GLuint colorVboID = 0;
 	GLuint positionsVboID = 0;
-	GLuint scaleVboID = 0;
-
 	GLuint charDataVboID = 0;
 
-	std::vector<GLuint> perInstanceVboIDs; //Per instance uniform VBO IDs
-
-	GLuint vertexCount = 0; //Amount of vertices
 	size_t instanceAmount = 0;
 	size_t staticTextBoxEmplaceOffset = 0; //Offset for emplacing static text boxes
+
+	size_t maxInstanceCount = 1000; //Max amount of indices
+
 	size_t indexCount = 0; //Amount of indices
 	size_t maxTextureIndex = 0;
 
 	std::string fontName;
-
-	//Utility functions --------------------------------------------------------
-
-	inline void bindVao() {
-		glBindVertexArray(vaoID);
-	}
-
-	inline void unbindBuffer() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
-
-	//Populates gl buffers with data from temp buffers
-	void setGLBufferData(size_t textBoxOffset, size_t charAmt);
-	void setGLBufferDataPositionsOnly(size_t textBoxOffset, size_t charAmt);
 
 	//Temp buffers -------------------------------------------------------------
 
@@ -123,12 +104,26 @@ protected:
 	//Aligns text in temp buffers according to text box parameters
 	void alignTextInTempBuffers(Shmingo::TextAlignment alignment, TextBox* textBox, bool alignStartingFromResizePoint);
 
+
+	//Utility functions --------------------------------------------------------
+
+	inline void bindVao() {
+		glBindVertexArray(vaoID);
+	}
+
+	inline void unbindBuffer() {
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	//Populates gl buffers with data from temp buffers
+	void setGLBufferData(size_t textBoxOffset, size_t charAmt);
+	void setGLBufferDataPositionsOnly(size_t textBoxOffset, size_t charAmt);
+
 	//Shifts the buffers to the right by shiftAmt
 	void shiftBuffersRight(size_t offset, size_t shiftAmt);
 	void shiftBuffersLeft(size_t offset, size_t shiftAmt);
 
 	void shiftPositionBufferValues(size_t offset, size_t charsToShift, float shiftAmt);
-
 
 
 	//Debug --------------------------------------------------------------------

@@ -1,0 +1,83 @@
+#include <sepch.h>
+
+#include "TextureAtlas.h"
+#define STB_IMAGE_IMPLEMENTATION
+
+Shmingo::TextureAtlas::TextureAtlas(size_t width, size_t height, bool uniformTextureDimensions) 
+	: texture(Texture2D(nullptr, width, height)), m_UniformTextureDimensions(uniformTextureDimensions), m_Width(width), m_Height(height){
+
+	Shmingo::QuadTextureCoords defaultTexCoords = Shmingo::QuadTextureCoords(vec2(-1.0f / m_Width, 1), vec2(-1.0f / m_Width, 1), vec2(-1.0f / m_Width,1), vec2(-1.0f / m_Width,1));
+	m_textureCoords.emplace(std::make_pair(0, defaultTexCoords));
+}
+
+void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
+	std::string realFilePath = "assets/textures/" + filePath;
+
+	int int_width, int_height, channels;
+
+	stbi_set_flip_vertically_on_load(1); //Flip texture to offset OpenGL flipping
+	stbi_uc* textureData = stbi_load(realFilePath.c_str(), &int_width, &int_height, &channels, 0); //stbi_uc is a typdef of unsigned char*, can use to initialize texture
+
+	if (!textureData) {
+		std::string errorMsg = "Failed to add texture to atlas: ";
+		errorMsg += filePath;
+		se_log(errorMsg);
+		throw std::runtime_error(errorMsg);
+	}
+
+	float width = (float)int_width / m_Width; //Width in percentage of atlas
+	float height = (float)int_height / m_Height; //Height in percentage of atlas
+
+
+	if (m_UniformTextureDimensions) {
+
+		Shmingo::QuadTextureCoords currentLastCoords = m_textureCoords[texturesInAtlas - 1];
+		float minXIncrease = 1.0f / m_Width;
+		float minYIncrease = 1.0f / m_Height;
+
+		float leftX = 0, topY = 0;
+
+		if (m_textureCoords[texturesInAtlas].topRight.x + width + minXIncrease <= 1) {
+
+			leftX = currentLastCoords.topRight.x + minXIncrease;
+			topY = currentLastCoords.topRight.y;
+
+		}
+
+		else {
+			if(currentLastCoords.bottomLeft.y - height - minYIncrease >= 0){
+				leftX = 0;
+				topY = currentLastCoords.bottomLeft.y  - minYIncrease;
+			}
+			else{
+				se_log("Atlas is full");
+				return;
+			}
+
+			Shmingo::QuadTextureCoords coords = Shmingo::QuadTextureCoords(
+
+				vec2(leftX, topY),
+				vec2(leftX + width, topY),
+				vec2(leftX, topY - height),
+				vec2(leftX + width, topY - height)
+			);
+
+			glActiveTexture(GL_TEXTURE0); //Set active texture to 0
+			glBindTexture(GL_TEXTURE_2D, texture.getTextureID()); //Bind texture to 2D texture target
+
+			m_textureCoords.emplace(textureID, coords);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, leftX * m_Width, topY * m_Height, int_width, int_height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+		}
+	}
+	else {
+		se_error("Non-uniform texture dimensions not yet supported");
+	}
+}
+
+Shmingo::QuadTextureCoords Shmingo::TextureAtlas::getTextureCoords(size_t textureID){
+	if (textureID < texturesInAtlas - 1) {
+		return m_textureCoords[textureID];
+	}
+	se_error("Texture ID not found in atlas");
+	return Shmingo::QuadTextureCoords(vec2(0,0),vec2(0,0),vec2(0,0),vec2(0,0));
+}

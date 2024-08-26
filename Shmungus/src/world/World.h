@@ -5,7 +5,7 @@
 #include <typeindex>
 
 #include "InstancedEntity.h"
-#include "InstancedVertexArray.h"
+#include "EntityVertexArray.h"
 
 /*
 Represents the world owned by the sandbox layer, including all of the expected constituents.
@@ -74,7 +74,7 @@ private:
 	std::unordered_map<Shmingo::EntityType, bool> initializedInstancedVaoMap; //Map to keep track of which Entity types have a VAO in our list
 	Shmingo::OrderedMap<Shmingo::EntityType, Shmingo::EntityTypeInfo> entityTypeInfoMap; //Contains information about a certain entity type in memory - ordered map is a custom data structure which retains insertion order
 
-	std::unordered_map<Shmingo::EntityType, std::shared_ptr<InstancedVertexArray>> instancedVAOMap; //Contains all of the world's instanced VAOs, which typically includes entities.
+	std::unordered_map<Shmingo::EntityType, std::shared_ptr<EntityVertexArray>> instancedVAOMap; //Contains all of the world's instanced VAOs, which typically includes entities.
 
 
 	void updateEntities(); //Updates all entities in the world

@@ -116,6 +116,7 @@ void Shmingo::ShmingoApp::update() {
 		totalFrames = 0;
 	}
 
+
 	se_layerStack.updateLayers();
 
 	se_masterRenderer.update();

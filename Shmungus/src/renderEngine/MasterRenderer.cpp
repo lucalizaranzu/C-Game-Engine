@@ -19,12 +19,15 @@ void MasterRenderer::init() {
 
 	std::shared_ptr<DefaultShader> entityShader = std::make_shared<DefaultShader>("entityVertex.glsl", "entityFragment.glsl");
 	std::shared_ptr<DefaultShader> textShader = std::make_shared<DefaultShader>("text/textVertex.glsl", "text/textFragment.glsl");
+	std::shared_ptr<DefaultShader> menuShader = std::make_shared<DefaultShader>("menu/menuVertex.glsl", "menu/menuFragment.glsl");
 
 	entityShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK, Shmingo::UTIL_BLOCK);
 	textShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
+	menuShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
 
 	mapShader(se_ENTITY_SHADER, entityShader);
 	mapShader(se_TEXT_SHADER, textShader);
+	mapShader(se_MENU_SHADER, menuShader);
 
 	mapEntityShader(Shmingo::DefaultEntity, entityShader);
 
@@ -37,28 +40,22 @@ void MasterRenderer::declareShaderTextureMap(ShaderType type, int textureSlotAmo
 	shaderMap.at(type)->loadTextureMap(textureSlotAmount);
 }
 
-//Creates a render group using the renderer and shader from the maps, adds to render queue
-void MasterRenderer::submitVertexArray(std::shared_ptr<VertexArray> vertexArray, ShaderType type){
 
-	RenderPair pair = RenderPair(vertexArray, shaderMap.at(type));
-	renderQueue.emplace_back(pair);
+void MasterRenderer::submitEntityVertexArray(std::shared_ptr<EntityVertexArray> vertexArray){
+
+	EntityRenderPair pair = EntityRenderPair(vertexArray, getEntityShader(vertexArray->getEntityType()));
+	entityRenderQueue.emplace_back(pair);
 }
+
+void MasterRenderer::submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray, ShaderType type){
+	InstancedRenderPair pair = InstancedRenderPair(vertexArray, shaderMap.at(type));
+	instancedRenderQueue.emplace_back(pair);
+}
+
 
 void MasterRenderer::submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, ShaderType type) {
 	TextRenderPair pair = TextRenderPair(vertexArray, shaderMap.at(type));
 	textRenderQueue.emplace_back(pair);
-}
-
-void MasterRenderer::submitVertexArray(std::shared_ptr<VertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
-
-	RenderPair pair = RenderPair(vertexArray, shader);
-	renderQueue.emplace_back(pair);
-}
-
-void MasterRenderer::submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray){
-
-	InstancedRenderPair pair = InstancedRenderPair(vertexArray, getEntityShader(vertexArray->getEntityType()));
-	instancedRenderQueue.emplace_back(pair);
 }
 
 void MasterRenderer::submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
@@ -66,18 +63,18 @@ void MasterRenderer::submitTextVertexArray(std::shared_ptr<TextVertexArray> vert
 	textRenderQueue.emplace_back(pair);
 }
 
-//Render all objects submitted
-void MasterRenderer::renderBatch() { 
-	for (RenderPair pair : renderQueue) {
-		//Uses render method from renderer.h
-		Shmingo::render(pair.vertexArray, pair.shader);
-	}
-}
 
 void MasterRenderer::renderInstancedBatch(){
 	for (InstancedRenderPair pair : instancedRenderQueue) {
 		//Uses render method from renderer.h
 		Shmingo::renderInstanced(pair.vertexArray, pair.shader);
+	}
+}
+
+void MasterRenderer::renderEntityBatch(){
+	for (EntityRenderPair pair : entityRenderQueue) {
+		//Uses render method from renderer.h
+		Shmingo::renderEntity(pair.vertexArray, pair.shader);
 	}
 }
 
@@ -89,16 +86,14 @@ void MasterRenderer::renderTextBatch() {
 }
 
 void MasterRenderer::clearBatches() {
-	renderQueue.clear();
-	instancedRenderQueue.clear();
+	entityRenderQueue.clear();
 	textRenderQueue.clear();
 }
 
 //Renders the queue then clears it for next frame
 void MasterRenderer::update() {
 
-	renderBatch();
-	renderInstancedBatch();
+	renderEntityBatch();
 	renderTextBatch();
 
 	clearBatches();
@@ -113,7 +108,6 @@ void MasterRenderer::update() {
 
 //Declare render pairs for internal shaders, if you make a new shader type, add to the enum following the convention in ShaderProgram.h, then declare it as a pair with your new shader object
 void MasterRenderer::mapShader(ShaderType type, std::shared_ptr<ShaderProgram> shader) {
-
 	//Add to maps with shader type as key
 	shaderMap.insert(std::make_pair(type, shader));
 }
@@ -122,9 +116,9 @@ void MasterRenderer::mapEntityShader(Shmingo::EntityType type, std::shared_ptr<S
 	entityShaderMap.insert(std::make_pair(type, shader));
 }
 
-void MasterRenderer::mapInstancedShader(std::type_index entityType, GLuint textureSlotAmount, std::shared_ptr<ShaderProgram> shader) {
-	instancedShaderMap.insert(std::make_pair(entityType, shader));
-	shader->loadTextureMap(textureSlotAmount);
+void MasterRenderer::mapInstancedShader(ShaderType type, std::shared_ptr<ShaderProgram> shader){
+	instancedShaderMap.insert(std::make_pair(type, shader));
+
 }
 
 /// <summary>
@@ -193,4 +187,8 @@ std::shared_ptr<Model> MasterRenderer::getEntityModel(Shmingo::EntityType type){
 
 std::shared_ptr<ShaderProgram> MasterRenderer::getEntityShader(Shmingo::EntityType type){
 	return entityShaderMap.at(type);
+}
+
+std::shared_ptr<ShaderProgram> MasterRenderer::getShader(ShaderType type){
+	return shaderMap.at(type);
 }

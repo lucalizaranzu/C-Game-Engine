@@ -1,9 +1,9 @@
 #include <sepch.h>
-#include "InstancedVertexArray.h"
+#include "EntityVertexArray.h"
 #include "MasterRenderer.h"
 
 
-InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared_ptr<Model> model) : instanceModel(model), entityType(type),
+EntityVertexArray::EntityVertexArray(Shmingo::EntityType type, std::shared_ptr<Model> model) : instanceModel(model), entityType(type),
 	perInstanceAttributeInfo(se_masterRenderer.getEntitySpecificInstanceAttributeInfoRef(type)){
 
 	linkTexture(model->getTexture(), 0); //Links the texture to the VAO
@@ -78,7 +78,7 @@ InstancedVertexArray::InstancedVertexArray(Shmingo::EntityType type, std::shared
 }
 
 //For shared pointer (unused)
-void InstancedVertexArray::submitInstanceData(std::shared_ptr<InstancedEntity> instancedEntity) {
+void EntityVertexArray::submitInstanceData(std::shared_ptr<InstancedEntity> instancedEntity) {
 
 	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType);
 
@@ -100,7 +100,7 @@ void InstancedVertexArray::submitInstanceData(std::shared_ptr<InstancedEntity> i
 
 
 //For raw pointers
-void InstancedVertexArray::submitInstanceData(InstancedEntity* instancedEntity) {
+void EntityVertexArray::submitInstanceData(InstancedEntity* instancedEntity) {
 
 	const GLuint perInstanceInstanceAttribAmt = se_masterRenderer.getEntitySpecificMajorInstanceAttribAmount(entityType);
 
@@ -126,7 +126,7 @@ void InstancedVertexArray::submitInstanceData(InstancedEntity* instancedEntity) 
 
 
 
-void InstancedVertexArray::updateInstanceData(InstancedEntity* entity, GLuint attributePositionInArray){
+void EntityVertexArray::updateInstanceData(InstancedEntity* entity, GLuint attributePositionInArray){
 
 	GLuint dataSize = perInstanceAttributeInfo[attributePositionInArray].size * sizeof(float);
 	GLuint realAttributeNumber = perInstanceAttributeInfo[attributePositionInArray].attributeNumber;
@@ -139,7 +139,7 @@ void InstancedVertexArray::updateInstanceData(InstancedEntity* entity, GLuint at
 	glBindVertexArray(0); //Unbind VAO
 }
 
-void InstancedVertexArray::removeInstancedData(GLuint offset){
+void EntityVertexArray::removeInstancedData(GLuint offset){
 
 	bindVao();
 
@@ -181,7 +181,7 @@ void InstancedVertexArray::removeInstancedData(GLuint offset){
 
 
 
-void InstancedVertexArray::linkTexture(Texture2D texture, GLuint slot) {
+void EntityVertexArray::linkTexture(Texture2D texture, GLuint slot) {
 
 	//Declares the size of the array so we don't have to always loop through 32 slots
 	if ((slot + 1) > maxTextureIndex) {
@@ -195,7 +195,7 @@ void InstancedVertexArray::linkTexture(Texture2D texture, GLuint slot) {
 	//std::cout << "ID in link: ";
 }
 
-void InstancedVertexArray::bindTextures() {
+void EntityVertexArray::bindTextures() {
 	bindVao();
 	//Loops through all the texture IDs and binds them to their slot according to their index in the array
 	for (int i = 0; i < (int)maxTextureIndex; i++) {
@@ -203,7 +203,7 @@ void InstancedVertexArray::bindTextures() {
 	}
 }
 
-void InstancedVertexArray::copyBufferData(GLuint readOffset, GLuint writeOffset, GLuint size){
+void EntityVertexArray::copyBufferData(GLuint readOffset, GLuint writeOffset, GLuint size){
 
 	glCopyBufferSubData(GL_ARRAY_BUFFER, GL_ARRAY_BUFFER, readOffset, writeOffset, size);
 }

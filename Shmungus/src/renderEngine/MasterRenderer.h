@@ -18,21 +18,19 @@ public:
 	//Meant for initializing the maps, all shaders and renderers should be added to the map in this function
 	void init();
 	//This function is how you render an object using shaders provided by the engine, custom shaders pass in a custom shader object in a shared pointer
-	void submitVertexArray(std::shared_ptr<VertexArray> vertexArray, ShaderType type);
 	//Meant for shaders added by modders, which do not have a corresponding ShaderType enum. Pass the object directly into the function
 	void submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, ShaderType type);
-
-	void submitVertexArray(std::shared_ptr<VertexArray>, std::shared_ptr<ShaderProgram> shader);
-
-	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray);
-
 	void submitTextVertexArray(std::shared_ptr<TextVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
+
+	void submitEntityVertexArray(std::shared_ptr<EntityVertexArray> vertexArray);
+
+	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray, ShaderType type);
+
 
 	void update();
 
-
-	void renderBatch();
 	void renderInstancedBatch();
+	void renderEntityBatch();
 	void renderTextBatch();
 
 	void clearBatches();
@@ -52,6 +50,7 @@ public:
 	std::shared_ptr<Model> getEntityModel(Shmingo::EntityType type);
 
 	std::shared_ptr<ShaderProgram> getEntityShader(Shmingo::EntityType type); //Get an entity type's shader
+	std::shared_ptr<ShaderProgram> getShader(ShaderType type); //Get an entity type's shader
 
 private:
 
@@ -61,7 +60,7 @@ private:
 	void mapEntityShader(Shmingo::EntityType type, std::shared_ptr<ShaderProgram> shader);
 
 	//Needs to have type explicitly declared, also declares an amount of texture slots
-	void mapInstancedShader(std::type_index entityType, GLuint textureSlotAmount, std::shared_ptr<ShaderProgram> shader);
+	void mapInstancedShader(ShaderType type, std::shared_ptr<ShaderProgram> shader);
 
 	//Used to set sampler uniform
 	void declareShaderTextureMap(ShaderType type, int textureSlotAmount);
@@ -70,12 +69,12 @@ private:
 
 	static MasterRenderer instance;
 
-	std::vector<RenderPair> renderQueue; 
-	std::vector<InstancedRenderPair> instancedRenderQueue; 
+	std::vector<EntityRenderPair> entityRenderQueue; 
 	std::vector<TextRenderPair> textRenderQueue; 
+	std::vector<InstancedRenderPair> instancedRenderQueue;
 
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> shaderMap;
-	std::map<std::type_index, std::shared_ptr<ShaderProgram>> instancedShaderMap;
+	std::map<ShaderType, std::shared_ptr<ShaderProgram>> instancedShaderMap;
 
 	std::unordered_map<Shmingo::EntityType, std::vector<Shmingo::EntitySpecificVertexDataInfo>> entityVertexAttributeMap;
 	std::unordered_map<Shmingo::EntityType, std::list<GLuint>> entitySpecificVertexAttribAmountMap;
