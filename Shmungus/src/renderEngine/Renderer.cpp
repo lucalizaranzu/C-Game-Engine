@@ -59,18 +59,17 @@ void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray,
 
 	shader->start();
 
-	vertexArray->bindTextures(); //Load textures into texture slots
-
 	vertexArray->bindVao(); //Bind VAO
 
+	vertexArray->bindTextures(); //Load textures into texture slots
+
 	enableAttribs(vertexArray->getAttribAmt()); //Enables attributes
-
+	clearOpenGLError();
 	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceCount());
-
+	checkOpenGLError();
 	disableAttribs(vertexArray->getAttribAmt()); //Disables attributes
 
 	glBindVertexArray(0); //Unbind VAO
-
 	shader->stop(); //Stop shader
 }
 

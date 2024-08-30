@@ -22,6 +22,8 @@ public:
 	GLuint getVaoLocalSlot() { return vaoLocalSlot; };
 	void setVaoLocalSlot(GLuint id) { vaoLocalSlot = id; };
 
+	virtual void setTextureData(unsigned char* textureData, GLuint width, GLuint height) = 0;
+
 	void bind();
 
 	void printTextureInfo() { se_log("Texture Address: " << &textureID); };
@@ -43,6 +45,8 @@ class Texture2D : public Texture {
 
 public:
 
-	Texture2D(unsigned char* textureData, GLuint width, GLuint height);
+	Texture2D(GLuint width, GLuint height);
+
+	void setTextureData(unsigned char* textureData, GLuint width, GLuint height) override;
 
 };

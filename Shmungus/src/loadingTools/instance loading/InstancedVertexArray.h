@@ -12,8 +12,8 @@ public:
 	void cleanUp();
 
 	size_t getInstanceCount(){ return m_instanceCount; }
-	GLsizei getAttribAmt(){ return m_attribAmt; }
-	size_t getIndexCount(){ return m_instanceCount; }
+	virtual GLsizei getAttribAmt() = 0;
+	virtual size_t getIndexCount() = 0;
 
 	virtual void bindTextures() = 0;
 
@@ -28,8 +28,6 @@ protected:
 
 	GLuint m_vaoID = 0; //Vertex Array Object ID
 	GLuint m_eboID = 0; //Element Buffer Object ID
-
-	size_t m_indicesPerInstance = 0; //Amount of indices per instance
 
 	size_t m_instanceCount = 0;
 	size_t m_maxVertexCount = 200; //Maximum vertex count
@@ -66,6 +64,9 @@ public:
 
 	void init();
 	void bindTextures() override;
+
+	size_t getIndexCount() override { return 6; }
+	GLsizei getAttribAmt() override { return 4; }
 
 	size_t submitQuad(Shmingo::Quad quad, uint8_t textureID);
 

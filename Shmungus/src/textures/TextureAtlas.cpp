@@ -4,14 +4,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 Shmingo::TextureAtlas::TextureAtlas(size_t width, size_t height, bool uniformTextureDimensions) 
-	: texture(Texture2D(nullptr, width, height)), m_UniformTextureDimensions(uniformTextureDimensions), m_Width(width), m_Height(height){
+	: texture(Texture2D(width, height)), m_UniformTextureDimensions(uniformTextureDimensions), m_Width(width), m_Height(height){
 
-	Shmingo::QuadTextureCoords defaultTexCoords = Shmingo::QuadTextureCoords(vec2(-1.0f / m_Width, 1), vec2(-1.0f / m_Width, 1), vec2(-1.0f / m_Width,1), vec2(-1.0f / m_Width,1));
-	m_textureCoords.emplace(std::make_pair(0, defaultTexCoords));
 }
 
 void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 	std::string realFilePath = "assets/textures/" + filePath;
+
 
 	int int_width, int_height, channels;
 
@@ -21,7 +20,7 @@ void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 	if (!textureData) {
 		std::string errorMsg = "Failed to add texture to atlas: ";
 		errorMsg += filePath;
-		se_log(errorMsg);
+		se_error(errorMsg);
 		throw std::runtime_error(errorMsg);
 	}
 
@@ -31,51 +30,64 @@ void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 
 	if (m_UniformTextureDimensions) {
 
-		Shmingo::QuadTextureCoords currentLastCoords = m_textureCoords[texturesInAtlas - 1];
-		float minXIncrease = 1.0f / m_Width;
-		float minYIncrease = 1.0f / m_Height;
+		float leftX = 0, bottomY = 0;
 
-		float leftX = 0, topY = 0;
+		if (texturesInAtlas > 0) {
 
-		if (m_textureCoords[texturesInAtlas].topRight.x + width + minXIncrease <= 1) {
+			Shmingo::QuadTextureCoords currentLastCoords = m_textureCoords[texturesInAtlas - 1];
 
-			leftX = currentLastCoords.topRight.x + minXIncrease;
-			topY = currentLastCoords.topRight.y;
+			if (currentLastCoords.topRight.x + width <= 1) {
 
-		}
+				leftX = currentLastCoords.topRight.x;
+				bottomY = currentLastCoords.bottomRight.y;
 
-		else {
-			if(currentLastCoords.bottomLeft.y - height - minYIncrease >= 0){
-				leftX = 0;
-				topY = currentLastCoords.bottomLeft.y  - minYIncrease;
-			}
-			else{
-				se_log("Atlas is full");
-				return;
 			}
 
-			Shmingo::QuadTextureCoords coords = Shmingo::QuadTextureCoords(
+			//Overflow to next section down
 
-				vec2(leftX, topY),
-				vec2(leftX + width, topY),
-				vec2(leftX, topY - height),
-				vec2(leftX + width, topY - height)
-			);
+			else {
+				if (currentLastCoords.topLeft.y + height <= 1) {
+					leftX = 0;
+					bottomY = currentLastCoords.bottomLeft.y + height;
 
-			glActiveTexture(GL_TEXTURE0); //Set active texture to 0
-			glBindTexture(GL_TEXTURE_2D, texture.getTextureID()); //Bind texture to 2D texture target
+				}
+				else {
+					se_log("Atlas is full");
+					return;
+				}
+			}
 
-			m_textureCoords.emplace(textureID, coords);
-			glTexSubImage2D(GL_TEXTURE_2D, 0, leftX * m_Width, topY * m_Height, int_width, int_height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 		}
+		
+		Shmingo::QuadTextureCoords coords = Shmingo::QuadTextureCoords(
+
+			vec2(leftX, bottomY + height),
+			vec2(leftX, bottomY),
+			vec2(leftX + width, bottomY),
+			vec2(leftX + width, bottomY + height)
+		);
+
+
+		GLsizei textureX = leftX * m_Width;
+		GLsizei textureY = bottomY * m_Height;
+
+		se_log("Submitting texture data to position " << leftX * m_Width << ", " << bottomY * m_Height << " with dimensions " << int_width << "x" << int_height)
+
+		glActiveTexture(GL_TEXTURE0); //Set active texture to 0
+		glBindTexture(GL_TEXTURE_2D, texture.getTextureID()); //Bind texture to 2D texture target
+
+		m_textureCoords.emplace(textureID, coords);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, textureX, textureY, int_width, int_height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 	}
 	else {
 		se_error("Non-uniform texture dimensions not yet supported");
 	}
+
+	texturesInAtlas++;
 }
 
 Shmingo::QuadTextureCoords Shmingo::TextureAtlas::getTextureCoords(size_t textureID){
-	if (textureID < texturesInAtlas - 1) {
+	if (textureID < texturesInAtlas) {
 		return m_textureCoords[textureID];
 	}
 	se_error("Texture ID not found in atlas");

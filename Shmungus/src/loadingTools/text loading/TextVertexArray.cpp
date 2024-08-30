@@ -241,8 +241,8 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 			textBox->setResizeStartingCharPointerPosition(pointerPosition); //Set starting position for resizing
 
 			size_t firstDynamicSectionBufferOffset = textBox->getSectionBufferOffset(1); //Get offset of first dynamic section in buffer
-			textBox->setFirstDynamicSectionPointerPosition(pointerPosition);
-			textBox->setResizeStartingCharBufferOffset(resizeStartingOffset);
+			textBox->setFirstDynamicSectionPointerPosition(pointerPosition); //Set pointer position of the first dynamic character
+			textBox->setResizeStartingCharBufferOffset(resizeStartingOffset); //Set the buffer offset where resizing should begin
 		}
 
 		pointerPosition = position;
@@ -251,7 +251,6 @@ void TextVertexArray::uploadDynamicTextBox(DynamicTextBox* textBox){
 
 		alignTextInTempBuffers(textBox->getTextAlignment(), textBox, false);
 
-		//se_log("Uploading dynamic text box at gl buffer offset: " << offsetInBuffer);
 		setGLBufferData(offsetInBuffer, charAmt);
 	}
 }
@@ -277,8 +276,6 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t firstCh
 	size_t currentLine = 1;
 
 	std::string::iterator c;
-
-	//se_log("Text: " << text);
 
 	for (c = text.begin(); c != text.end(); c++) {
 

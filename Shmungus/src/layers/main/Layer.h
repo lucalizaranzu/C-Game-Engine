@@ -81,8 +81,6 @@ private:
 	void keybordCallback(KeyPressEvent* e);
 	void mouseDragCallback(MouseDragEvent* e);
 
-	InteractiveMenu interactiveMenu;
-
 };
 
 

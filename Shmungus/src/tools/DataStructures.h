@@ -56,9 +56,9 @@ namespace Shmingo {
 	//Texture coords of a quad
 	struct QuadTextureCoords {
 		vec2 topLeft;
-		vec2 topRight;
 		vec2 bottomLeft;
 		vec2 bottomRight;
+		vec2 topRight;
 	};
 
 

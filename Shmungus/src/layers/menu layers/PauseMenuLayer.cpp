@@ -5,12 +5,17 @@
 
 #include "MiscTools.h"
 
-PauseMenuLayer::PauseMenuLayer() : interactiveMenu(InteractiveMenu()){
+PauseMenuLayer::PauseMenuLayer(){
 
 	type = Shmingo::PAUSEMENU_LAYER;
 }
 
+std::shared_ptr<InteractiveMenu> interactiveMenu;
+
 void PauseMenuLayer::onAttach() {
+
+	interactiveMenu.reset(new InteractiveMenu());
+	interactiveMenu->init();
 
 	//Add new event listeners
 	se_layerStack.addListener<PauseMenuLayer, KeyPressEvent>(Shmingo::PAUSEMENU_LAYER, this, &PauseMenuLayer::keybordCallback);
@@ -18,12 +23,14 @@ void PauseMenuLayer::onAttach() {
 
 	Shmingo::enableGLFWCursor(); //Re enable glfw cursor
 	Shmingo::centerCursor();
+
+	MenuButton button = MenuButton(vec2(0.2, 0.2), vec2(0.3, 0.15), 3);
+	interactiveMenu->submitButton(button);
 }
 
 
 void PauseMenuLayer::onUpdate() {
-
-	interactiveMenu.update();
+	interactiveMenu->update();
 
 }
 

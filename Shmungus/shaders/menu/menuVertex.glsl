@@ -19,13 +19,15 @@ layout(std140) uniform Matrices {
 
 void main(){
 
-	vec2 scaledPosition = vec4(matrices.ortho * vec4(static_positions,0,0) * vec4(transform_scale,0,0)).xy; //Scale static positions
-	vec2 transformedPositions = scaledPosition + transform_positions; //Translate scaled positions	
+	vec4 texCoordsInfo = atlasTexCoords[textureID]; //Get current texture coordinates
 
-	vec4 currentTexCoordsInfo = atlasTexCoords[textureID]; //Get current texture coordinates
+	vec4 scaledPosition = matrices.ortho * vec4(static_positions.x * (transform_scale.x * 2), static_positions.y * (transform_scale.y * 2), 0,1);
+	vec2 transformedPositions = scaledPosition.xy + transform_positions; //Translate scaled positions	
 
-	texCoords = mix(currentTexCoordsInfo.xy, currentTexCoordsInfo.zw, vec2(static_positions.x, 1.0 - static_positions.y)); //Mix texture coordinates
+	//Multiply left side by width, add pos.x, right side by height, add pos.y
+	texCoords = vec2(static_positions.x * texCoordsInfo.x + texCoordsInfo.z, static_positions.y * texCoordsInfo.y + texCoordsInfo.w);
+	//texCoords = static_positions;
 
-	gl_Position = vec4(transformedPositions, 0.0, 1.0); //Set quad position
+	gl_Position = vec4(transformedPositions, 0,1);
 
 }

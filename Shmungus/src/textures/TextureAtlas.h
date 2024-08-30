@@ -39,6 +39,6 @@ namespace Shmingo {
 
 		std::unordered_map<size_t, Shmingo::QuadTextureCoords> m_textureCoords; //TextureCoords
 
-		size_t texturesInAtlas = 1;
+		size_t texturesInAtlas = 0;
 	};
 }

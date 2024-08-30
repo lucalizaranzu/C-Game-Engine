@@ -61,9 +61,6 @@
     <Filter Include="src\loadingTools">
       <UniqueIdentifier>{EB1B37DF-D714-5631-0047-3BB6EC9E353D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\loadingTools\batch loading">
-      <UniqueIdentifier>{DAA5714A-C6CB-3BB1-AF11-C17C9BD6607D}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\loadingTools\instance loading">
       <UniqueIdentifier>{ADF17118-1960-C797-6249-8297CEF6BC33}</UniqueIdentifier>
     </Filter>
@@ -156,10 +153,10 @@
     <ClInclude Include="src\layers\main\LayerStack.h">
       <Filter>src\layers\main</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadingTools\batch loading\InstancedVertexArray.h">
-      <Filter>src\loadingTools\batch loading</Filter>
-    </ClInclude>
     <ClInclude Include="src\loadingTools\instance loading\EntityVertexArray.h">
+      <Filter>src\loadingTools\instance loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h">
       <Filter>src\loadingTools\instance loading</Filter>
     </ClInclude>
     <ClInclude Include="src\loadingTools\text loading\TextBox.h">
@@ -290,10 +287,10 @@
     <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp">
       <Filter>src\layers\sandbox layers</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadingTools\batch loading\InstancedVertexArray.cpp">
-      <Filter>src\loadingTools\batch loading</Filter>
-    </ClCompile>
     <ClCompile Include="src\loadingTools\instance loading\EntityVertexArray.cpp">
+      <Filter>src\loadingTools\instance loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp">
       <Filter>src\loadingTools\instance loading</Filter>
     </ClCompile>
     <ClCompile Include="src\loadingTools\text loading\TextBox.cpp">
@@ -349,6 +346,9 @@
     </ClCompile>
     <ClCompile Include="src\tools\math\Matrices.cpp">
       <Filter>src\tools\math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ui\elements\MenuButton.cpp">
+      <Filter>src\ui\elements</Filter>
     </ClCompile>
     <ClCompile Include="src\ui\infospaces\InfoSpace.cpp">
       <Filter>src\ui\infospaces</Filter>

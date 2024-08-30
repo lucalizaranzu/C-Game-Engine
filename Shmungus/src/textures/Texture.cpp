@@ -35,10 +35,9 @@ Texture& Texture::operator=(const Texture& other){
 	return *this;
 }
 
-Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height) : Texture() {
+Texture2D::Texture2D(GLuint width, GLuint height) : Texture() {
 
 	glTextureStorage2D(textureID, 1, GL_RGB8, width, height);
-	glTextureSubImage2D(textureID, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -47,6 +46,13 @@ Texture2D::Texture2D(unsigned char* textureData, GLuint width, GLuint height) : 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
+}
+
+void Texture2D::setTextureData(unsigned char* textureData, GLuint width, GLuint height){
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTextureSubImage2D(textureID, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+
 }
 
 void Texture::bind(){

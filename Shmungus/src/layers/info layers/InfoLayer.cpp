@@ -5,11 +5,12 @@
 
 //Use this character to use color codes: §
 
-InfoLayer::InfoLayer() : infoSpace(InfoSpace("Minecraft_Faithful")) {
+InfoLayer::InfoLayer() : infoSpace(InfoSpace("Kratos")) {
 	type = Shmingo::INFO_LAYER;
 }
 
 void InfoLayer::onAttach() {
+
 	se_layerStack.addListener<InfoLayer, KeyPressEvent>(Shmingo::INFO_LAYER, this, &InfoLayer::keybordCallback);
 
 	infoSpace.submitDynamicTextBox(DynamicTextBox("Entity Count: ~§§uentityCount", vec2(0.5, 0), vec2(0.5f, 0.1f), 5, 1, 10, Shmingo::RIGHT));

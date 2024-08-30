@@ -88,6 +88,7 @@ void MasterRenderer::renderTextBatch() {
 void MasterRenderer::clearBatches() {
 	entityRenderQueue.clear();
 	textRenderQueue.clear();
+	instancedRenderQueue.clear();
 }
 
 //Renders the queue then clears it for next frame
@@ -95,6 +96,7 @@ void MasterRenderer::update() {
 
 	renderEntityBatch();
 	renderTextBatch();
+	renderInstancedBatch();
 
 	clearBatches();
 }

@@ -17,6 +17,8 @@ public:
 
 	void cleanUp();
 
+	void submitButton(MenuButton button);
+
 protected:
 
 	std::shared_ptr<TexturedQuadVertexArrayAtlas> m_vertexArray;
