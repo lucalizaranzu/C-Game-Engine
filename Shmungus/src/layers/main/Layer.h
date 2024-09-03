@@ -80,6 +80,7 @@ private:
 
 	void keybordCallback(KeyPressEvent* e);
 	void mouseDragCallback(MouseDragEvent* e);
+	void mouseClickCallBack(MouseClickEvent* e);
 
 };
 

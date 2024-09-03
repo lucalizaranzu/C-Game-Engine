@@ -15,4 +15,6 @@ namespace Shmingo {
 	void centerCursor();
 	//Returns true if the elapsed time is exactly equal to variable seconds in seconds
 	bool isTimeMultipleOf(double seconds);
+	//Returns true if text spacing needs to be recalculated
+	bool shouldDoWindowResizeFunctions();
 }

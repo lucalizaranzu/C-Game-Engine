@@ -60,7 +60,7 @@ class TexturedQuadVertexArrayAtlas : public InstancedVertexArray {
 
 public:
 
-	TexturedQuadVertexArrayAtlas(Shmingo::TextureAtlas textureAtlas);
+	TexturedQuadVertexArrayAtlas(std::shared_ptr<Shmingo::TextureAtlas> textureAtlas);
 
 	void init();
 	void bindTextures() override;
@@ -69,6 +69,7 @@ public:
 	GLsizei getAttribAmt() override { return 4; }
 
 	size_t submitQuad(Shmingo::Quad quad, uint8_t textureID);
+	void resubmitQuad(size_t index, Shmingo::Quad quad, uint8_t textureID);
 
 	void changeQuadTexture(size_t index, uint8_t textureID);
 	void removeQuad(size_t index);
@@ -76,7 +77,7 @@ public:
 	//Matches the textureID to the texture coordinates in the texture atlas
 	void declareTexture(size_t textureID, std::string filePath);
 
-	GLuint& getTextureID(){ return m_textureAtlas.getTextureID(); }
+	GLuint& getTextureID(){ return m_textureAtlas->getTextureID(); }
 
 private:
 
@@ -86,6 +87,6 @@ private:
 	GLuint m_transformVboID = 0;
 	GLuint m_texIDVboID = 0;
 
-	Shmingo::TextureAtlas m_textureAtlas;
+	std::shared_ptr<Shmingo::TextureAtlas> m_textureAtlas;
 
 };

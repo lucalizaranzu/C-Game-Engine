@@ -6,6 +6,7 @@
 double lastFrameTime = 0.0f;
 World* dummyWorld;
 
+
 int totalFrames = 0;
 
 Shmingo::ShmingoApp::ShmingoApp() :
@@ -22,19 +23,13 @@ Shmingo::ShmingoApp::~ShmingoApp() {
 	delete window;
 }
 
-void Shmingo::ShmingoApp::recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHeight, float newDisplayWidth, float newDisplayHeight){
-	for (auto& infoSpace : infoSpaces) {
-		infoSpace->recalculateTextSpacing(oldDisplayWidth, oldDisplayHeight, newDisplayWidth, newDisplayHeight); //Recalculates text spacing of all info spaces
-	}
-}
-
 
 void Shmingo::ShmingoApp::run() {
 
 	init();
 
 
-	while (!window->shouldDisplayClose()) {
+	while (!shouldApplicationClose) {
 		update();
 	}
 
@@ -102,7 +97,6 @@ void Shmingo::ShmingoApp::init() {
 }
 
 void Shmingo::ShmingoApp::update() {
-
 	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
 
 	double time = glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
@@ -128,6 +122,12 @@ void Shmingo::ShmingoApp::update() {
 
 	totalFrames++;
 
+	if (window->shouldDisplayClose()) {
+		setShoulApplicationClose();
+	}
+
+	lastFrameWindowDimensions = vec2(window->getWidth(), window->getHeight());
+	updateTextResizingVariables();
 }
 
 
@@ -135,6 +135,19 @@ void Shmingo::ShmingoApp::update() {
 
 void Shmingo::ShmingoApp::initGlobalVariables(){
 	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, &minimumUniformBlockOffset);
+}
+
+void Shmingo::ShmingoApp::updateTextResizingVariables(){
+
+	if (doWindowResizeFunctionsNextFrame) {
+		doWindowResizeFunctionsFlag = true;
+		doWindowResizeFunctionsNextFrame = false;
+		return;
+	}
+	else {
+		doWindowResizeFunctionsFlag = false;
+		return;
+	}
 }
 
 void Shmingo::ShmingoApp::declareApplicationInfoKey(Shmingo::ApplicationInfoKey applicationKey, std::string keyString){

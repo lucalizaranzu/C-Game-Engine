@@ -42,8 +42,7 @@ void framebufferResizeCallback(GLFWwindow* window, int width, int height) {
 	se_application.getWindow()->setDimensions(width, height);
 	se_uniformBuffer.setProjectionMatrix(Shmingo::createProjectionMatrix(45.0f, width, height, 0.1f, 100.0f));
 	se_uniformBuffer.setOrthoMatrix(Shmingo::createOrthoMatrix(width, height));
-
-	se_application.recalculateTextSpacing(oldWidth, oldHeight, (float)width, (float)height);
+	se_application.setDoWindowResizeFunctionsFlag(true);
 }
 
 //Key callback for keybaord input
@@ -62,12 +61,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouseButton_callback(GLFWwindow* window, int button, int action, int mods) {
 	
-	if (action == GLFW_RELEASE) {
-		se_layerStack.throwEvent<MouseReleaseEvent>(new MouseReleaseEvent(button, action, mods));
-	}
-	if (action == GLFW_PRESS) {
-		se_layerStack.throwEvent<MouseClickEvent>(new MouseClickEvent(button, action, mods));
-	}
+
+	se_layerStack.throwEvent<MouseClickEvent>(new MouseClickEvent(button, action, mods));
+
 }
 
 //Mouse callback for mouse input
@@ -84,6 +80,9 @@ void mouseDrag_callback(GLFWwindow* window, double x, double y) {
     lastX = (float)x;
     lastY = (float)y;
 
-	se_layerStack.throwEvent<MouseDragEvent>(new MouseDragEvent(xOffset, yOffset)); //Throw new event
+	float realX = (float)x / se_application.getWindow()->getWidth();
+	float realY = (float)y / se_application.getWindow()->getHeight();
+
+	se_layerStack.throwEvent<MouseDragEvent>(new MouseDragEvent(xOffset, yOffset, realX, realY)); //Throw new event
 
 }

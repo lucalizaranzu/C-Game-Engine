@@ -22,7 +22,7 @@ TexturedQuadVertexArray::TexturedQuadVertexArray(){
 	glBindVertexArray(0);
 }
 
-TexturedQuadVertexArrayAtlas::TexturedQuadVertexArrayAtlas(Shmingo::TextureAtlas textureAtlas) : m_textureAtlas(textureAtlas){
+TexturedQuadVertexArrayAtlas::TexturedQuadVertexArrayAtlas(std::shared_ptr<Shmingo::TextureAtlas> textureAtlas) : m_textureAtlas(textureAtlas){
 
 	m_attribAmt = 2;
 
@@ -83,7 +83,7 @@ void TexturedQuadVertexArrayAtlas::bindTextures(){
 	GLint textureUniformLocation = glGetUniformLocation(se_masterRenderer.getShader(se_MENU_SHADER)->getProgramID(), "textureAtlas");
 
 	//Texture2D funnyTexture = Shmingo::createTexture2D("funnyimage.png");
-	m_textureAtlas.bind();
+	m_textureAtlas->bind();
 
 	glUniform1i(textureUniformLocation, 0);
 	//setTexCoordsUniforms(se_masterRenderer.getShader(se_MENU_SHADER));
@@ -93,7 +93,7 @@ void TexturedQuadVertexArrayAtlas::bindTextures(){
 
 size_t TexturedQuadVertexArrayAtlas::submitQuad(Shmingo::Quad quad, uint8_t textureID){
 
-	Shmingo::QuadTextureCoords texCoords = m_textureAtlas.getTextureCoords(textureID); // get texture coordinates for this ID
+	Shmingo::QuadTextureCoords texCoords = m_textureAtlas->getTextureCoords(textureID); // get texture coordinates for this ID
 
 
 	float transformData[4] = {
@@ -101,21 +101,40 @@ size_t TexturedQuadVertexArrayAtlas::submitQuad(Shmingo::Quad quad, uint8_t text
 		quad.size.x, quad.size.y
 	};
 
-	uint8_t texID = textureID;
-
 	bindVao();
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_transformVboID);
-	glBufferSubData(GL_ARRAY_BUFFER, m_instanceCount * sizeof(float), 4 * sizeof(float), &transformData); //Put data in buffer
+	glBufferSubData(GL_ARRAY_BUFFER, m_instanceCount * 4 * sizeof(float), 4 * sizeof(float), &transformData); //Put data in buffer
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_texIDVboID);
 	glBufferSubData(GL_ARRAY_BUFFER, m_instanceCount * sizeof(uint8_t), sizeof(uint8_t), &textureID); // Update with correct offset and size
-	se_log("Uploading quad with texture ID " << (int)texID);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
+
 	return m_instanceCount++; //Post increment quadCount and return the value before incrementing
+}
+
+void TexturedQuadVertexArrayAtlas::resubmitQuad(size_t index, Shmingo::Quad quad, uint8_t textureID){
+	Shmingo::QuadTextureCoords texCoords = m_textureAtlas->getTextureCoords(textureID); // get texture coordinates for this ID
+
+
+	float transformData[4] = {
+		quad.position.x, quad.position.y,
+		quad.size.x, quad.size.y
+	};
+
+	bindVao();
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_transformVboID);
+	glBufferSubData(GL_ARRAY_BUFFER, index * 4 * sizeof(float), 4 * sizeof(float), &transformData); //Put data in buffer
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_texIDVboID);
+	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(uint8_t), sizeof(uint8_t), &textureID); // Update with correct offset and size
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 void TexturedQuadVertexArrayAtlas::changeQuadTexture(size_t index, uint8_t textureID){
@@ -153,24 +172,20 @@ void TexturedQuadVertexArrayAtlas::removeQuad(size_t index){
 }
 
 void TexturedQuadVertexArrayAtlas::declareTexture(size_t textureID, std::string filePath){
-	m_textureAtlas.addTexture(textureID, filePath);
+	m_textureAtlas->addTexture(textureID, filePath);
 }
 
 void TexturedQuadVertexArrayAtlas::setTexCoordsUniforms(std::shared_ptr<ShaderProgram> shader){
 
-	size_t textureAmt = m_textureAtlas.getTextureCount();
+	size_t textureAmt = m_textureAtlas->getTextureCount();
 
 	float* textureCoords = new float[16 * 4];
-	se_log("Start");
 	for (size_t i = 0; i < textureAmt; i++) {
-		Shmingo::QuadTextureCoords coords = m_textureAtlas.getTextureCoords(i);
+		Shmingo::QuadTextureCoords coords = m_textureAtlas->getTextureCoords(i);
 		textureCoords[4 * i + 0] = coords.bottomRight.x - coords.bottomLeft.x;
 		textureCoords[4 * i + 1] = coords.topRight.y - coords.bottomRight.y;
 		textureCoords[4 * i + 2] = coords.bottomLeft.x;
 		textureCoords[4 * i + 3] = coords.bottomLeft.y;
-
-		se_log("Texture ID " + std::to_string(i) << " uniform value: " << textureCoords[4 * i] << ", " << textureCoords[4*i + 1] << ", " << 
-			textureCoords[4 * i + 2] << ", " << textureCoords[4 * i + 3]);
 
 	}
 
@@ -178,6 +193,7 @@ void TexturedQuadVertexArrayAtlas::setTexCoordsUniforms(std::shared_ptr<ShaderPr
 	glUniform4fv(uniformLocation, 16, textureCoords);
 
 	delete[] textureCoords;
+
 }
 
 

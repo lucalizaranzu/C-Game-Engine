@@ -112,15 +112,21 @@ class MouseDragEvent : public Event{
 
 public:
 	
-	MouseDragEvent(float xDiff, float yDiff) : xOffset(xDiff), yOffset(yDiff) {}
+	MouseDragEvent(float xDiff, float yDiff, float xPosition, float yPosition) : xOffset(xDiff), yOffset(yDiff), xPos(xPosition), yPos(yPosition) {}
 
 	float getXOffset() { return xOffset; };
 	float getYOffset() { return yOffset; };
+
+	float getXPos() { return xPos; };
+	float getYPos() { return yPos; };
 
 protected:
 
 	float xOffset;
 	float yOffset;
+
+	float xPos;
+	float yPos;
 
 };
 

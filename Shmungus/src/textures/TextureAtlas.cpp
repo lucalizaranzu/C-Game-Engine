@@ -11,7 +11,6 @@ Shmingo::TextureAtlas::TextureAtlas(size_t width, size_t height, bool uniformTex
 void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 	std::string realFilePath = "assets/textures/" + filePath;
 
-
 	int int_width, int_height, channels;
 
 	stbi_set_flip_vertically_on_load(1); //Flip texture to offset OpenGL flipping
@@ -52,7 +51,7 @@ void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 
 				}
 				else {
-					se_log("Atlas is full");
+					se_error("Atlas is full");
 					return;
 				}
 			}
@@ -71,8 +70,6 @@ void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 		GLsizei textureX = leftX * m_Width;
 		GLsizei textureY = bottomY * m_Height;
 
-		se_log("Submitting texture data to position " << leftX * m_Width << ", " << bottomY * m_Height << " with dimensions " << int_width << "x" << int_height)
-
 		glActiveTexture(GL_TEXTURE0); //Set active texture to 0
 		glBindTexture(GL_TEXTURE_2D, texture.getTextureID()); //Bind texture to 2D texture target
 
@@ -82,7 +79,6 @@ void Shmingo::TextureAtlas::addTexture(size_t textureID, std::string filePath){
 	else {
 		se_error("Non-uniform texture dimensions not yet supported");
 	}
-
 	texturesInAtlas++;
 }
 
@@ -90,6 +86,6 @@ Shmingo::QuadTextureCoords Shmingo::TextureAtlas::getTextureCoords(size_t textur
 	if (textureID < texturesInAtlas) {
 		return m_textureCoords[textureID];
 	}
-	se_error("Texture ID not found in atlas");
+	se_error("Texture ID not found in atlas, only " << texturesInAtlas << " textures in Atlas");
 	return Shmingo::QuadTextureCoords(vec2(0,0),vec2(0,0),vec2(0,0),vec2(0,0));
 }

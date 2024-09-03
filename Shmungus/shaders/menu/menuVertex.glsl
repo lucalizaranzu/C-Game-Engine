@@ -21,13 +21,14 @@ void main(){
 
 	vec4 texCoordsInfo = atlasTexCoords[textureID]; //Get current texture coordinates
 
-	vec4 scaledPosition = matrices.ortho * vec4(static_positions.x * (transform_scale.x * 2), static_positions.y * (transform_scale.y * 2), 0,1);
-	vec2 transformedPositions = scaledPosition.xy + transform_positions; //Translate scaled positions	
+	vec4 scaledPosition = vec4(static_positions.x * (transform_scale.x), static_positions.y * (transform_scale.y), 0,0);
+	vec2 transformedPositions = scaledPosition.xy + transform_positions; //Translate scaled positions
+	transformedPositions.y += (1 - transform_scale.y); //Flip y axis
 
 	//Multiply left side by width, add pos.x, right side by height, add pos.y
 	texCoords = vec2(static_positions.x * texCoordsInfo.x + texCoordsInfo.z, static_positions.y * texCoordsInfo.y + texCoordsInfo.w);
 	//texCoords = static_positions;
 
-	gl_Position = vec4(transformedPositions, 0,1);
+	gl_Position = vec4(transformedPositions * 2 - 1,0,1);
 
 }

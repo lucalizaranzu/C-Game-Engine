@@ -27,6 +27,7 @@ public:
 	size_t getCharacterOffsetInVao() { return characterOffsetInVao; }; //Returns the character offset in the VAO
 
 	void setLineCharOffset(size_t lineIndex, size_t offset);
+	void resizeLineCharOffsetVector(size_t newSize) { charOffsetsOfLines.resize(newSize); };
 
 	size_t getLineCharOffset(size_t lineIndex) { return charOffsetsOfLines[lineIndex]; };
 	size_t getLineAmt() { return charOffsetsOfLines.size() - 1; };

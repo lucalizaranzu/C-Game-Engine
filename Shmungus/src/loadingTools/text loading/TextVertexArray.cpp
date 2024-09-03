@@ -195,8 +195,6 @@ void TextVertexArray::allocateSpaceForTextBox(TextBox* textBox){
 
 	size_t textboxSize = textBox->getTextBufferSize(); //Get size of text box
 
-	//se_log("Allocating space for text box at offset " << instanceAmount << " with size " << textboxSize);
-
 	instanceAmount += textboxSize; //Increment instance amount
 }
 
@@ -348,6 +346,7 @@ size_t TextVertexArray::uploadTextToTempBuffers(std::string text, size_t firstCh
 		}
 	}
 	textBox->setLineCharOffset(currentLine, offsetInBuffer + firstCharacterBufferOffset); //Set offset of new line
+	textBox->resizeLineCharOffsetVector(currentLine + 1);
 
 	return charAmt;
 }
@@ -410,7 +409,7 @@ void TextVertexArray::alignTextInTempBuffers(Shmingo::TextAlignment alignment, T
 			shiftAmount = textboxEndPosition - rightmostCharPosition - endingCorrection;
 		}
 		else if (alignment == Shmingo::CENTER) {
-			shiftAmount = (textboxEndPosition - rightmostCharPosition - endingCorrection - textBox->getResizeStartingCharPointerPosition().x) / 2.0f + textBox->getResizeStartingCharPointerPosition().x;
+			shiftAmount = (textboxEndPosition - rightmostCharPosition - textBox->getResizeStartingCharPointerPosition().x) / 2.0f + textBox->getResizeStartingCharPointerPosition().x;
 		}
 	}
 

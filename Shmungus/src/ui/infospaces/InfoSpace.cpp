@@ -22,6 +22,11 @@ void InfoSpace::update() {
 	if (Shmingo::isTimeMultipleOf(0.2)) {
 		updateDynamicTextBoxes();
 	}
+	
+	if (Shmingo::shouldDoWindowResizeFunctions()) {
+		recalculateTextSpacing(se_application.getLastFrameWindowDimensions().x, se_application.getLastFrameWindowDimensions().y, 
+			se_application.getWindow()->getWidth(), se_application.getWindow()->getHeight()); //Recalculates text spacing of all info spaces
+	}
 
 	render();
 }
@@ -88,6 +93,8 @@ void InfoSpace::updateDynamicTextBoxes(){
 		m_textVertexArray->updateDynamicTextBox(dynamicTextbox); //Update all dynamic text boxes
 	}
 }
+
+
 
 void InfoSpace::recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHeight, float newDisplayWidth, float newDisplayHeight){
 	for (auto& textBox : m_textBoxes) {

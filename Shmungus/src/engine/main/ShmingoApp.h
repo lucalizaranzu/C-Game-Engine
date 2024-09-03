@@ -20,7 +20,6 @@ namespace Shmingo {
 
 		//Public utility functions -------------------------------------------------------------------
 
-		void recalculateTextSpacing(float oldDisplayWidth, float oldDisplayHeight, float newDisplayWidth, float newDisplayHeight);
 
 		//Getters -------------------------------------------------------------------------------------
 		//Returns a pointer to the window
@@ -35,6 +34,9 @@ namespace Shmingo {
 		//Returns total time elapsed since beginning of application
 		inline double getElapsedTime() { return timeElapsed; }
 		inline double getLastElapsedTime() { return timeElapsed - deltaTime; }
+		inline bool getShouldRecalculateTextSpacing() { return doWindowResizeFunctionsFlag; }
+
+		inline vec2 getLastFrameWindowDimensions() { return lastFrameWindowDimensions; }
 
 		//I dont think this is being used
 		inline bool getOnTick() { return onTick; }
@@ -61,6 +63,8 @@ namespace Shmingo {
 		//Setters -------------------------------------------------------------------------------------
 		void setApplicationInfo(Shmingo::ApplicationInfoKey, std::string value);
 		void setApplicationInfo(std::string keyString, std::string value);
+		void setDoWindowResizeFunctionsFlag(bool value) { doWindowResizeFunctionsNextFrame = value; }
+		void setShoulApplicationClose() { shouldApplicationClose = true; }
 
 
 
@@ -110,6 +114,14 @@ namespace Shmingo {
 		double deltaTime = 0; //Time since last frame
 		double timeElapsed = 0; //Time since start of application
 		bool onTick = false;
+		bool doWindowResizeFunctionsFlag = false;
+		bool doWindowResizeFunctionsNextFrame = false;
+
+		bool shouldApplicationClose = false;
+
+		vec2 lastFrameWindowDimensions = vec2(0, 0);
+
+		void updateTextResizingVariables();
 
 		//Global OpenGL objects
 

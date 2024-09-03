@@ -39,3 +39,10 @@ bool Shmingo::isTimeMultipleOf(double seconds) {
     }
     return false;
 }
+
+bool Shmingo::shouldDoWindowResizeFunctions(){
+    if (se_application.getShouldRecalculateTextSpacing()) {
+        return true;
+    }
+    return false;
+}

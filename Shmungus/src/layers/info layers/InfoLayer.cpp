@@ -5,7 +5,7 @@
 
 //Use this character to use color codes: §
 
-InfoLayer::InfoLayer() : infoSpace(InfoSpace("Kratos")) {
+InfoLayer::InfoLayer() : infoSpace(InfoSpace("Minecraft_Faithful")) {
 	type = Shmingo::INFO_LAYER;
 }
 
