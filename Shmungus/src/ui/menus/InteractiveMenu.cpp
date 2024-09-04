@@ -35,15 +35,20 @@ void InteractiveMenu::update(){
 }
 
 void InteractiveMenu::cleanUp(){
+
 	m_elementVertexArray->cleanUp();
 	m_textVertexArray->cleanUp();
+
+	for (int i = 0; i < m_Buttons.size(); i++) {
+		delete m_Buttons[i];
+	}
 }
 
 size_t InteractiveMenu::createButton(vec2 position, vec2 size, std::string texture, std::string text, GLuint fontSize, GLuint lineSpacing){
-	MenuButton button = MenuButton(position, size, m_textureMap[texture], text, fontSize, lineSpacing);
-	button.setVaoID(m_elementVertexArray->submitQuad(button.getQuad(), button.getTextureID()));
+	MenuButton* button = new MenuButton(position, size, m_textureMap[texture], text, fontSize, lineSpacing);
+	button->setVaoID(m_elementVertexArray->submitQuad(button->getQuad(), button->getTextureID()));
 
-	m_textVertexArray->submitStaticText(button.getTextBox());
+	m_textVertexArray->submitStaticText(button->getTextBox());
 	m_Buttons.emplace_back(button);
 	return m_Buttons.size() - 1;
 }
@@ -55,13 +60,13 @@ void InteractiveMenu::addTexture(std::string texturePath){
 
 void InteractiveMenu::doButtonCollisionChecks(vec2 mousePosition){
 	for (auto& button : m_Buttons) {
-		button.checkMouseHovered(mousePosition);
+		button->checkMouseHovered(mousePosition);
 	}
 }
 
 int InteractiveMenu::doButtonHoverChecks(){
 	for (size_t i = 0; i < m_Buttons.size(); i++) {
-		if (m_Buttons[i].isMouseHovered()) {
+		if (m_Buttons[i]->isMouseHovered()) {
 			return (int)i;
 		}
 	}
@@ -69,7 +74,7 @@ int InteractiveMenu::doButtonHoverChecks(){
 }
 
 void InteractiveMenu::doButtonOnClick(int buttonIndex) {
-	std::function<void()> onClickFunction = m_Buttons[buttonIndex].getOnClickFunction();
+	std::function<void()> onClickFunction = m_Buttons[buttonIndex]->getOnClickFunction();
 	if (onClickFunction) { //Check if the function is not null
 		onClickFunction();
 	}
@@ -79,42 +84,42 @@ void InteractiveMenu::doButtonOnClick(int buttonIndex) {
 }
 
 void InteractiveMenu::doButtonOnMouseEnter(int buttonIndex){
-	m_Buttons[buttonIndex].getOnMouseEnterFunction()();
+	m_Buttons[buttonIndex]->getOnMouseEnterFunction()();
 }
 
 void InteractiveMenu::doButtonOnMouseExit(int buttonIndex){
-	m_Buttons[buttonIndex].getOnMouseExitFunction()();
+	m_Buttons[buttonIndex]->getOnMouseExitFunction()();
 }
 
 void InteractiveMenu::setButtonOnClickFunction(int buttonIndex, std::function<void()> onClickFunction){
-	m_Buttons[buttonIndex].setOnClickFunction(onClickFunction);
+	m_Buttons[buttonIndex]->setOnClickFunction(onClickFunction);
 }
 
 void InteractiveMenu::setButtonOnMouseEnterFunction(int buttonIndex, std::function<void()> onMouseEnterFunction){
-	m_Buttons[buttonIndex].setOnMouseEnterFunction(onMouseEnterFunction);
+	m_Buttons[buttonIndex]->setOnMouseEnterFunction(onMouseEnterFunction);
 }
 
 void InteractiveMenu::setButtonOnMouseExitFunction(int buttonIndex, std::function<void()> onMouseExitFunction){
-	m_Buttons[buttonIndex].setOnMouseExitFunction(onMouseExitFunction);
+	m_Buttons[buttonIndex]->setOnMouseExitFunction(onMouseExitFunction);
 }
 
 void InteractiveMenu::setButtonTexture(int buttonIndex, std::string texture){
-	m_Buttons[buttonIndex].setTextureID(m_textureMap[texture]);
-	m_elementVertexArray->resubmitQuad(m_Buttons[buttonIndex].getVaoID(), m_Buttons[buttonIndex].getQuad(), m_Buttons[buttonIndex].getTextureID());
+	m_Buttons[buttonIndex]->setTextureID(m_textureMap[texture]);
+	m_elementVertexArray->resubmitQuad(m_Buttons[buttonIndex]->getVaoID(), m_Buttons[buttonIndex]->getQuad(), m_Buttons[buttonIndex]->getTextureID());
 }
 
 void InteractiveMenu::releaseAllButtons(){
 	for (auto& button : m_Buttons) {
-		button.setIsMouseDown(false);
+		button->setIsMouseDown(false);
 	}
 }
 
 bool InteractiveMenu::checkButtonIsMouseDown(int buttonIndex){
-	return m_Buttons[buttonIndex].isMouseDown();
+	return m_Buttons[buttonIndex]->isMouseDown();
 }
 
 void InteractiveMenu::setButtonIsMouseDown(int buttonIndex, bool isMouseDown) {
-	m_Buttons[buttonIndex].setIsMouseDown(isMouseDown);
+	m_Buttons[buttonIndex]->setIsMouseDown(isMouseDown);
 }
 
 
@@ -126,9 +131,9 @@ void InteractiveMenu::recalculateTextSpacing(float oldDisplayWidth, float oldDis
 
 	for (auto& button : m_Buttons) {
 
-		Shmingo::Quad newQuad = Shmingo::Quad(button.getQuad().position, vec2(button.getQuad().size.x / resolutionScalingFactor, button.getQuad().size.y * heightChange));
+		Shmingo::Quad quad = button->getQuad();
 
-		m_elementVertexArray->resubmitQuad(button.getVaoID(), button.getQuad(), button.getTextureID());
-		m_textVertexArray->resetTextBox(button.getTextBox());
+		m_elementVertexArray->resubmitQuad(button->getVaoID(), button->getQuad(), button->getTextureID());
+		m_textVertexArray->resetTextBox(button->getTextBox());
 	}
 }

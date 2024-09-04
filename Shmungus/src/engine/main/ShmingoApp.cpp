@@ -60,6 +60,9 @@ void Shmingo::ShmingoApp::init() {
 	declareApplicationInfoKey(Shmingo::PLAYER_X, "playerX");
 	declareApplicationInfoKey(Shmingo::PLAYER_Y, "playerY");
 	declareApplicationInfoKey(Shmingo::PLAYER_Z, "playerZ");
+	declareApplicationInfoKey(Shmingo::PLAYER_VELOCITY_X, "playerVelocityX");
+	declareApplicationInfoKey(Shmingo::PLAYER_VELOCITY_Y, "playerVelocityY");
+	declareApplicationInfoKey(Shmingo::PLAYER_VELOCITY_Z, "playerVelocityZ");
 
 	setApplicationInfo(Shmingo::PRIMARY_MONITOR_WIDTH, std::to_string(mode->width));
 	setApplicationInfo(Shmingo::PRIMARY_MONITOR_HEIGHT, std::to_string(mode->height));

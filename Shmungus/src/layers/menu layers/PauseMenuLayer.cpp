@@ -5,6 +5,8 @@
 
 #include "MiscTools.h"
 
+//Use this character to use color codes: §
+
 PauseMenuLayer::PauseMenuLayer(){
 
 	type = Shmingo::PAUSEMENU_LAYER;
@@ -29,8 +31,8 @@ void PauseMenuLayer::onAttach() {
 	interactiveMenu->addTexture("menu_elements/pressed.png");
 	interactiveMenu->completeTextureAtlas();
 
-	size_t backButtonID = interactiveMenu->createButton(vec2(0.35, 0.8), vec2(0.3, 0.066), "menu_elements/unpressed.png", "Back", 8, 1);
-	size_t closeButtonID = interactiveMenu->createButton(vec2(0.35, 0.4), vec2(0.3, 0.066), "menu_elements/unpressed.png", "Close", 8, 1);
+	int backButtonID = (int)interactiveMenu->createButton(vec2(0.35, 0.4), vec2(0.3, 0.066), "menu_elements/unpressed.png", "§§fBack", 8, 1);
+	int closeButtonID = (int)interactiveMenu->createButton(vec2(0.35, 0.5), vec2(0.3, 0.066), "menu_elements/unpressed.png", "§§§PExit", 8, 1);
 
 	interactiveMenu->setButtonOnClickFunction(backButtonID, []() {
 		Shmingo::disableGLFWCursor(); //This should be thrown into a function in SandboxLayer or some kind of onSwitchToSandboxLayer function here, will do eventually
@@ -99,4 +101,3 @@ void PauseMenuLayer::mouseClickCallBack(MouseClickEvent* e) {
 void PauseMenuLayer::onDetach() {
 	interactiveMenu->cleanUp();
 }
-

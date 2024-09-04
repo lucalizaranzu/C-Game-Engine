@@ -39,7 +39,10 @@ namespace Shmingo {
 		PRIMARY_MONITOR_HEIGHT,
 		PLAYER_X,
 		PLAYER_Y,
-		PLAYER_Z
+		PLAYER_Z,
+		PLAYER_VELOCITY_X,
+		PLAYER_VELOCITY_Y,
+		PLAYER_VELOCITY_Z
 	};
 
 	enum TextAlignment {

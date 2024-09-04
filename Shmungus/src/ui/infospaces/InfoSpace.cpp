@@ -19,7 +19,7 @@ InfoSpace::InfoSpace(const InfoSpace& other) {
 
 void InfoSpace::update() {
 
-	if (Shmingo::isTimeMultipleOf(0.2)) {
+	if (Shmingo::isTimeMultipleOf(0.02)) {
 		updateDynamicTextBoxes();
 	}
 	

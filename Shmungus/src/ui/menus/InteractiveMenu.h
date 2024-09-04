@@ -47,7 +47,7 @@ protected:
 	std::shared_ptr<TextVertexArray> m_textVertexArray;
 	std::shared_ptr<Shmingo::TextureAtlas> m_textureAtlas;
 
-	std::vector<MenuButton> m_Buttons;
+	std::vector<MenuButton*> m_Buttons;
 
 	std::unordered_map<std::string, size_t> m_textureMap;
 
