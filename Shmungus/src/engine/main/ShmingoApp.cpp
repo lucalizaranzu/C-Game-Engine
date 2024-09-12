@@ -70,7 +70,7 @@ void Shmingo::ShmingoApp::init() {
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
 
 	initGlobalVariables(); //Initialize global variables after GLAD is loaded
 
@@ -81,10 +81,10 @@ void Shmingo::ShmingoApp::init() {
 
 	//TODO only last font loaded works properly? All others seem to use the values from the last one. Valve please fix
 
-	Shmingo::loadFont("arial");
-	Shmingo::loadFont("Kratos");
+	//Shmingo::loadFont("arial");
+	//Shmingo::loadFont("Kratos");
 	Shmingo::loadFont("Minecraft");
-	Shmingo::loadFont("Minecraft_Faithful");
+	//Shmingo::loadFont("Minecraft_Faithful");
 
 	se_masterRenderer.init();
 
@@ -100,7 +100,7 @@ void Shmingo::ShmingoApp::init() {
 }
 
 void Shmingo::ShmingoApp::update() {
-	window->setViewport(0.0f, 0.4f, 0.8f, 1.0f); //Contains clear color and other settings
+	window->setViewport(0.1f, 0.3f, 1.0f, 1.0f); //Contains clear color and other settings
 
 	double time = glfwGetTime(); //TODO Make platform specific later on - similar to gl functions
 	deltaTime = time - lastFrameTime;

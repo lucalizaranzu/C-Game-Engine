@@ -195,5 +195,3 @@ void TexturedQuadVertexArrayAtlas::setTexCoordsUniforms(std::shared_ptr<ShaderPr
 	delete[] textureCoords;
 
 }
-
-

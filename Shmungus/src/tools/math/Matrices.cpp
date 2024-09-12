@@ -33,7 +33,7 @@ mat4 Shmingo::createOrthoMatrix(int displayWidth, int displayHeight){
 	return projectionMatrix;
 }
 
-mat4 Shmingo::createTransformationMatrix(vec3 position, vec2 rotation, vec3 scale){
+mat4 Shmingo::createTransformationMatrix(vec3 position, vec3 rotation, vec3 scale){
 	// Initialize the transformation matrix to the identity matrix
 	glm::mat4 transformationMatrix = glm::mat4(1.0f);
 
@@ -41,10 +41,9 @@ mat4 Shmingo::createTransformationMatrix(vec3 position, vec2 rotation, vec3 scal
 	transformationMatrix = glm::translate(transformationMatrix, position);
 	// Apply rotation: Yaw (around the Y axis) and Pitch (around the X axis)
 	// First, rotate around the X axis (pitch)
-	transformationMatrix = glm::rotate(transformationMatrix, rotation.y, glm::vec3(1.0f, 0.0f, 0.0f));
-
-	// Then, rotate around the Y axis (yaw)
-	transformationMatrix = glm::rotate(transformationMatrix, rotation.x, glm::vec3(0.0f, 1.0f, 0.0f));
+	transformationMatrix = glm::rotate(transformationMatrix, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
+	transformationMatrix = glm::rotate(transformationMatrix, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
+	transformationMatrix = glm::rotate(transformationMatrix, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	// Apply scaling
 	transformationMatrix = glm::scale(transformationMatrix, scale);

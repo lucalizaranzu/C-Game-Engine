@@ -26,16 +26,13 @@ void main() {
     if(vertexData.pass_skip){
     	discard;
 	}
-    vec4 sampled = vec4(decodeColor(vertexData.pass_Color), texture(font, vec3(vertexData.pass_texCoords.xy, vertexData.pass_textureID)).r);
+    vec3 decodedColor = decodeColor(vertexData.pass_Color);
+    vec4 sampled = vec4(decodedColor, texture(font, vec3(vertexData.pass_texCoords.xy, vertexData.pass_textureID)).r);
     
     
-    if(sampled.a < 0.1) {
+    if(sampled.a < 0.5) {
         discard; // Discard the fragment if the alpha is less than 0.1
     } else {
-        color = sampled; // Otherwise, use the sampled color
+        color = sampled;
     }
 }
-
-
-
-

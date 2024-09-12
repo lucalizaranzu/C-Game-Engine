@@ -3,7 +3,7 @@
 
 MenuButton::MenuButton(vec2 position, vec2 size, size_t textureID, std::string text, GLuint fontSize, GLuint lineSpacing) :
 	m_quad(Shmingo::Quad(vec2(position.x, -1 * position.y), size)), textureID(textureID),
-	m_textBox(TextBox(text, vec2(position.x, position.y + (0.06f / fontSize)), size, fontSize, lineSpacing , Shmingo::CENTER)) {
+	m_textBox(TextBox(text, vec2(position.x, position.y + (0.07f / fontSize)), size, fontSize, lineSpacing , Shmingo::CENTER)) {
 }
 
 void MenuButton::checkMouseHovered(vec2 mousePosition){

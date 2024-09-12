@@ -162,6 +162,7 @@
     <ClInclude Include="src\layers\main\LayerStack.h" />
     <ClInclude Include="src\loadingTools\instance loading\EntityVertexArray.h" />
     <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h" />
+    <ClInclude Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.h" />
     <ClInclude Include="src\loadingTools\text loading\TextBox.h" />
     <ClInclude Include="src\loadingTools\text loading\TextVertexArray.h" />
     <ClInclude Include="src\loadingTools\uniform loading\UniformBuffer.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="src\layers\sandbox layers\SandboxLayer.cpp" />
     <ClCompile Include="src\loadingTools\instance loading\EntityVertexArray.cpp" />
     <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp" />
+    <ClCompile Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.cpp" />
     <ClCompile Include="src\loadingTools\text loading\TextBox.cpp" />
     <ClCompile Include="src\loadingTools\text loading\TextVertexArray.cpp" />
     <ClCompile Include="src\loadingTools\uniform loading\UniformBuffer.cpp" />

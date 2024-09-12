@@ -13,5 +13,5 @@ namespace Shmingo {
 
 	mat4 createOrthoMatrix(int displayWidth, int displayHeight);
 
-	mat4 createTransformationMatrix(vec3 translation, vec2 rotation, vec3 scale);
+	mat4 createTransformationMatrix(vec3 translation, vec3 rotation, vec3 scale);
 }

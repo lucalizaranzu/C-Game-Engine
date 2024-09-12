@@ -18,6 +18,7 @@ C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\menu layers\PauseMenuLay
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\layers\sandbox layers\SandboxLayer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\SandboxLayer.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\instance loading\EntityVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\EntityVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\instance loading\InstancedVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\InstancedVertexArray.obj
+C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\ChunkVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextBox.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextBox.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\text loading\TextVertexArray.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\TextVertexArray.obj
 C:\Users\Luca\source\repos\Shmungus\Shmungus\src\loadingTools\uniform loading\UniformBuffer.cpp;C:\Users\Luca\source\repos\Shmungus\bin-obj\Debug-windows-x86_64\Shmingo\UniformBuffer.obj

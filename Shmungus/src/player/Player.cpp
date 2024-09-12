@@ -151,20 +151,22 @@ void Player::getKeyUp(KeyReleaseEvent* e) {
 
 void Player::calcVelocity() {
 
+	const float accelerationUnit = DEFAULT_ACCELERATION * se_deltaTime;
+
 	if (velocity.x - targetVelocity.x == 0) {
 		//Do nothing
 	}
 	else if (velocity.x - targetVelocity.x > 0) { //Slowing down
-		if (velocity.x - DEFAULT_ACCELERATION >= targetVelocity.x) {
-			velocity.x -= DEFAULT_ACCELERATION;
+		if (velocity.x - accelerationUnit >= targetVelocity.x) {
+			velocity.x -= accelerationUnit;
 		}
 		else {
 			velocity.x = targetVelocity.x;
 		}
 	}
 	else { //Speeding up
-		if (velocity.x + DEFAULT_ACCELERATION <= targetVelocity.x) {
-			velocity.x += DEFAULT_ACCELERATION;
+		if (velocity.x + accelerationUnit <= targetVelocity.x) {
+			velocity.x += accelerationUnit;
 		}
 		else {
 			velocity.x = targetVelocity.x;
@@ -175,16 +177,16 @@ void Player::calcVelocity() {
 		//Do nothing
 	}
 	else if (velocity.z - targetVelocity.z > 0) { //Slowing down
-		if (velocity.z - DEFAULT_ACCELERATION >= targetVelocity.z) {
-			velocity.z -= DEFAULT_ACCELERATION;
+		if (velocity.z - accelerationUnit >= targetVelocity.z) {
+			velocity.z -= accelerationUnit;
 		}
 		else {
 			velocity.z = targetVelocity.z;
 		}
 	}
 	else { //Speeding up
-		if (velocity.z + DEFAULT_ACCELERATION <= targetVelocity.z) {
-			velocity.z += DEFAULT_ACCELERATION;
+		if (velocity.z + accelerationUnit <= targetVelocity.z) {
+			velocity.z += accelerationUnit;
 		}
 		else {
 			velocity.z = targetVelocity.z;
@@ -195,16 +197,16 @@ void Player::calcVelocity() {
 		//Do nothing
 	}
 	else if (velocity.y - targetVelocity.y > 0) { //Slowing down
-		if (velocity.y - DEFAULT_ACCELERATION >= targetVelocity.y) {
-			velocity.y -= DEFAULT_ACCELERATION;
+		if (velocity.y - accelerationUnit >= targetVelocity.y) {
+			velocity.y -= accelerationUnit;
 		}
 		else {
 			velocity.y = targetVelocity.y;
 		}
 	}
 	else { //Speeding up
-		if (velocity.y + DEFAULT_ACCELERATION <= targetVelocity.y) {
-			velocity.y += DEFAULT_ACCELERATION;
+		if (velocity.y + accelerationUnit <= targetVelocity.y) {
+			velocity.y += accelerationUnit;
 		}
 		else {
 			velocity.y = targetVelocity.y;
@@ -227,16 +229,10 @@ void Player::getMouseMovement(MouseDragEvent* e) {
 }
 
 
-
-
 //Turns velocity into position change, useful for eventual animation code etc.
 void Player::move() {
 
 	position.z += se_deltaTime * (velocity.z * cos(rotation.x) - velocity.x * sin(rotation.x));
 	position.y += se_deltaTime * velocity.y;
 	position.x += se_deltaTime * (velocity.x * cos(rotation.x) + velocity.z * sin(rotation.x));
-}
-
-float roundToNearestThird(float num) {
-	return std::round(num * 1000.0f) / 1000.0f;
 }

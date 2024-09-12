@@ -7,6 +7,7 @@
 #include "World.h"
 #include "Matrices.h"
 #include "InstancedVertexArray.h"
+#include "MiscTools.h"
 
 
 //-------------------------------------------------Utility Functions-------------------------------------------------
@@ -208,7 +209,7 @@ DefaultEntity::DefaultEntity(vec3 position, vec2 rotation, vec3 scale) : Instanc
 
 	instantiateInstanceData();
 
-    auto matrix = Shmingo::createTransformationMatrix(position, rotation, scale);
+    auto matrix = Shmingo::createTransformationMatrix(position, vec3(rotation.x, rotation.y, 0.0f), scale);
 
     setTransformationMatrix(matrix);
 
@@ -217,6 +218,7 @@ DefaultEntity::DefaultEntity(vec3 position, vec2 rotation, vec3 scale) : Instanc
 }
 
 void DefaultEntity::update() {
+
 }
 
 
@@ -226,7 +228,7 @@ void DefaultEntity::update() {
 
 
 void DefaultEntity::updateTransformationMatrix(){
-    mat4 newMatrix = Shmingo::createTransformationMatrix(position, rotation, scale);
+    mat4 newMatrix = Shmingo::createTransformationMatrix(position, vec3(rotation.x,rotation.y,0.0f), scale);
     setTransformationMatrix(newMatrix);
     se_currentWorld->instancedVAOMap[Shmingo::DefaultEntity]->updateInstanceData(this, 0);
 }

@@ -231,6 +231,7 @@
     <ClInclude Include="src\world\World.h">
       <Filter>src\world</Filter>
     </ClInclude>
+    <ClInclude Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\display\DisplayManager.cpp">
@@ -359,6 +360,7 @@
     <ClCompile Include="src\world\World.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
+    <ClCompile Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\entityFragment.glsl">

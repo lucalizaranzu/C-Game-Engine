@@ -36,6 +36,8 @@ void Shmingo::loadFont(std::string name) {
     // Disable byte-alignment restriction
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
+    FT_GlyphSlot slot = face->glyph;
+
     se_application.setFontTextureArrayID(name, 0);
 
     glGenTextures(1, se_application.getFontTextureArrayIDPtr(name));
@@ -50,6 +52,9 @@ void Shmingo::loadFont(std::string name) {
             std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
             continue;
         }
+
+        //ENABLE THIS IN PROD
+        //FT_Render_Glyph(slot, FT_RENDER_MODE_SDF);
 
         glTexSubImage3D(
             GL_TEXTURE_2D_ARRAY,
