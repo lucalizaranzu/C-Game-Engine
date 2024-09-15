@@ -20,14 +20,17 @@ void MasterRenderer::init() {
 	std::shared_ptr<DefaultShader> entityShader = std::make_shared<DefaultShader>("entityVertex.glsl", "entityFragment.glsl");
 	std::shared_ptr<DefaultShader> textShader = std::make_shared<DefaultShader>("text/textVertex.glsl", "text/textFragment.glsl");
 	std::shared_ptr<DefaultShader> menuShader = std::make_shared<DefaultShader>("menu/menuVertex.glsl", "menu/menuFragment.glsl");
+	std::shared_ptr<DefaultShader> terrainShader = std::make_shared<DefaultShader>("terrain/terrainVertex.glsl", "terrain/terrainFragment.glsl");
 
 	entityShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK, Shmingo::UTIL_BLOCK);
 	textShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
 	menuShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
+	terrainShader->bindUniformBlocks(Shmingo::MATRIX_BLOCK);
 
 	mapShader(se_ENTITY_SHADER, entityShader);
 	mapShader(se_TEXT_SHADER, textShader);
 	mapShader(se_MENU_SHADER, menuShader);
+	mapShader(se_TERRAIN_SHADER, terrainShader);
 
 	mapEntityShader(Shmingo::DefaultEntity, entityShader);
 
@@ -50,6 +53,11 @@ void MasterRenderer::submitEntityVertexArray(std::shared_ptr<EntityVertexArray> 
 void MasterRenderer::submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray, ShaderType type){
 	InstancedRenderPair pair = InstancedRenderPair(vertexArray, shaderMap.at(type));
 	instancedRenderQueue.emplace_back(pair);
+}
+
+void MasterRenderer::submitTerrainVertexArray(std::shared_ptr<ChunkVertexArray> vertexArray, ShaderType type){
+	TerrainRenderPair pair = TerrainRenderPair(vertexArray, shaderMap.at(type));
+	terrainRenderQueue.emplace_back(pair);
 }
 
 
@@ -85,10 +93,18 @@ void MasterRenderer::renderTextBatch() {
 	}
 }
 
+void MasterRenderer::renderTerrainBatch(){
+	for (TerrainRenderPair pair : terrainRenderQueue) {
+		//Uses render method from renderer.h
+		Shmingo::renderTerrain(pair.vertexArray, pair.shader);
+	}
+}
+
 void MasterRenderer::clearBatches() {
 	entityRenderQueue.clear();
 	textRenderQueue.clear();
 	instancedRenderQueue.clear();
+	terrainRenderQueue.clear();
 }
 
 //Renders the queue then clears it for next frame
@@ -97,6 +113,7 @@ void MasterRenderer::update() {
 	renderEntityBatch();
 	renderTextBatch();
 	renderInstancedBatch();
+	renderTerrainBatch();
 
 	clearBatches();
 }

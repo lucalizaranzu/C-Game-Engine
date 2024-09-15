@@ -218,7 +218,7 @@ DefaultEntity::DefaultEntity(vec3 position, vec2 rotation, vec3 scale) : Instanc
 }
 
 void DefaultEntity::update() {
-
+    //setRotation(vec2(rotation.x, rotation.y + 0.5 * se_deltaTime));
 }
 
 
@@ -228,8 +228,7 @@ void DefaultEntity::update() {
 
 
 void DefaultEntity::updateTransformationMatrix(){
-    mat4 newMatrix = Shmingo::createTransformationMatrix(position, vec3(rotation.x,rotation.y,0.0f), scale);
-    setTransformationMatrix(newMatrix);
+    setTransformationMatrix(Shmingo::createTransformationMatrix(position, vec3(rotation.x, rotation.y, 0.0f), scale));
     se_currentWorld->instancedVAOMap[Shmingo::DefaultEntity]->updateInstanceData(this, 0);
 }
 

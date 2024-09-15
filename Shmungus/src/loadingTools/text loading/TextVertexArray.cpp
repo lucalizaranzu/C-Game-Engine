@@ -506,7 +506,7 @@ void TextVertexArray::setGLBufferDataPositionsOnly(size_t textBoxOffset, size_t 
 
 void TextVertexArray::shiftBuffersRight(size_t offset, size_t shiftAmt) {
 
-	GLuint charAmt = instanceAmount - offset; //Amount of characters to shift
+	size_t charAmt = instanceAmount - offset; //Amount of characters to shift
 
 	bindVao();
 

@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\terrain loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\loadingTools\terrain loading\chunk loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -100,7 +100,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\terrain loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\loadingTools\terrain loading\chunk loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -124,7 +124,7 @@
       <PrecompiledHeaderFile>sepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>se_DISTRIBUTION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\menu interactable loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src\display;src\engine;src\entities;src\events;src\layers;src\loadingTools;src\models;src\player;src\renderEngine;src\shaders;src\textures;src\tools;src\ui;src\world;src\engine\core;src\engine\main;src\engine\utilities;src\engine\utilities\extern;src\engine\utilities\font;src\engine\utilities\input;src\layers\info layers;src\layers\main;src\layers\menu layers;src\layers\sandbox layers;src\loadingTools\instance loading;src\loadingTools\terrain loading;src\loadingTools\text loading;src\loadingTools\uniform loading;src\loadingTools\terrain loading\chunk loading;src\tools\math;src\ui\elements;src\ui\infospaces;src\ui\menus;..\Libraries\include;..\Libraries\include\freetype;..\Libraries\include\stb_image;..\Libraries\include\glad;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -153,8 +153,8 @@
     <ClInclude Include="src\engine\main\ShmingoApp.h" />
     <ClInclude Include="src\engine\utilities\font\FontUtil.h" />
     <ClInclude Include="src\engine\utilities\input\Input.h" />
-    <ClInclude Include="src\entities\Entity.h" />
     <ClInclude Include="src\entities\InstancedEntity.h" />
+    <ClInclude Include="src\entities\entity.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventBus.h" />
     <ClInclude Include="src\events\EventHandler.h" />
@@ -203,8 +203,8 @@
     <ClCompile Include="src\engine\utilities\extern\stb_image.cpp" />
     <ClCompile Include="src\engine\utilities\font\FontUtil.cpp" />
     <ClCompile Include="src\engine\utilities\input\Input.cpp" />
-    <ClCompile Include="src\entities\Entity.cpp" />
     <ClCompile Include="src\entities\InstancedEntity.cpp" />
+    <ClCompile Include="src\entities\entity.cpp" />
     <ClCompile Include="src\layers\info layers\InfoLayer.cpp" />
     <ClCompile Include="src\layers\info layers\TopLayer.cpp" />
     <ClCompile Include="src\layers\main\Layer.cpp" />
@@ -243,6 +243,8 @@
     <None Include="shaders\fragment.glsl" />
     <None Include="shaders\menu\menuFragment.glsl" />
     <None Include="shaders\menu\menuVertex.glsl" />
+    <None Include="shaders\terrain\terrainFragment.glsl" />
+    <None Include="shaders\terrain\terrainVertex.glsl" />
     <None Include="shaders\text\textFragment.glsl" />
     <None Include="shaders\text\textVertex.glsl" />
     <None Include="shaders\vertex.glsl" />

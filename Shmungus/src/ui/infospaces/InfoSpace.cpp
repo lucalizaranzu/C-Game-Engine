@@ -7,7 +7,7 @@
 
 
 
-InfoSpace::InfoSpace(std::string fontName) : m_applicationID(se_application.getInfoSpaceAmount()) {
+InfoSpace::InfoSpace(std::string fontName) : m_applicationID((GLuint)se_application.getInfoSpaceAmount()) {
 
 	m_textVertexArray.reset(new TextVertexArray(fontName)); //Initialize vertex array to use arial font (May change to a parameter later if necessary)
 	se_application.addInfoSpace(this); //Add the info space to the application list

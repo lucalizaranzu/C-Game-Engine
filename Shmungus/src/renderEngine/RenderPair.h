@@ -5,6 +5,7 @@
 #include "ShaderProgram.h"
 #include "EntityVertexArray.h"
 #include "TextVertexArray.h"
+#include "ChunkVertexArray.h"
 
 //This object contains a vertrex array, a shader and a renderer, used to avoid the need to lookup a shader and renderer every time
 
@@ -71,6 +72,29 @@ public:
 private:
 
 	std::shared_ptr<InstancedVertexArray> vertexArray;
+	std::shared_ptr<ShaderProgram> shader;
+
+};
+
+
+
+
+class TerrainRenderPair {
+
+	friend class MasterRenderer;
+
+public:
+
+	TerrainRenderPair(std::shared_ptr<ChunkVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader) : vertexArray(vertexArray), shader(shader) {}
+
+	GLuint getVertexArrayID() { return vertexArray->getVaoID(); };
+	inline std::shared_ptr<ShaderProgram> getShader() { return shader; };
+
+	inline void setShader(std::shared_ptr<ShaderProgram> newShader) { shader = newShader; };
+
+private:
+
+	std::shared_ptr<ChunkVertexArray> vertexArray;
 	std::shared_ptr<ShaderProgram> shader;
 
 };

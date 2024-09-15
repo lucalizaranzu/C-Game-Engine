@@ -65,10 +65,33 @@ void Shmingo::renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray,
 
 	enableAttribs(vertexArray->getAttribAmt()); //Enables attributes
 	clearOpenGLError();
-	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, vertexArray->getInstanceCount());
+	glDrawElementsInstanced(GL_TRIANGLES, vertexArray->getIndexCount(), GL_UNSIGNED_INT, 0, (GLsizei)vertexArray->getInstanceCount());
 	checkOpenGLError();
 	disableAttribs(vertexArray->getAttribAmt()); //Disables attributes
 
+	glBindVertexArray(0); //Unbind VAO
+	shader->stop(); //Stop shader
+}
+
+
+
+void Shmingo::renderTerrain(std::shared_ptr<ChunkVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader){
+
+	shader->start();
+
+	vertexArray->bind(); //Bind VAO
+
+	//vertexArray->bindTextures(); //Load textures into texture slots
+
+	enableAttribs(vertexArray->getAttribAmt()); //Enables attributes
+	clearOpenGLError();
+
+	glDisable(GL_CULL_FACE);
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 3, vertexArray->getInstanceCount());
+	glEnable(GL_CULL_FACE);
+
+	checkOpenGLError();
+	disableAttribs(vertexArray->getAttribAmt()); //Disables attributes
 	glBindVertexArray(0); //Unbind VAO
 	shader->stop(); //Stop shader
 }

@@ -7,6 +7,9 @@
     <Filter Include="shaders\menu">
       <UniqueIdentifier>{B3C77519-9F2A-05BE-48B0-3D7434F2D040}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\terrain">
+      <UniqueIdentifier>{939FF629-FF2A-64EE-083C-E7E27446C0EE}</UniqueIdentifier>
+    </Filter>
     <Filter Include="shaders\text">
       <UniqueIdentifier>{A39F7919-8F02-09BE-3888-417424CAD440}</UniqueIdentifier>
     </Filter>
@@ -63,6 +66,12 @@
     </Filter>
     <Filter Include="src\loadingTools\instance loading">
       <UniqueIdentifier>{ADF17118-1960-C797-6249-8297CEF6BC33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\terrain loading">
+      <UniqueIdentifier>{CD58F33E-B9A9-DE80-E20D-CD42CEBD71EA}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\loadingTools\terrain loading\chunk loading">
+      <UniqueIdentifier>{13A2421B-FF1F-93B4-E817-514CD434D5DC}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\loadingTools\text loading">
       <UniqueIdentifier>{5D7610E2-C98E-F70B-923B-87A5FE128CA5}</UniqueIdentifier>
@@ -132,10 +141,10 @@
     <ClInclude Include="src\engine\utilities\input\Input.h">
       <Filter>src\engine\utilities\input</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\Entity.h">
+    <ClInclude Include="src\entities\InstancedEntity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\InstancedEntity.h">
+    <ClInclude Include="src\entities\entity.h">
       <Filter>src\entities</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Event.h">
@@ -158,6 +167,9 @@
     </ClInclude>
     <ClInclude Include="src\loadingTools\instance loading\InstancedVertexArray.h">
       <Filter>src\loadingTools\instance loading</Filter>
+    </ClInclude>
+    <ClInclude Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.h">
+      <Filter>src\loadingTools\terrain loading\chunk loading</Filter>
     </ClInclude>
     <ClInclude Include="src\loadingTools\text loading\TextBox.h">
       <Filter>src\loadingTools\text loading</Filter>
@@ -231,7 +243,6 @@
     <ClInclude Include="src\world\World.h">
       <Filter>src\world</Filter>
     </ClInclude>
-    <ClInclude Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\display\DisplayManager.cpp">
@@ -264,10 +275,10 @@
     <ClCompile Include="src\engine\utilities\input\Input.cpp">
       <Filter>src\engine\utilities\input</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\Entity.cpp">
+    <ClCompile Include="src\entities\InstancedEntity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\InstancedEntity.cpp">
+    <ClCompile Include="src\entities\entity.cpp">
       <Filter>src\entities</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\info layers\InfoLayer.cpp">
@@ -293,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="src\loadingTools\instance loading\InstancedVertexArray.cpp">
       <Filter>src\loadingTools\instance loading</Filter>
+    </ClCompile>
+    <ClCompile Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.cpp">
+      <Filter>src\loadingTools\terrain loading\chunk loading</Filter>
     </ClCompile>
     <ClCompile Include="src\loadingTools\text loading\TextBox.cpp">
       <Filter>src\loadingTools\text loading</Filter>
@@ -360,7 +374,6 @@
     <ClCompile Include="src\world\World.cpp">
       <Filter>src\world</Filter>
     </ClCompile>
-    <ClCompile Include="src\loadingTools\terrain loading\chunk loading\ChunkVertexArray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\entityFragment.glsl">
@@ -377,6 +390,12 @@
     </None>
     <None Include="shaders\menu\menuVertex.glsl">
       <Filter>shaders\menu</Filter>
+    </None>
+    <None Include="shaders\terrain\terrainFragment.glsl">
+      <Filter>shaders\terrain</Filter>
+    </None>
+    <None Include="shaders\terrain\terrainVertex.glsl">
+      <Filter>shaders\terrain</Filter>
     </None>
     <None Include="shaders\text\textFragment.glsl">
       <Filter>shaders\text</Filter>

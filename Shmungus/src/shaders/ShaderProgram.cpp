@@ -18,6 +18,7 @@ std::string get_file_contents(const char* filename)
 		in.close();
 		return(contents);
 	}
+	se_error("Could not load shader with filename " << filename);
 	throw(errno);
 }
 

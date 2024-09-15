@@ -10,7 +10,8 @@ enum ShaderType {
 	se_DEFAULT_SHADER,
 	se_ENTITY_SHADER,
 	se_TEXT_SHADER,
-	se_MENU_SHADER
+	se_MENU_SHADER,
+	se_TERRAIN_SHADER
 
 };
 

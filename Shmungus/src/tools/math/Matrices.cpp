@@ -37,13 +37,14 @@ mat4 Shmingo::createTransformationMatrix(vec3 position, vec3 rotation, vec3 scal
 	// Initialize the transformation matrix to the identity matrix
 	glm::mat4 transformationMatrix = glm::mat4(1.0f);
 
-	// Apply translation
 	transformationMatrix = glm::translate(transformationMatrix, position);
-	// Apply rotation: Yaw (around the Y axis) and Pitch (around the X axis)
-	// First, rotate around the X axis (pitch)
+
 	transformationMatrix = glm::rotate(transformationMatrix, rotation.x, glm::vec3(1.0f, 0.0f, 0.0f));
 	transformationMatrix = glm::rotate(transformationMatrix, rotation.y, glm::vec3(0.0f, 1.0f, 0.0f));
 	transformationMatrix = glm::rotate(transformationMatrix, rotation.z, glm::vec3(0.0f, 0.0f, 1.0f));
+	// Apply translation
+	// Apply rotation: Yaw (around the Y axis) and Pitch (around the X axis)
+	// First, rotate around the X axis (pitch)
 
 	// Apply scaling
 	transformationMatrix = glm::scale(transformationMatrix, scale);

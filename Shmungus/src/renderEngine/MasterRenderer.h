@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "DefaultShader.h"
 #include "UniformBuffer.h"
+#include "ChunkVertexArray.h"
 
 
 class MasterRenderer {
@@ -26,12 +27,15 @@ public:
 
 	void submitInstancedVertexArray(std::shared_ptr<InstancedVertexArray> vertexArray, ShaderType type);
 
+	void submitTerrainVertexArray(std::shared_ptr<ChunkVertexArray> vertexArray, ShaderType type);
+
 
 	void update();
 
 	void renderInstancedBatch();
 	void renderEntityBatch();
 	void renderTextBatch();
+	void renderTerrainBatch();
 
 	void clearBatches();
 
@@ -72,6 +76,7 @@ private:
 	std::vector<EntityRenderPair> entityRenderQueue; 
 	std::vector<TextRenderPair> textRenderQueue; 
 	std::vector<InstancedRenderPair> instancedRenderQueue;
+	std::vector<TerrainRenderPair> terrainRenderQueue;
 
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> shaderMap;
 	std::map<ShaderType, std::shared_ptr<ShaderProgram>> instancedShaderMap;

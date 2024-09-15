@@ -4,6 +4,7 @@
 #include "EntityVertexArray.h"
 #include "TextVertexArray.h"
 #include "instancedVertexArray.h"
+#include "ChunkVertexArray.h"
 
 namespace Shmingo {
 
@@ -35,5 +36,12 @@ namespace Shmingo {
 	/// <param name="vertexArray"></param>
 	/// <param name="shader"></param>
 	void renderInstanced(std::shared_ptr<InstancedVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
+
+	/// <summary>
+	/// Renders terrain
+	/// </summary>
+	/// <param name="vertexArray">Terrain Vertex Array</param>
+	/// <param name="shader"></param>
+	void renderTerrain(std::shared_ptr<ChunkVertexArray> vertexArray, std::shared_ptr<ShaderProgram> shader);
 
 }
