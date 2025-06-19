@@ -1,4 +1,4 @@
-# Shmungus
+# OpenGL game engine
 
 To generate project files:
 	I've set up a batch file to run a premake script in order to build the project in the visual studio 2022 format. 
